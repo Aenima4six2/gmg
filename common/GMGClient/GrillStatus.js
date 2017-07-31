@@ -31,9 +31,6 @@ const getFoodTemp = (hex) => {
 class GrillStatus {
   constructor(bytes) {
     const hex = Buffer.from(bytes).toString('hex')
-    this.hex = hex
-    this.ansi = bytes.toString()
-    this.decimal = getDecimal(hex)
     this.grillTemp = getGrillTemp(hex)
     this.foodTemp = getFoodTemp(hex)
     this.state = getGrillState(hex)

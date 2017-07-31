@@ -14,6 +14,12 @@ const commands = Object.freeze({
   setFoodTempF: (temp) => `UF${temp}`
 })
 
+const getCommandData = (command) => {
+  const fullCommand = `${command}!\n`
+  const data = Buffer.from(fullCommand, 'ascii')
+  return data
+}
+
 class GMGClient {
   constructor(port = defaultPort, host = defaultHost, tries = 5) {
     this.port = port
@@ -68,48 +74,63 @@ class GMGClient {
     return response == 'OK' ? Promise.resolve() : Promise.reject()
   }
 
-  async sendCommand(command) {
-    return await new Promise((res, rej) => {
-      const fullCommand = `${command}!\n`
-      const data = Buffer.from(fullCommand, 'ascii')
+  async discoverGrill() {
+    if (this.host !== defaultHost) return
+    return new Promise((res, rej) => {
       const socket = dgram.createSocket('udp4')
       socket.bind(this.port)
-
       socket.on('listening', () => {
-        if (this.host == defaultHost) {
-          socket.setBroadcast(true)
+        socket.setBroadcast(true)
+        const data = getCommandData(commands.getGrillStatus)
+        const schedule = setInterval(() => {
+          socket.send(data, 0, data.byteLength, this.port, this.host, error => {
+            if (error) rej(error)
+            else {
+              socket.on('message', (msg, info) => {
+                const hostIp = ip.address()
+                if (info.address == hostIp) return
+                clearInterval(schedule)
+                this.host = info.address
+                socket.close()
+                res(info.address)
+              })
+            }
+          })
+        }, retryMs)
+      })
+    })
+  }
+
+  async sendCommand(command) {
+    if (this.host === defaultHost) await this.discoverGrill()
+    return await new Promise((res, rej) => {
+      const data = getCommandData(command)
+      const socket = dgram.createSocket('udp4')
+      const offset = data.byteLength
+      let tries = 0
+      const schedule = setInterval(() => {
+        const fail = (error) => {
+          clearInterval(schedule)
+          socket.close()
+          rej(error)
         }
 
-        const offset = data.byteLength
-        let tries = 0
+        if (tries++ > this.tries) {
+          fail(new Error('Try count exceeded!'))
+        }
+        else {
+          socket.send(data, 0, offset, this.port, this.host, error => {
+            if (error) fail(error)
+          })
+        }
+      }, retryMs)
 
-        const schedule = setInterval(() => {
-          const fail = (error) => {
-            clearInterval(schedule)
-            socket.close()
-            rej(error)
-          }
-
-          if (tries++ > this.tries) {
-            fail(new Error('Try count exceeded!'))
-          }
-          else {
-            socket.send(data, 0, offset, this.port, this.host, error => {
-              if (error) fail(error)
-            })
-          }
-        }, retryMs)
-
-        socket.on('message', (msg, info) => {
-          const hostIp = ip.address()
-          if (info.address == hostIp) return
-          clearInterval(schedule)
-          if (this.host == defaultHost) {
-            this.host = info.address
-          }
-          socket.close()
-          res({ msg, info })
-        })
+      socket.on('message', (msg, info) => {
+        const hostIp = ip.address()
+        if (info.address == hostIp) return
+        clearInterval(schedule)
+        socket.close()
+        res({ msg, info })
       })
     })
   }

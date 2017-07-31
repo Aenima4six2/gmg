@@ -6,15 +6,15 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "GMGClient": "file:../common/GMGClient",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
-    "firmata": "^0.17.0",
-    "ip": "^1.1.5",
     "morgan": "~1.8.1",
     "node-sass-middleware": "0.9.8",
     "pug": "~2.0.0-beta11",
-    "serve-favicon": "~2.4.2"
+    "serve-favicon": "~2.4.2",
+    "socket.io": "^2.0.3"
   }
 }
