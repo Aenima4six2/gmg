@@ -1,8 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const gmg = new require('../GMG')
-const client = new gmg.GMGClient()
-const errors = gmg.Errors
+const client = require('../services/gmgClientService').client
+const errors = require('GMGClient').Errors
 
 router.get('/status', async (req, res, next) => {
   try {
