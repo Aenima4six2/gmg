@@ -6203,7 +6203,7 @@ exports.push([module.i, "/* roboto-100normal - latin */\n@font-face {\n  font-fa
 /* no static exports found */
 /* all exports used */
 /*!****************************************************************************************************************************************!*\
-  !*** ./~/css-loader?{"importLoaders":1}!./~/postcss-loader/lib?{"ident":"postcss","plugins":[null,null]}!./src/components/App/App.css ***!
+  !*** ./~/css-loader?{"importLoaders":1}!./~/postcss-loader/lib?{"ident":"postcss","plugins":[null,null]}!./src/components/App/index.css ***!
   \****************************************************************************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6223,7 +6223,7 @@ exports.push([module.i, "body {\n  background: #000000 url(" + __webpack_require
 /* no static exports found */
 /* all exports used */
 /*!****************************************************************************************************************************************************!*\
-  !*** ./~/css-loader?{"importLoaders":1}!./~/postcss-loader/lib?{"ident":"postcss","plugins":[null,null]}!./src/components/Container/Container.css ***!
+  !*** ./~/css-loader?{"importLoaders":1}!./~/postcss-loader/lib?{"ident":"postcss","plugins":[null,null]}!./src/components/ControlContainer/index.css ***!
   \****************************************************************************************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6232,7 +6232,7 @@ exports = module.exports = __webpack_require__(/*! ../../../~/css-loader/lib/css
 
 
 // module
-exports.push([module.i, ".Container {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  max-width: 50rem;\n  margin-left: auto;\n  margin-right: auto;\n  margin-top: 20px;\n}\n\n.Card-Container {\n  margin-top: 15px;\n  margin-bottom: 5px;\n  padding-left: 20px;\n  padding-right: 20px;\n}\n\n.Headline {\n  fontSize: 24px;\n  paddingTop: 16px;\n  marginBottom: 12px;\n  fontWeight: 400px;\n}", ""]);
+exports.push([module.i, ".ControlContainer {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  max-width: 50rem;\n  margin-left: auto;\n  margin-right: auto;\n  margin-top: 20px;\n}\n\n.Card-ControlContainer {\n  margin-top: 15px;\n  margin-bottom: 5px;\n  padding-left: 20px;\n  padding-right: 20px;\n}\n\n.Headline {\n  fontSize: 24px;\n  paddingTop: 16px;\n  marginBottom: 12px;\n  fontWeight: 400px;\n}", ""]);
 
 // exports
 
@@ -25526,9 +25526,9 @@ function formatMessage(message, isError) {
 
   // Remove webpack-specific loader notation from filename.
   // Before:
-  // ./~/css-loader!./~/postcss-loader!./src/App.css
+  // ./~/css-loader!./~/postcss-loader!./src/index.css
   // After:
-  // ./src/App.css
+  // ./src/index.css
   if (lines[0].lastIndexOf('!') !== -1) {
     lines[0] = lines[0].substr(lines[0].lastIndexOf('!') + 1);
   }
@@ -61730,14 +61730,14 @@ module.exports = function(module) {
 /***/ "./src/components/App/App.css":
 /* no static exports found */
 /*!************************************!*\
-  !*** ./src/components/App/App.css ***!
+  !*** ./src/components/App/index.css ***!
   \************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(/*! !../../../~/css-loader??ref--4-1!../../../~/postcss-loader/lib??postcss!./App.css */ "./node_modules/css-loader/index.js?{\"importLoaders\":1}!./node_modules/postcss-loader/lib/index.js?{\"ident\":\"postcss\",\"plugins\":[null,null]}!./src/components/App/App.css");
+var content = __webpack_require__(/*! !../../../~/css-loader??ref--4-1!../../../~/postcss-loader/lib??postcss!./index.css */ "./node_modules/css-loader/index.js?{\"importLoaders\":1}!./node_modules/postcss-loader/lib/index.js?{\"ident\":\"postcss\",\"plugins\":[null,null]}!./src/components/App/index.css");
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -61751,8 +61751,8 @@ if(content.locals) module.exports = content.locals;
 if(true) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept(/*! !../../../~/css-loader??ref--4-1!../../../~/postcss-loader/lib??postcss!./App.css */ "./node_modules/css-loader/index.js?{\"importLoaders\":1}!./node_modules/postcss-loader/lib/index.js?{\"ident\":\"postcss\",\"plugins\":[null,null]}!./src/components/App/App.css", function() {
-			var newContent = __webpack_require__(/*! !../../../~/css-loader??ref--4-1!../../../~/postcss-loader/lib??postcss!./App.css */ "./node_modules/css-loader/index.js?{\"importLoaders\":1}!./node_modules/postcss-loader/lib/index.js?{\"ident\":\"postcss\",\"plugins\":[null,null]}!./src/components/App/App.css");
+		module.hot.accept(/*! !../../../~/css-loader??ref--4-1!../../../~/postcss-loader/lib??postcss!./index.css */ "./node_modules/css-loader/index.js?{\"importLoaders\":1}!./node_modules/postcss-loader/lib/index.js?{\"ident\":\"postcss\",\"plugins\":[null,null]}!./src/components/App/index.css", function() {
+			var newContent = __webpack_require__(/*! !../../../~/css-loader??ref--4-1!../../../~/postcss-loader/lib??postcss!./index.css */ "./node_modules/css-loader/index.js?{\"importLoaders\":1}!./node_modules/postcss-loader/lib/index.js?{\"ident\":\"postcss\",\"plugins\":[null,null]}!./src/components/App/index.css");
 			if(typeof newContent === 'string') newContent = [[module.i, newContent, '']];
 			update(newContent);
 		});
@@ -61767,14 +61767,14 @@ if(true) {
 /* exports provided: default */
 /* exports used: default */
 /*!***********************************!*\
-  !*** ./src/components/App/App.js ***!
+  !*** ./src/components/App/index.js ***!
   \***********************************/
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(/*! react */ "./node_modules/react/react.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_css__ = __webpack_require__(/*! ./App.css */ "./src/components/App/App.css");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_css__ = __webpack_require__(/*! ./index.css */ "./src/components/App/index.css");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__App_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_typeface_roboto__ = __webpack_require__(/*! typeface-roboto */ "./node_modules/typeface-roboto/index.css");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_typeface_roboto___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_typeface_roboto__);
@@ -61783,10 +61783,10 @@ if(true) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__theme_gmgTheme__ = __webpack_require__(/*! ../../theme/gmgTheme */ "./src/theme/gmgTheme.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_material_ui_styles_getMuiTheme__ = __webpack_require__(/*! material-ui/styles/getMuiTheme */ "./node_modules/material-ui/styles/getMuiTheme.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_material_ui_styles_getMuiTheme___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_material_ui_styles_getMuiTheme__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Container__ = __webpack_require__(/*! ../Container */ "./src/components/Container/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Container__ = __webpack_require__(/*! ../ControlContainer */ "./src/components/ControlContainer/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_material_ui_AppBar__ = __webpack_require__(/*! material-ui/AppBar */ "./node_modules/material-ui/AppBar/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_material_ui_AppBar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_material_ui_AppBar__);
-var _jsxFileName = '/Users/peej/Projects/gmg/src/app/react/src/components/App/App.js';
+var _jsxFileName = '/Users/peej/Projects/gmg/src/app/react/src/components/App/index.js';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -61887,14 +61887,14 @@ module.exports = __webpack_require__.p + "static/media/wood.cde93d87.jpg";
 /***/ "./src/components/Container/Container.css":
 /* no static exports found */
 /*!************************************************!*\
-  !*** ./src/components/Container/Container.css ***!
+  !*** ./src/components/ControlContainer/index.css ***!
   \************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(/*! !../../../~/css-loader??ref--4-1!../../../~/postcss-loader/lib??postcss!./Container.css */ "./node_modules/css-loader/index.js?{\"importLoaders\":1}!./node_modules/postcss-loader/lib/index.js?{\"ident\":\"postcss\",\"plugins\":[null,null]}!./src/components/Container/Container.css");
+var content = __webpack_require__(/*! !../../../~/css-loader??ref--4-1!../../../~/postcss-loader/lib??postcss!./index.css */ "./node_modules/css-loader/index.js?{\"importLoaders\":1}!./node_modules/postcss-loader/lib/index.js?{\"ident\":\"postcss\",\"plugins\":[null,null]}!./src/components/ControlContainer/index.css");
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -61908,8 +61908,8 @@ if(content.locals) module.exports = content.locals;
 if(true) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept(/*! !../../../~/css-loader??ref--4-1!../../../~/postcss-loader/lib??postcss!./Container.css */ "./node_modules/css-loader/index.js?{\"importLoaders\":1}!./node_modules/postcss-loader/lib/index.js?{\"ident\":\"postcss\",\"plugins\":[null,null]}!./src/components/Container/Container.css", function() {
-			var newContent = __webpack_require__(/*! !../../../~/css-loader??ref--4-1!../../../~/postcss-loader/lib??postcss!./Container.css */ "./node_modules/css-loader/index.js?{\"importLoaders\":1}!./node_modules/postcss-loader/lib/index.js?{\"ident\":\"postcss\",\"plugins\":[null,null]}!./src/components/Container/Container.css");
+		module.hot.accept(/*! !../../../~/css-loader??ref--4-1!../../../~/postcss-loader/lib??postcss!./index.css */ "./node_modules/css-loader/index.js?{\"importLoaders\":1}!./node_modules/postcss-loader/lib/index.js?{\"ident\":\"postcss\",\"plugins\":[null,null]}!./src/components/ControlContainer/index.css", function() {
+			var newContent = __webpack_require__(/*! !../../../~/css-loader??ref--4-1!../../../~/postcss-loader/lib??postcss!./index.css */ "./node_modules/css-loader/index.js?{\"importLoaders\":1}!./node_modules/postcss-loader/lib/index.js?{\"ident\":\"postcss\",\"plugins\":[null,null]}!./src/components/ControlContainer/index.css");
 			if(typeof newContent === 'string') newContent = [[module.i, newContent, '']];
 			update(newContent);
 		});
@@ -61924,14 +61924,14 @@ if(true) {
 /* exports provided: default */
 /* exports used: default */
 /*!*******************************************!*\
-  !*** ./src/components/Container/index.js ***!
+  !*** ./src/components/ControlContainer/index.js ***!
   \*******************************************/
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(/*! react */ "./node_modules/react/react.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Container_css__ = __webpack_require__(/*! ./Container.css */ "./src/components/Container/Container.css");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Container_css__ = __webpack_require__(/*! ./index.css */ "./src/components/ControlContainer/index.css");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Container_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Container_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_typeface_roboto__ = __webpack_require__(/*! typeface-roboto */ "./node_modules/typeface-roboto/index.css");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_typeface_roboto___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_typeface_roboto__);
@@ -61939,7 +61939,7 @@ if(true) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_material_ui_Tabs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_material_ui_Tabs__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__GrillTemperature__ = __webpack_require__(/*! ../GrillTemperature */ "./src/components/GrillTemperature/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__FoodTemperature__ = __webpack_require__(/*! ../FoodTemperature */ "./src/components/FoodTemperature/index.js");
-var _jsxFileName = '/Users/peej/Projects/gmg/src/app/react/src/components/Container/index.js';
+var _jsxFileName = '/Users/peej/Projects/gmg/src/app/react/src/components/ControlContainer/index.js';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -61995,7 +61995,7 @@ var Container = function (_Component) {
             },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'div',
-              { className: 'Card-Container ', __source: {
+              { className: 'Card-ControlContainer ', __source: {
                   fileName: _jsxFileName,
                   lineNumber: 14
                 },
@@ -62011,7 +62011,7 @@ var Container = function (_Component) {
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'div',
-              { className: 'Card-Container ', __source: {
+              { className: 'Card-ControlContainer ', __source: {
                   fileName: _jsxFileName,
                   lineNumber: 15
                 },
@@ -62600,7 +62600,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index_css__ = __webpack_require__(/*! ./index.css */ "./src/index.css");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__index_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_App_App__ = __webpack_require__(/*! ./components/App/App */ "./src/components/App/App.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_App_App__ = __webpack_require__(/*! ./components/App/App */ "./src/components/App/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__registerServiceWorker__ = __webpack_require__(/*! ./registerServiceWorker */ "./src/registerServiceWorker.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_tap_event_plugin__ = __webpack_require__(/*! react-tap-event-plugin */ "./node_modules/react-tap-event-plugin/src/injectTapEventPlugin.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_tap_event_plugin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_tap_event_plugin__);

@@ -21,7 +21,7 @@ export default class GrillTemperature extends Component {
           <img src={logo} alt=""/>
         </CardMedia>
 
-        <div className="Controls">
+        <div className="controls">
           <List>
             <ListItem
               disabled={true}

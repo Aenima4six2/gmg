@@ -1,6 +1,7 @@
 const socketIo = require('socket.io')
 const debug = require('debug')('src:server')
-const client = require('../services/gmgClientService').client
+const gmg = require('GMGClient')
+const client = new gmg.GMGClient()
 let connections = 0
 
 module.exports.start = (server) => {
@@ -18,7 +19,7 @@ module.exports.start = (server) => {
       else {
         const status = await client.getGrillStatus()
         io.emit('status', status)
-        debug('Sending client status...')
+        debug(`Sending client status -> ${JSON.stringify(status)}`)
       }
     }, 5000)
 

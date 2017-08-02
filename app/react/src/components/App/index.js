@@ -1,26 +1,23 @@
 import React, { Component } from 'react'
-import './App.css'
+import './index.css'
 import 'typeface-roboto'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import gmgTheme from '../../theme/gmgTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
-import Container from '../Container'
-import AppBar from 'material-ui/AppBar';
+import ControlContainer from '../ControlContainer'
+import AppBar from 'material-ui/AppBar'
+import Navi from '../Navi'
 
-class App extends Component {
+export default class App extends Component {
   render() {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(gmgTheme)}>
-        <div className="App">
-          <AppBar
-            className="App-logo"
-          />
-          <Container/>
+        <div className="app">
+          <AppBar className="app-logo"/>
+          <ControlContainer/>
+          <Navi/>
         </div>
-
       </MuiThemeProvider>
     )
   }
 }
-
-export default App

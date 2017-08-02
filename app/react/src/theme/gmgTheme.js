@@ -7,8 +7,8 @@ const muiTheme = {
     textColor: colors.grey200,
     primary1Color: colors.grey50,
     accent1Color: colors.green700,
-    accent2Color: colors.green800,
-    accent3Color: colors.green900,
+    accent2Color: colors.grey800,
+    accent3Color: 'rgb(48, 48, 48)',
   },
   table: {
     height: 'calc(100vh - 122px)'
