@@ -75,11 +75,9 @@ class GMGClient {
   }
 
   async discoverGrill() {
-    if (this.host !== defaultHost) return
     return new Promise((res, rej) => {
       const socket = dgram.createSocket('udp4')
-      socket.bind(this.port)
-      socket.on('listening', () => {
+      socket.bind(() => {
         socket.setBroadcast(true)
         const data = getCommandData(commands.getGrillStatus)
         const schedule = setInterval(() => {
@@ -91,7 +89,6 @@ class GMGClient {
                 if (info.address == hostIp) return
                 clearInterval(schedule)
                 this.host = info.address
-                socket.close()
                 res(info.address)
               })
             }

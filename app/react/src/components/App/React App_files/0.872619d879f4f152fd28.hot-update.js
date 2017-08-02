@@ -4,7 +4,7 @@ webpackHotUpdate(0,{
 /* no static exports found */
 /* all exports used */
 /*!****************************************************************************************************************************************!*\
-  !*** ./~/css-loader?{"importLoaders":1}!./~/postcss-loader/lib?{"ident":"postcss","plugins":[null,null]}!./src/components/App/App.css ***!
+  !*** ./~/css-loader?{"importLoaders":1}!./~/postcss-loader/lib?{"ident":"postcss","plugins":[null,null]}!./src/components/App/index.css ***!
   \****************************************************************************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 

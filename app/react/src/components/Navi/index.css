@@ -1,0 +1,7 @@
+.navi{
+    right: 0;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    z-index: 99999;
+}
