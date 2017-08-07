@@ -104,30 +104,26 @@ class GMGClient {
       const data = getCommandData(command)
       const socket = dgram.createSocket('udp4')
       const offset = data.byteLength
+      const finish = (result, schedule) => {
+        clearInterval(schedule)
+        result instanceof Error ? rej(result) : res(result)
+      }
+
       let tries = 0
       const schedule = setInterval(() => {
-        const fail = (error) => {
-          clearInterval(schedule)
-          socket.close()
-          rej(error)
-        }
-
         if (tries++ > this.tries) {
-          fail(new Error('Try count exceeded!'))
+          finish(new Error('Try count exceeded!'), schedule)
         }
         else {
           socket.send(data, 0, offset, this.port, this.host, error => {
-            if (error) fail(error)
+            if (error) finish(error, schedule)
           })
         }
       }, retryMs)
 
       socket.on('message', (msg, info) => {
-        const hostIp = ip.address()
-        if (info.address == hostIp) return
-        clearInterval(schedule)
-        socket.close()
-        res({ msg, info })
+        if (info.address !== ip.address())
+          finish({ msg, info }, schedule)
       })
     })
   }

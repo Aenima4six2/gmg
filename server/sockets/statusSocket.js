@@ -8,24 +8,24 @@ module.exports.start = (server) => {
   const io = socketIo(server)
   debug('Started Socket.io server')
 
-  io.on('connection', mainSocket => {
+  io.on('connection', () => {
     debug('Client connecting...')
     connections++
-
-    const schedule = setInterval(async () => {
-      if (connections == 0) {
-        clearInterval(schedule)
-      }
-      else {
-        const status = await client.getGrillStatus()
-        io.emit('status', status)
-        debug(`Sending client status -> ${JSON.stringify(status)}`)
-      }
-    }, 5000)
-
-    mainSocket.on('disconnect', () => {
-      debug(`client disconnected`)
-      connections--
-    })
   })
+
+  io.on('disconnect', () => {
+    debug(`client disconnected`)
+    connections--
+  })
+
+  const schedule = setInterval(async () => {
+    if (connections == 0) {
+      clearInterval(schedule)
+    }
+    else {
+      const status = await client.getGrillStatus()
+      io.emit('status', status)
+      debug(`Sending client status -> ${JSON.stringify(status)}`)
+    }
+  }, 5000)
 }

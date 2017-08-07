@@ -1,15 +1,24 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { BottomNavigation, BottomNavigationItem } from 'material-ui/BottomNavigation'
 import Paper from 'material-ui/Paper'
 import FontIcon from 'material-ui/FontIcon'
 import './index.css'
 
-export default class Navi extends Component {
-  state = {
-    selectedIndex: 0
+export default class Navigation extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      selectedIndex: props.selectedIndex || 0
+    }
   }
 
-  select = (index) => this.setState({ selectedIndex: index })
+  select = (index) => {
+    if (this.props.onSelectedIndexChanged) {
+      this.props.onSelectedIndexChanged(index)
+    }
+    return this.setState({ selectedIndex: index })
+  }
 
   render() {
     return (
@@ -36,4 +45,9 @@ export default class Navi extends Component {
       </div>
     )
   }
+}
+
+Navigation.propTypes = {
+  onSelectedIndexChanged: PropTypes.func,
+  selectedIndex: PropTypes.number
 }

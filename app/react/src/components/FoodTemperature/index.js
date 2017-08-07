@@ -9,10 +9,67 @@ import logo from './food.png'
 import PropTypes from 'prop-types'
 import './index.css'
 import '../../../node_modules/font-awesome/css/font-awesome.css'
+import FlatButton from 'material-ui/FlatButton'
+import Dialog from 'material-ui/Dialog'
+import TextField from 'material-ui/TextField'
 import 'typeface-roboto'
 
 export default class FoodTemperature extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      open: false,
+      desiredFoodTemp: '',
+      desiredFoodTempError: ''
+    }
+  }
+
+
+  handleOpen = () => this.setState({ open: true })
+  handleCancel = () => this.setState({ open: false, desiredFoodTemp: '' })
+  handleSubmit = () => {
+    this.setState({ open: false })
+    if (this.props.onSubmit && this.props.desiredFoodTemp) {
+      this.props.onSubmit(this.state.desiredFoodTemp)
+    }
+  }
+
+  handleDesiredTempChange = (event) => {
+    const value = event.target.value
+    let error = ''
+    if (isNaN(value)) error = 'Desired temperature must be a number!'
+    else if (value < 0) error = 'Desired temperature must be greater than 0 ℉!'
+    else if (value > 500) error = 'Desired temperature must be less than 500 ℉!'
+    this.setState({
+      desiredFoodTemp: value,
+      desiredFoodTempError: error
+    })
+  }
+
+  handleOpen = () => this.setState({ open: true })
+  handleCancel = () => this.setState({ open: false, desiredFoodTemp: '' })
+  handleSubmit = () => {
+    this.setState({ open: false })
+    if (this.props.onSubmit && this.props.desiredGrillTemp) {
+      this.props.onSubmit(this.state.desiredFoodTemp)
+    }
+  }
+
   render() {
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={this.handleCancel}
+      />,
+      <FlatButton
+        label="Set"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this.handleSubmit}
+      />,
+    ]
+
     return (
       <Card>
         <CardMedia overlay={
@@ -33,12 +90,47 @@ export default class FoodTemperature extends Component {
               }
 
             >
-              {this.props.foodTemp} ℉
+              Current: {this.props.currentFoodTemp} ℉
+            </ListItem>
+          </List>
+          <List>
+            <ListItem
+              disabled={true}
+              leftAvatar={
+                <Avatar
+                  icon={<FontIcon className="fa fa-thermometer-full"/>}
+                  size={50}
+                />
+              }
+
+            >
+              Desired: {this.props.desiredFoodTemp
+              ? `${this.props.desiredFoodTemp} ℉`
+              : 'Not set'}
             </ListItem>
           </List>
           <CardActions>
-            <Button label="Set Temperature"/>
+            <Button
+              onTouchTap={this.handleOpen}
+              disabled={!this.props.isEnabled}
+              label="Set Food Temperature"/>
           </CardActions>
+          <Dialog
+            title="Set the desired food temperature"
+            actions={actions}
+            modal={true}
+            open={this.state.open}
+            onRequestClose={this.handleSubmit}
+          >
+            <TextField
+              id="desired-food-temp"
+              value={this.state.desiredFoodTemp}
+              onChange={this.handleDesiredTempChange}
+              errorText={this.state.desiredFoodTempError}
+              hintText="Grill temperature ℉"
+              floatingLabelText="Example: 225"
+            />
+          </Dialog>
         </div>
 
       </Card>
@@ -47,5 +139,8 @@ export default class FoodTemperature extends Component {
 }
 
 FoodTemperature.propTypes = {
-  grillTemp: PropTypes.number
+  currentFoodTemp: PropTypes.number,
+  desiredFoodTemp: PropTypes.number,
+  isEnabled: PropTypes.bool,
+  onSubmit: PropTypes.func
 }
