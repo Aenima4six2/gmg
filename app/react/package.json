@@ -2,17 +2,19 @@
   "name": "app",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "font-awesome": "^4.7.0",
     "lodash.merge": "latest",
     "material-ui": "^0.18.7",
+    "prop-types": "latest",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-scripts": "1.0.10",
     "react-tap-event-plugin": "^2.0.1",
     "socket.io-client": "^2.0.3",
     "typeface-roboto": "0.0.31",
-    "prop-types": "latest"
+    "whatwg-fetch": "^2.0.3"
   },
   "scripts": {
     "start": "react-scripts start",

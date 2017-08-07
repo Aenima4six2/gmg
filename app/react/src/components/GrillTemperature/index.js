@@ -9,10 +9,58 @@ import logo from './temp.png'
 import PropTypes from 'prop-types'
 import './index.css'
 import '../../../node_modules/font-awesome/css/font-awesome.css'
+import FlatButton from 'material-ui/FlatButton'
+import Dialog from 'material-ui/Dialog'
+import TextField from 'material-ui/TextField'
 import 'typeface-roboto'
 
+
 export default class GrillTemperature extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      open: false,
+      desiredGrillTemp: '',
+      desiredGrillTempError: ''
+    }
+  }
+
+  handleOpen = () => this.setState({ open: true })
+  handleCancel = () => this.setState({ open: false, desiredGrillTemp: '' })
+  handleSubmit = () => {
+    this.setState({ open: false })
+    if (this.props.onSubmit && this.props.desiredGrillTemp) {
+      this.props.onSubmit(this.state.desiredGrillTemp)
+    }
+  }
+
+  handleDesiredGrillTempChange = (event) => {
+    const value = event.target.value
+    let error = ''
+    if (isNaN(value)) error = 'Desired temperature must be a number!'
+    else if (value < 0) error = 'Desired temperature must be greater than 0 ℉!'
+    else if (value > 500) error = 'Desired temperature must be less than 500 ℉!'
+    this.setState({
+      desiredGrillTemp: value,
+      desiredGrillTempError: error
+    })
+  }
+
   render() {
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={this.handleCancel}
+      />,
+      <FlatButton
+        label="Set"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this.handleSubmit}
+      />,
+    ]
+
     return (
       <Card>
         <CardMedia overlay={
@@ -33,12 +81,47 @@ export default class GrillTemperature extends Component {
               }
 
             >
-              {this.props.grillTemp} ℉
+              Current: {this.props.currentGrillTemp} ℉
+            </ListItem>
+          </List>
+          <List>
+            <ListItem
+              disabled={true}
+              leftAvatar={
+                <Avatar
+                  icon={<FontIcon className="fa fa-thermometer-full"/>}
+                  size={50}
+                />
+              }
+
+            >
+              Desired: {this.props.desiredGrillTemp
+              ? `${this.props.desiredGrillTemp} ℉`
+              : 'Not set'}
             </ListItem>
           </List>
           <CardActions>
-            <Button label="Set Temperature"/>
+            <Button
+              onTouchTap={this.handleOpen}
+              disabled={!this.props.isEnabled}
+              label="Set Grill Temperature"/>
           </CardActions>
+          <Dialog
+            title="Set the desired grill temperature"
+            actions={actions}
+            modal={true}
+            open={this.state.open}
+            onRequestClose={this.handleSubmit}
+          >
+            <TextField
+              id="desired-grill-temp"
+              value={this.state.desiredGrillTemp}
+              onChange={this.handleDesiredGrillTempChange}
+              errorText={this.state.desiredGrillTempError}
+              hintText="Grill temperature ℉"
+              floatingLabelText="Example: 225"
+            />
+          </Dialog>
         </div>
 
       </Card>
@@ -47,5 +130,8 @@ export default class GrillTemperature extends Component {
 }
 
 GrillTemperature.propTypes = {
-  grillTemp: PropTypes.number
+  currentGrillTemp: PropTypes.number,
+  desiredGrillTemp: PropTypes.number,
+  isEnabled: PropTypes.bool,
+  onSubmit: PropTypes.func
 }
