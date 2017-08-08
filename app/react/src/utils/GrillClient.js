@@ -20,4 +20,18 @@ export default class GrillClient {
     })
   }
 
+  setDesiredFoodTemp(temperature) {
+    const url = `${this.apiBaseAddress}/api/temperature/food/${temperature}`
+    return fetch(url, { method: 'PUT' }).then(result => {
+      if (!result.ok) throw new Error(result.statusText)
+    })
+  }
+
+  setDesiredGrillTemp(temperature) {
+    const url = `${this.apiBaseAddress}/api/temperature/grill/${temperature}`
+    return fetch(url, { method: 'PUT' }).then(result => {
+      if (!result.ok) throw new Error(result.statusText)
+    })
+  }
+
 }

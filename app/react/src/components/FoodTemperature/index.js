@@ -19,19 +19,16 @@ export default class FoodTemperature extends Component {
     super(props)
     this.state = {
       open: false,
-      desiredFoodTemp: '',
-      desiredFoodTempError: ''
+      desiredFoodTemp: 0,
+      desiredFoodTempError: 0
     }
   }
 
-
   handleOpen = () => this.setState({ open: true })
-  handleCancel = () => this.setState({ open: false, desiredFoodTemp: '' })
+  handleCancel = () => this.setState({ open: false, desiredFoodTemp: 0 })
   handleSubmit = () => {
     this.setState({ open: false })
-    if (this.props.onSubmit && this.props.desiredFoodTemp) {
-      this.props.onSubmit(this.state.desiredFoodTemp)
-    }
+    this.props.onSubmit(this.state.desiredFoodTemp)
   }
 
   handleDesiredTempChange = (event) => {
@@ -44,15 +41,6 @@ export default class FoodTemperature extends Component {
       desiredFoodTemp: value,
       desiredFoodTempError: error
     })
-  }
-
-  handleOpen = () => this.setState({ open: true })
-  handleCancel = () => this.setState({ open: false, desiredFoodTemp: '' })
-  handleSubmit = () => {
-    this.setState({ open: false })
-    if (this.props.onSubmit && this.props.desiredGrillTemp) {
-      this.props.onSubmit(this.state.desiredFoodTemp)
-    }
   }
 
   render() {
@@ -124,9 +112,10 @@ export default class FoodTemperature extends Component {
           >
             <TextField
               id="desired-food-temp"
-              value={this.state.desiredFoodTemp}
+              value={this.state.desiredFoodTemp || ''}
               onChange={this.handleDesiredTempChange}
               errorText={this.state.desiredFoodTempError}
+              keyboardFocused={true}
               hintText="Grill temperature ℉"
               floatingLabelText="Example: 225"
             />

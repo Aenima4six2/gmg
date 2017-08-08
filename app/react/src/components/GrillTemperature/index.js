@@ -20,18 +20,16 @@ export default class GrillTemperature extends Component {
     super(props)
     this.state = {
       open: false,
-      desiredGrillTemp: '',
-      desiredGrillTempError: ''
+      desiredGrillTemp: 0,
+      desiredGrillTempError: 0
     }
   }
 
   handleOpen = () => this.setState({ open: true })
-  handleCancel = () => this.setState({ open: false, desiredGrillTemp: '' })
+  handleCancel = () => this.setState({ open: false, desiredGrillTemp: 0 })
   handleSubmit = () => {
     this.setState({ open: false })
-    if (this.props.onSubmit && this.props.desiredGrillTemp) {
-      this.props.onSubmit(this.state.desiredGrillTemp)
-    }
+    this.props.onSubmit(this.state.desiredGrillTemp)
   }
 
   handleDesiredGrillTempChange = (event) => {
@@ -115,10 +113,11 @@ export default class GrillTemperature extends Component {
           >
             <TextField
               id="desired-grill-temp"
-              value={this.state.desiredGrillTemp}
+              value={this.state.desiredGrillTemp || ''}
               onChange={this.handleDesiredGrillTempChange}
               errorText={this.state.desiredGrillTempError}
               hintText="Grill temperature ℉"
+              keyboardFocused={true}
               floatingLabelText="Example: 225"
             />
           </Dialog>
