@@ -18,11 +18,8 @@ module.exports.start = (server) => {
     connections--
   })
 
-  const schedule = setInterval(async () => {
-    if (connections == 0) {
-      clearInterval(schedule)
-    }
-    else {
+  setInterval(async () => {
+    if (connections >= 0) {
       const status = await client.getGrillStatus()
       io.emit('status', status)
       debug(`Sending client status -> ${JSON.stringify(status)}`)

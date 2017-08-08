@@ -106,6 +106,7 @@ class GMGClient {
       const offset = data.byteLength
       const finish = (result, schedule) => {
         clearInterval(schedule)
+        socket.removeAllListeners('message')
         result instanceof Error ? rej(result) : res(result)
       }
 
