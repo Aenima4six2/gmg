@@ -5,7 +5,7 @@ import FontIcon from 'material-ui/FontIcon'
 import List from 'material-ui/List/List'
 import ListItem from 'material-ui/List/ListItem'
 import Button from 'material-ui/RaisedButton'
-import logo from './food.png'
+import logo from './logo.png'
 import PropTypes from 'prop-types'
 import './index.css'
 import '../../../node_modules/font-awesome/css/font-awesome.css'
@@ -65,7 +65,6 @@ export default class FoodTemperature extends Component {
         }>
           <img src={logo} alt=""/>
         </CardMedia>
-
         <div className="controls">
           <List>
             <ListItem
@@ -76,7 +75,6 @@ export default class FoodTemperature extends Component {
                   size={50}
                 />
               }
-
             >
               Current: {this.props.currentFoodTemp} ℉
             </ListItem>
@@ -90,7 +88,6 @@ export default class FoodTemperature extends Component {
                   size={50}
                 />
               }
-
             >
               Desired: {this.props.desiredFoodTemp
               ? `${this.props.desiredFoodTemp} ℉`
@@ -121,7 +118,6 @@ export default class FoodTemperature extends Component {
             />
           </Dialog>
         </div>
-
       </Card>
     )
   }
