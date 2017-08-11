@@ -3,6 +3,7 @@ import './index.css'
 import 'typeface-roboto'
 import GrillTemperature from '../GrillTemperature'
 import FoodTemperature from '../FoodTemperature'
+import Timers from "../Timers/index"
 import HomeControls from '../HomeControls'
 import io from 'socket.io-client'
 import GrillClient from '../../utils/GrillClient'
@@ -19,9 +20,9 @@ export default class Home extends Component {
       desiredFoodTemp: 0,
       loading: true,
       connected: false,
+      showTimers: false,
       socket: io('http://localhost:3001')
     }
-
   }
 
   componentDidMount() {
@@ -37,6 +38,10 @@ export default class Home extends Component {
   powerToggle = () => {
     this.setState({ loading: true })
     client.powerToggle()
+  }
+
+  timerToggle = () => {
+    this.setState({ showTimers: !this.state.showTimers })
   }
 
   setDesiredGrillTemp = (temperature) => {
@@ -60,9 +65,11 @@ export default class Home extends Component {
         <div>
           <HomeControls
             onPowerTouchTap={this.powerToggle}
+            onTimersTouchTap={this.timerToggle}
             isLoading={this.state.loading}
             fanModeOn={this.state.fanModeActive}
             isConnected={this.state.connected}
+            timersOn={this.state.showTimers}
             powerOn={this.state.isOn}/>
         </div>
         <div className="card-container ">
@@ -79,6 +86,11 @@ export default class Home extends Component {
             desiredFoodTemp={this.state.desiredFoodTemp}
             currentFoodTemp={this.state.currentFoodTemp}/>
         </div>
+        {this.state.showTimers &&
+        <div className="card-container">
+          <Timers
+            isEnabled={commandsEnabled}/>
+        </div>}
       </div>
     )
   }

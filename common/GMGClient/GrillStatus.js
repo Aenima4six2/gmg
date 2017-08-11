@@ -9,14 +9,6 @@ const getGrillState = (hex) => {
   return status
 }
 
-const getDecimal = (hex) => {
-  let decimal = ''
-  for (let i = 0; i < hex.length; i += 2) {
-    decimal += getRawValue(hex, i).toString()
-  }
-  return decimal
-}
-
 const getCurrentGrillTemp = (hex) => {
   const first = getRawValue(hex, 4)
   const second = getRawValue(hex, 6) * 256

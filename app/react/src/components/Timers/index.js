@@ -14,34 +14,24 @@ import Dialog from 'material-ui/Dialog'
 import TextField from 'material-ui/TextField'
 import 'typeface-roboto'
 
-
-export default class GrillTemperature extends Component {
+export default class Timers extends Component {
   constructor(props) {
     super(props)
     this.state = {
       open: false,
-      desiredGrillTemp: 0,
-      desiredGrillTempError: 0
+      desiredCountDown: 0,
+      desiredCountDownError: ''
     }
   }
 
   handleOpen = () => this.setState({ open: true })
-  handleCancel = () => this.setState({ open: false, desiredGrillTemp: 0 })
+  handleCancel = () => this.setState({ open: false, desiredCountDown: 0 })
   handleSubmit = () => {
     this.setState({ open: false })
-    this.props.onSubmit(this.state.desiredGrillTemp)
   }
 
-  handleDesiredGrillTempChange = (event) => {
-    const value = event.target.value
-    let error = ''
-    if (isNaN(value)) error = 'Desired temperature must be a number!'
-    else if (value < 0) error = 'Desired temperature must be greater than 0 ℉!'
-    else if (value > 500) error = 'Desired temperature must be less than 500 ℉!'
-    this.setState({
-      desiredGrillTemp: value,
-      desiredGrillTempError: error
-    })
+  handleDesiredCountDown = () => {
+
   }
 
   render() {
@@ -62,7 +52,7 @@ export default class GrillTemperature extends Component {
     return (
       <Card>
         <CardMedia overlay={
-          <CardTitle title="Grill Temp ℉" subtitle="Set the temperature of the grill"/>
+          <CardTitle title="Timers" subtitle="Set a grilling stopwatch or countdown timer."/>
         }>
           <img src={logo} alt=""/>
         </CardMedia>
@@ -72,50 +62,52 @@ export default class GrillTemperature extends Component {
               disabled={true}
               leftAvatar={
                 <Avatar
-                  icon={<FontIcon className="fa fa-thermometer-empty"/>}
+                  icon={<FontIcon className="fa fa-clock-o"/>}
                   size={50}
                 />
               }
-            >
-              Current: {this.props.currentGrillTemp} ℉
-            </ListItem>
-          </List>
-          <List>
-            <ListItem
-              disabled={true}
-              leftAvatar={
-                <Avatar
-                  icon={<FontIcon className="fa fa-thermometer-full"/>}
-                  size={50}
-                />
-              }
-            >
-              Desired: {this.props.desiredGrillTemp
-              ? `${this.props.desiredGrillTemp} ℉`
-              : 'Not set'}
+            > Timer 00:00:00
             </ListItem>
           </List>
           <CardActions>
             <Button
               onTouchTap={this.handleOpen}
               disabled={!this.props.isEnabled}
-              label="Set Grill Temperature"/>
+              label="Start"/>
+          </CardActions>
+          <List>
+            <ListItem
+              disabled={true}
+              leftAvatar={
+                <Avatar
+                  icon={<FontIcon className="fa fa-arrow-circle-o-down"/>}
+                  size={50}
+                />
+              }
+            > Countdown 00:00:00
+            </ListItem>
+          </List>
+          <CardActions>
+            <Button
+              onTouchTap={this.handleOpen}
+              disabled={!this.props.isEnabled}
+              label="Countdown"/>
           </CardActions>
           <Dialog
-            title="Set the desired grill temperature"
+            title="Set the countdown time"
             actions={actions}
             modal={true}
             open={this.state.open}
             onRequestClose={this.handleSubmit}
           >
             <TextField
-              id="desired-grill-temp"
-              value={this.state.desiredGrillTemp || ''}
-              onChange={this.handleDesiredGrillTempChange}
-              errorText={this.state.desiredGrillTempError}
-              hintText="Grill temperature ℉"
+              id="desired-countdown"
+              value={this.state.desiredCountDown || ''}
+              onChange={this.handleDesiredCountDown}
+              errorText={this.state.desiredCountDownError}
               keyboardFocused={true}
-              floatingLabelText="Example: 225"
+              hintText="Set countdown"
+              floatingLabelText="1:30:00"
             />
           </Dialog>
         </div>
@@ -124,9 +116,6 @@ export default class GrillTemperature extends Component {
   }
 }
 
-GrillTemperature.propTypes = {
-  currentGrillTemp: PropTypes.number,
-  desiredGrillTemp: PropTypes.number,
-  isEnabled: PropTypes.bool,
-  onSubmit: PropTypes.func
+Timers.propTypes = {
+  isEnabled: PropTypes.bool
 }
