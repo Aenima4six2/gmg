@@ -36,13 +36,13 @@ const getDesiredFoodTemp = (hex) => {
 class GrillStatus {
   constructor(bytes) {
     const hex = Buffer.from(bytes).toString('hex')
+    this.state = getGrillState(hex)
     this.hex = hex
     this.isOn = this.state == 'on'
     this.currentGrillTemp = getCurrentGrillTemp(hex)
     this.desiredGrillTemp = this.isOn ? getDesiredGrillTemp(hex) : 0
     this.currentFoodTemp = getCurrentFoodTemp(hex)
     this.desiredFoodTemp = this.isOn ? getDesiredFoodTemp(hex) : 0
-    this.state = getGrillState(hex)
     this.fanModeActive = this.state == 'fan mode'
   }
 }
