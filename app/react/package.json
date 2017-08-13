@@ -7,6 +7,7 @@
     "font-awesome": "^4.7.0",
     "lodash.merge": "latest",
     "material-ui": "^0.18.7",
+    "moment": "^2.18.1",
     "prop-types": "latest",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
