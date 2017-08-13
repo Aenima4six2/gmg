@@ -89,7 +89,7 @@ export default class Home extends Component {
         {this.state.showTimers &&
         <div className="card-container">
           <Timers
-            isEnabled={commandsEnabled}/>
+            isEnabled={true}/>
         </div>}
       </div>
     )
