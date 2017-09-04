@@ -136,7 +136,7 @@ class GMGClient {
 
   async sendCommand(command) {
     if (this.host === defaultHost) {
-      this.logger(`No grill host provided. Attempting discovery...`)
+      this.logger(`Grill broadcast host provided. Attempting discovery...`)
       const newHost = await this.discoverGrill()
       this.host = newHost
       this.logger(`Grill discovered at ${newHost}:${this.port}!`)

@@ -1,7 +1,9 @@
 const socketIo = require('socket.io')
 const debug = require('debug')('src:server')
 const gmg = require('GMGClient')
-const client = new gmg.GMGClient({ logger: debug })
+const config = require('config')
+const options = config.get('grill')
+const client = new gmg.GMGClient({ ...options, logger: debug })
 
 function schedule(scheduled) {
   if (scheduled.enabled)
