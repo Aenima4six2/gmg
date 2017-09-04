@@ -8,8 +8,7 @@ import HomeControls from '../HomeControls'
 import io from 'socket.io-client'
 import GrillClient from '../../utils/GrillClient'
 
-const client = new GrillClient('http://localhost:3001')
-
+const client = new GrillClient(window.location.origin)
 export default class Home extends Component {
   constructor() {
     super()
@@ -21,7 +20,7 @@ export default class Home extends Component {
       loading: true,
       connected: false,
       showTimers: false,
-      socket: io('http://localhost:3001')
+      socket: io(window.location.origin)
     }
   }
 
