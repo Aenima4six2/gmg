@@ -1,7 +1,7 @@
 const defaultPort = 8080
 const defaultHost = '255.255.255.255'
 const dgram = require('dgram')
-const retryMs = 1000
+const retryMs = 1500
 const ip = require('ip')
 const GrillStatus = require('./GrillStatus')
 const InvalidCommand = require('./InvalidCommand')
@@ -12,6 +12,10 @@ const commands = Object.freeze({
   getGrillStatus: 'UR001',
   setGrillTempF: (temp) => `UR${temp}`,
   setFoodTempF: (temp) => `UF${temp}`
+})
+
+const results = Object.freeze({
+  OK: 'OK'
 })
 
 const getCommandData = (command) => {
@@ -37,16 +41,15 @@ class GMGClient {
   }
 
   async powerOffGrill() {
-    const status = await this.getGrillStatus()
+    let status = await this.getGrillStatus()
     if (!status.isOn) return
 
     const result = await this.sendCommand(commands.powerOff)
-    const response = result.msg.toString()
-    return response == 'OK' ? Promise.resolve() : Promise.reject()
+    await this._validateResult(result, newState => newState.isOn)
   }
 
   async powerOnGrill() {
-    const status = await this.getGrillStatus()
+    let status = await this.getGrillStatus()
     if (status.fanModeActive) {
       const error = new InvalidCommand('Cannot start grill when fan mode is active.')
       this.logger(error)
@@ -54,12 +57,11 @@ class GMGClient {
     }
 
     const result = await this.sendCommand(commands.powerOn)
-    const response = result.msg.toString()
-    return response == 'OK' ? Promise.resolve() : Promise.reject()
+    await this._validateResult(result, newState => !newState.isOn)
   }
 
   async setGrillTemp(fahrenheit) {
-    const status = await this.getGrillStatus()
+    let status = await this.getGrillStatus()
     if (!status.isOn) {
       const error = new InvalidCommand('Cannot set grill temperature when the gill is off!')
       this.logger(error)
@@ -67,12 +69,11 @@ class GMGClient {
     }
 
     const result = await this.sendCommand(commands.setGrillTempF(fahrenheit))
-    const response = result.msg.toString()
-    return response == 'OK' ? Promise.resolve() : Promise.reject()
+    await this._validateResult(result, newState => newState.desiredGrillTemp === fahrenheit)
   }
 
   async setFoodTemp(fahrenheit) {
-    const status = await this.getGrillStatus()
+    let status = await this.getGrillStatus()
     if (!status.isOn) {
       const error = new InvalidCommand('Cannot set food temperature when the gill is off!')
       this.logger(error)
@@ -80,8 +81,19 @@ class GMGClient {
     }
 
     const result = await this.sendCommand(commands.setFoodTempF(fahrenheit))
+    await this._validateResult(result, newState => newState.desiredFoodTemp === fahrenheit)
+  }
+
+  async _validateResult(result, isValid) {
     const response = result.msg.toString()
-    return response == 'OK' ? Promise.resolve() : Promise.reject()
+    if (response !== results.OK) {
+      throw new Error(`Grill responded with non OK status -> ${response}`)
+    }
+
+    let status = await this.getGrillStatus()
+    if (!isValid(status)) {
+      throw new Error(`Grill accepted command but did not apply it`)
+    }
   }
 
   async discoverGrill() {
