@@ -51,7 +51,7 @@ router.put('/poweroff', async (req, res, next) => {
 
 router.put('/temperature/grill/:tempF', async (req, res, next) => {
   try {
-    var temperature = req.params.tempF
+    const temperature = req.params.tempF
     await client.setGrillTemp(temperature)
     res.sendStatus(200)
   }
@@ -63,7 +63,7 @@ router.put('/temperature/grill/:tempF', async (req, res, next) => {
 
 router.put('/temperature/food/:tempF', async (req, res, next) => {
   try {
-    var temperature = req.params.tempF
+    const temperature = req.params.tempF
     await client.setFoodTemp(temperature)
     res.sendStatus(200)
   }

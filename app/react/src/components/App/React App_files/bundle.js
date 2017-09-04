@@ -1418,7 +1418,7 @@ var index = 0;
 // truncate already-completed tasks.
 var capacity = 1024;
 
-// The flush function processes all tasks that have been scheduled with
+// The flush function processes all tasks that have been task with
 // `rawAsap` unless and until one of those tasks throws an exception.
 // If a task throws an exception, `flush` ensures that its state will remain
 // consistent and will resume where it left off when called again.
@@ -1432,7 +1432,7 @@ function flush() {
         index = index + 1;
         queue[currentIndex].call();
         // Prevent leaking memory for long chains of recursive calls to `asap`.
-        // If we call `asap` within tasks scheduled by `asap`, the queue will
+        // If we call `asap` within tasks task by `asap`, the queue will
         // grow, but to avoid an O(n) walk for every task we execute, we don't
         // shift tasks off the queue after they have been executed.
         // Instead, we periodically shift 1024 tasks off the queue.
@@ -31211,7 +31211,7 @@ var ReactCompositeComponent = {
     }
 
     // Reset pending fields
-    // Even if this component is scheduled for another update in ReactUpdates,
+    // Even if this component is task for another update in ReactUpdates,
     // it would still be ignored because these fields are reset.
     this._pendingStateQueue = null;
     this._pendingReplaceState = false;
@@ -38358,7 +38358,7 @@ function getInternalInstanceReadyForUpdate(publicInstance, callerName) {
 }
 
 /**
- * ReactUpdateQueue allows for state updates to be scheduled into a later
+ * ReactUpdateQueue allows for state updates to be task into a later
  * reconciliation step.
  */
 var ReactUpdateQueue = {

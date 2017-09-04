@@ -1,6 +1,5 @@
 const express = require('express')
 const path = require('path')
-const favicon = require('serve-favicon')
 const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
@@ -23,7 +22,10 @@ app.use(sassMiddleware({
   indentedSyntax: true, // true = .sass and false = .scss
   sourceMap: true
 }))
+
+// Static content
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.resolve(path.join(__dirname, '../app/react/build'))))
 
 // Routes
 app.use((req, res, next) => {

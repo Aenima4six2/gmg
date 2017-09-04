@@ -20,6 +20,19 @@ export default class Navigation extends Component {
     return this.setState({ selectedIndex: index })
   }
 
+  updateDimensions = () => {
+    this.setState({ selectedIndex: this.state.selectedIndex })
+  }
+
+  componentDidMount = () => {
+    this.updateDimensions()
+    window.addEventListener("resize", this.updateDimensions)
+  }
+
+  componentWillUnmount = () => {
+    window.removeEventListener("resize", this.updateDimensions)
+  }
+
   render() {
     return (
       <div className="navi">
