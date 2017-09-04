@@ -86,7 +86,7 @@ class GMGClient {
 
   async discoverGrill() {
     return new Promise((res, rej) => {
-      let attempt = 0, schedule
+      let attempts = 0, schedule
       const socket = dgram.createSocket('udp4')
       const data = getCommandData(commands.getGrillStatus)
       const finish = (result) => {
@@ -111,19 +111,20 @@ class GMGClient {
 
         // Send Commands
         schedule = setInterval(() => {
-          if (++attempt >= this.tries) {
-            const error = new Error(`No response from Grill after [${attempt}] discovery attempts!`)
+          if (attempts >= this.tries) {
+            const error = new Error(`No response from Grill after [${attempts}] discovery attempts!`)
             finish(error)
             this.logger(error)
           }
           else {
+            attempts++
             socket.send(data, 0, data.byteLength, this.port, this.host, error => {
               if (error) {
                 finish(error)
                 this.logger(`Grill discovery broadcast dgram send failed -> ${error}`)
               }
               else {
-                this.logger(`Grill discovery broadcast dgram sent`)
+                this.logger(`Grill discovery broadcast dgram sent -> Attempt #${attempts}`)
               }
             })
           }
@@ -165,19 +166,20 @@ class GMGClient {
 
       // Send Commands
       schedule = setInterval(() => {
-        if (++attempts > this.tries) {
+        if (attempts > this.tries) {
           const error = new Error(`No response from Grill after [${attempt}] command sent attempts!`)
           finish(error)
           this.logger(error)
         }
         else {
+          attempts++
           socket.send(data, 0, offset, this.port, this.host, error => {
             if (error) {
               finish(error)
               this.logger(`Grill [${command}] command dgram send failed -> ${error}`)
             }
             else {
-              this.logger(`Grill [${command}] command dgram sent.`)
+              this.logger(`Grill [${command}] command dgram sent -> Attempt #${attempts}.`)
             }
           })
         }
