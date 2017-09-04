@@ -3,7 +3,7 @@ const path = require('path')
 const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
-const sassMiddleware = require('node-sass-middleware')
+// const sassMiddleware = require('node-sass-middleware')
 const app = express()
 
 // view engine setup
