@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const gmg = require('GMGClient')
-const client = new gmg.GMGClient()
+const config = require('config')
+const options = config.get('grill')
+const client = new gmg.GMGClient({ ...options })
 const errors = gmg.Errors
 
 router.get('/status', async (req, res, next) => {
