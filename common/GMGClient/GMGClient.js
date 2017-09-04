@@ -76,25 +76,32 @@ class GMGClient {
 
   async discoverGrill() {
     return new Promise((res, rej) => {
+      let resolved = false
       const socket = dgram.createSocket('udp4')
-      socket.bind(() => {
-        socket.setBroadcast(true)
-        const data = getCommandData(commands.getGrillStatus)
-        const schedule = setInterval(() => {
+      const data = getCommandData(commands.getGrillStatus)
+      const send = (attempt = 0) => {
+        if (resolved) return
+        else if (attempt >= 5) rej(new Error(`No response from Grill after [${attempt}] discovery attempts!`))
+        else {
           socket.send(data, 0, data.byteLength, this.port, this.host, error => {
             if (error) rej(error)
-            else {
-              socket.on('message', (msg, info) => {
-                const hostIp = ip.address()
-                if (info.address == hostIp) return
-                clearInterval(schedule)
-                this.host = info.address
-                res(info.address)
-              })
-            }
+            else setTimeout(() => send(attempt + 1), retryMs)
           })
-        }, retryMs)
+        }
+      }
+
+      socket.bind(() => {
+        socket.setBroadcast(true)
+        socket.on('message', (msg, info) => {
+          const hostIp = ip.address()
+          if (info.address == hostIp) return
+          resolved = true
+          this.host = info.address
+          res(info.address)
+        })
       })
+
+      send()
     })
   }
 
