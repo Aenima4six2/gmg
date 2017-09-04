@@ -102,17 +102,18 @@ class GMGClient {
         socket.on('message', (msg, info) => {
           if (info.address !== ip.address()) {
             finish(info.address)
-            this.logger(`Received response dgram from ${info.address}`)
+            this.logger(`Received response dgram from ${info.address}:${info.port}`)
           }
           else {
-            this.logger(`Received response dgram from self (${info.address}) - ignoring`)
+            this.logger(`Ignoring received response dgram from self (${info.address}:${info.port})`)
           }
         })
 
         // Send Commands
         schedule = setInterval(() => {
           if (attempts >= this.tries) {
-            const error = new Error(`No response from Grill after [${attempts}] discovery attempts!`)
+            const error = new Error(
+              `No response from Grill (${this.host}:${this.port}) after [${attempts}] discovery attempts!`)
             finish(error)
             this.logger(error)
           }
@@ -121,10 +122,10 @@ class GMGClient {
             socket.send(data, 0, data.byteLength, this.port, this.host, error => {
               if (error) {
                 finish(error)
-                this.logger(`Grill discovery broadcast dgram send failed -> ${error}`)
+                this.logger(`Grill (${this.host}:${this.port}) discovery broadcast dgram send failed -> ${error}`)
               }
               else {
-                this.logger(`Grill discovery broadcast dgram sent -> Attempt #${attempts}`)
+                this.logger(`Grill (${this.host}:${this.port}) discovery broadcast dgram sent -> Attempt #${attempts}`)
               }
             })
           }
@@ -138,7 +139,7 @@ class GMGClient {
       this.logger(`No grill host provided. Attempting discovery...`)
       const newHost = await this.discoverGrill()
       this.host = newHost
-      this.logger(`Grill discovered at ${newHost}!`)
+      this.logger(`Grill discovered at ${newHost}:${this.port}!`)
     }
 
     return await new Promise((res, rej) => {
@@ -157,10 +158,10 @@ class GMGClient {
       socket.on('message', (msg, info) => {
         if (info.address !== ip.address()) {
           finish({ msg, info })
-          this.logger(`Received response dgram from ${info.address}`)
+          this.logger(`Received response dgram from ${info.address}:${info.port}`)
         }
         else {
-          this.logger(`Received response dgram from self (${info.address}) - ignoring`)
+          this.logger(`Ignoring received response dgram from self (${info.address}:${info.port})`)
         }
       })
 
@@ -176,10 +177,10 @@ class GMGClient {
           socket.send(data, 0, offset, this.port, this.host, error => {
             if (error) {
               finish(error)
-              this.logger(`Grill [${command}] command dgram send failed -> ${error}`)
+              this.logger(`Grill (${this.host}:${this.port}) [${command}] command dgram send failed -> ${error}`)
             }
             else {
-              this.logger(`Grill [${command}] command dgram sent -> Attempt #${attempts}.`)
+              this.logger(`Grill (${this.host}:${this.port}) [${command}] command dgram sent -> Attempt #${attempts}.`)
             }
           })
         }
