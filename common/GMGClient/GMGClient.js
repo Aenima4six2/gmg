@@ -95,7 +95,7 @@ class GMGClient {
 
         // Send Commands
         schedule = setInterval(() => {
-          if (attempt++ >= 5) {
+          if (attempt++ >= this.tries) {
             rej(new Error(`No response from Grill after [${attempt}] discovery attempts!`))
           }
           else {
