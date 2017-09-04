@@ -37,7 +37,7 @@ class GrillStatus {
   constructor(bytes) {
     const hex = Buffer.from(bytes).toString('hex')
     this.state = getGrillState(hex)
-    this.hex = hex
+    this._hex = hex
     this.isOn = this.state == 'on'
     this.currentGrillTemp = getCurrentGrillTemp(hex)
     this.desiredGrillTemp = this.isOn ? getDesiredGrillTemp(hex) : 0

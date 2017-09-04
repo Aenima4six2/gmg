@@ -100,12 +100,13 @@ class GMGClient {
         // Listen for response
         socket.setBroadcast(true)
         socket.on('message', (msg, info) => {
-          if (info.address !== ip.address()) {
+          const self = ip.address()
+          if (info.address !== self) {
             finish(info.address)
-            this.logger(`Received response dgram from ${info.address}:${info.port}`)
+            this.logger(`Received response dgram from Grill (${info.address}:${info.port})`)
           }
           else {
-            this.logger(`Ignoring received response dgram from self (${info.address}:${info.port})`)
+            this.logger(`Ignoring received response dgram from Self (${info.address}:${info.port})`)
           }
         })
 
@@ -156,12 +157,12 @@ class GMGClient {
 
       // Listen for response
       socket.on('message', (msg, info) => {
-        if (info.address !== ip.address()) {
+        if (info.address === this.host) {
           finish({ msg, info })
-          this.logger(`Received response dgram from ${info.address}:${info.port}`)
+          this.logger(`Received response dgram from Grill (${info.address}:${info.port})`)
         }
         else {
-          this.logger(`Ignoring received response dgram from self (${info.address}:${info.port})`)
+          this.logger(`Ignoring received response dgram from ${info.address}:${info.port}`)
         }
       })
 

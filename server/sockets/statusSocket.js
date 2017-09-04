@@ -52,7 +52,9 @@ module.exports.start = (server) => {
         debug('Fetching grill status...')
         const status = await client.getGrillStatus()
         io.emit('status', status)
-        debug(`Sending [${connections}] client(s) status -> ${JSON.stringify(status)}`)
+        const message = { ...status }
+        Object.keys(message).filter(x => x.startsWith('_')).forEach(x => delete message[x])
+        debug(`Sending [${connections}] client(s) status -> ${JSON.stringify(message)}`)
       }
     }
   }
