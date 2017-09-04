@@ -1,0 +1,7 @@
+{
+  "grill": {
+    "host": "GRILL_HOST",
+    "port": "GRILL_PORT",
+    "tries": "GRILL_TRIES"
+  }
+}
