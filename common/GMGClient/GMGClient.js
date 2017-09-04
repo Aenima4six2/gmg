@@ -1,7 +1,7 @@
 const defaultPort = 8080
 const defaultHost = '255.255.255.255'
 const dgram = require('dgram')
-const retryMs = 500
+const retryMs = 1000
 const ip = require('ip')
 const GrillStatus = require('./GrillStatus')
 const InvalidCommand = require('./InvalidCommand')
@@ -89,15 +89,19 @@ class GMGClient {
       let attempt = 0, schedule
       const socket = dgram.createSocket('udp4')
       const data = getCommandData(commands.getGrillStatus)
+      const finish = (result) => {
+        if (schedule) clearInterval(schedule)
+        socket.removeAllListeners('message')
+        socket.close()
+        result instanceof Error ? rej(result) : res(result)
+      }
+
       socket.bind(() => {
         // Listen for response
         socket.setBroadcast(true)
         socket.on('message', (msg, info) => {
           if (info.address !== ip.address()) {
-            if (schedule) clearInterval(schedule)
-            socket.removeAllListeners('message')
-            socket.close()
-            res(info.address)
+            finish(info.address)
             this.logger(`Received response dgram from ${info.address}`)
           }
           else {
@@ -109,13 +113,13 @@ class GMGClient {
         schedule = setInterval(() => {
           if (++attempt >= this.tries) {
             const error = new Error(`No response from Grill after [${attempt}] discovery attempts!`)
-            rej(error)
+            finish(error)
             this.logger(error)
           }
           else {
             socket.send(data, 0, data.byteLength, this.port, this.host, error => {
               if (error) {
-                rej(error)
+                finish(error)
                 this.logger(`Grill discovery broadcast dgram send failed -> ${error}`)
               }
               else {
