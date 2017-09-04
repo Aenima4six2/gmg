@@ -76,67 +76,75 @@ class GMGClient {
 
   async discoverGrill() {
     return new Promise((res, rej) => {
-      let resolved = false
+      let attempt = 0, schedule
       const socket = dgram.createSocket('udp4')
       const data = getCommandData(commands.getGrillStatus)
-      const send = (attempt = 0) => {
-        if (resolved) return
-        else if (attempt >= 5) rej(new Error(`No response from Grill after [${attempt}] discovery attempts!`))
-        else {
-          socket.send(data, 0, data.byteLength, this.port, this.host, error => {
-            if (error) rej(error)
-            else setTimeout(() => send(attempt + 1), retryMs)
-          })
-        }
-      }
-
       socket.bind(() => {
+        // Enable UDP broadcast
         socket.setBroadcast(true)
-        socket.on('message', (msg, info) => {
-          const hostIp = ip.address()
-          if (info.address == hostIp) return
-          resolved = true
-          this.host = info.address
-          res(info.address)
-        })
-      })
 
-      send()
+        // Listen for response
+        socket.on('message', (msg, info) => {
+          if (info.address !== ip.address()) {
+            if (schedule) clearInterval(schedule)
+            socket.removeAllListeners('message')
+            socket.close()
+            res(info.address)
+          }
+        })
+
+        // Send Commands
+        schedule = setInterval(() => {
+          if (attempt++ >= 5) {
+            rej(new Error(`No response from Grill after [${attempt}] discovery attempts!`))
+          }
+          else {
+            socket.send(data, 0, data.byteLength, this.port, this.host, error => {
+              if (error) rej(error)
+            })
+          }
+        }, retryMs)
+      })
     })
   }
 
   async sendCommand(command) {
-    if (this.host === defaultHost) await this.discoverGrill()
+    if (this.host === defaultHost) {
+      const newHost = await this.discoverGrill()
+      this.host = newHost
+    }
+
     return await new Promise((res, rej) => {
+      let attempts = 0, schedule
       const data = getCommandData(command)
       const socket = dgram.createSocket('udp4')
       const offset = data.byteLength
-      const finish = (result, schedule) => {
-        clearInterval(schedule)
+      const finish = (result) => {
+        if (schedule) clearInterval(schedule)
         socket.removeAllListeners('message')
         socket.close()
         result instanceof Error ? rej(result) : res(result)
       }
 
-      let tries = 0
-      const schedule = setInterval(() => {
-        if (tries++ > this.tries) {
-          finish(new Error('Try count exceeded!'), schedule)
+      // Listen for response
+      socket.on('message', (msg, info) => {
+        if (info.address !== ip.address())
+          finish({ msg, info })
+      })
+
+      // Send Commands
+      schedule = setInterval(() => {
+        if (attempts++ > this.tries) {
+          finish(new Error('Try count exceeded!'))
         }
         else {
           socket.send(data, 0, offset, this.port, this.host, error => {
-            if (error) finish(error, schedule)
+            if (error) finish(error)
           })
         }
       }, retryMs)
-
-      socket.on('message', (msg, info) => {
-        if (info.address !== ip.address())
-          finish({ msg, info }, schedule)
-      })
     })
   }
-
 }
 
 module.exports = GMGClient
