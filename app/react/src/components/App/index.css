@@ -4,17 +4,12 @@ body {
 }
 
 .app {
+    margin-bottom: 4.5rem;
 }
 
 .app-logo {
     animation: App-logo-spin infinite 20s linear;
-    height: 50px;
+    height: 3.5rem;
     background: #212121 url("logo.png") no-repeat right top;
-    background-size: 80px;
-}
-
-.app-header {
-    height: 150px;
-    padding: 20px;
-    color: white;
+    background-size: 5rem;
 }

@@ -181,7 +181,7 @@ class GMGClient {
       // Send Commands
       schedule = setInterval(() => {
         if (attempts > this.tries) {
-          const error = new Error(`No response from Grill after [${attempt}] command sent attempts!`)
+          const error = new Error(`No response from Grill after [${attempts}] command sent attempts!`)
           finish(error)
           this.logger(error)
         }

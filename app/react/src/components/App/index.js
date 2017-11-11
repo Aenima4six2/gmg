@@ -16,6 +16,10 @@ export default class App extends Component {
     }
   }
 
+  componentDidMount() {
+
+  }
+
   selectedNavigationIndexChanged = (index) => {
     this.setState({ selectedNavigationIndex: index })
   }
@@ -29,7 +33,7 @@ export default class App extends Component {
         return null
       }
       default: {
-        return <Home/>
+        return <Home />
       }
     }
   }
@@ -38,11 +42,12 @@ export default class App extends Component {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(gmgTheme)}>
         <div className="app">
-          <AppBar className="app-logo"/>
+          <AppBar className="app-logo" />
           {this.renderCards()}
           <Navigation
             onSelectedIndexChanged={this.selectedNavigationIndexChanged}
-            selectedIndex={this.selectedNavigationIndex}/>
+            selectedIndex={this.selectedNavigationIndex}
+          />
         </div>
       </MuiThemeProvider>
     )
