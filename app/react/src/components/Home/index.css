@@ -4,23 +4,24 @@
     max-width: 50rem;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 20px;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .card-container {
-    margin-top: 15px;
-    margin-bottom: 5px;
-    padding-left: 20px;
-    padding-right: 20px;
+    margin-top: 1.5rem;
+    margin-bottom: .5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 .headline {
-    fontSize: 24px;
-    paddingTop: 16px;
-    marginBottom: 12px;
-    fontWeight: 400px;
+    fontSize: 2.4rem;
+    paddingTop: 1.6rem;
+    marginBottom: 1.2rem;
+    fontWeight: 40rem;
 }
 
 .big {
-    font-size: 30px !important;
+    font-size: 2rem !important;
 }

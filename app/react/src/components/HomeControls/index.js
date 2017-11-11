@@ -16,7 +16,7 @@ export default class HomeControls extends Component {
   render() {
     return (
       <div>
-        <Toolbar style={{ height: '65px' }}>
+        <Toolbar style={{ height: '5rem' }}>
           <ToolbarGroup>
             <IconButton
               tooltip={this.props.fanModeOn ? 'Grill cannot be powered on during fan mode!' : ''}
