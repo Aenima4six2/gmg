@@ -7,18 +7,6 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "App",
-            "runtimeExecutable": "npm",
-            "cwd": "${workspaceFolder}/app/react",            
-            "runtimeArgs": [
-                "run",
-                "start"
-            ],
-            "port": 9229
-        },
-        {
-            "type": "node",
-            "request": "launch",
             "name": "Server",
             "program": "${workspaceFolder}/server/bin/www",
             "cwd": "${workspaceFolder}/server",

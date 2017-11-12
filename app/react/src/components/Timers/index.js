@@ -92,18 +92,23 @@ export default class Timers extends Component {
 
   computeSeconds = (input) => {
     let result = 0
-    if (!input.includes(':') && !isNaN(parseInt(input))) {
-      result = parseInt(input)
+    const parseResult = (matches) => {
+      if (matches.index === regex.lastIndex) regex.lastIndex++
+      matches.filter((match, groupIndex) => groupIndex > 0).forEach((match, groupIndex) => {
+        const key = Object.keys(conversions)[groupIndex]
+        const conversion = conversions[key]
+        result += conversion * parseInt(match, 10)
+      })
+    }
+
+    if (!input.includes(':') && !isNaN(parseInt(input, 10))) {
+      result = parseInt(input, 10)
     }
     else {
-      let m
-      while ((m = regex.exec(input)) !== null) {
-        if (m.index === regex.lastIndex) regex.lastIndex++
-        m.filter((match, groupIndex) => groupIndex > 0).forEach((match, groupIndex) => {
-          const key = Object.keys(conversions)[groupIndex]
-          const conversion = conversions[key]
-          result += conversion * parseInt(match)
-        })
+      let matches = regex.exec(input)
+      while (matches !== null) {
+        parseResult(matches)
+        matches = regex.exec(input)
       }
     }
 
