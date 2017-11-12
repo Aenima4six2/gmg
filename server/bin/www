@@ -3,8 +3,14 @@
 /**
  * Module dependencies.
  */
-const debug = require('debug')('src:server')
+const debug = require('debug')
+const logger = debug('src:www')
 const http = require('http')
+const fs = require('fs')
+const path = require('path')
+const SocketServer = require('../sockets/SocketServer')
+const AlertManager = require('../alerts/AlertManager')
+const SocketSender = require('../alerts/senders/SocketSender')
 
 /**
  * Get port from environment and store in Express.
@@ -16,16 +22,30 @@ app.set('port', port)
 /**
  * Create HTTP server.
  */
-const server = http.Server(app)
-const io = require('../sockets/statusSocket')
-io.start(server)
+const webServer = http.Server(app)
+webServer.listen(port)
+webServer.on('error', onError)
+webServer.on('listening', onListening)
 
 /**
- * Listen on provided port, on all network interfaces.
+ * Create Socket Server
  */
-server.listen(port)
-server.on('error', onError)
-server.on('listening', onListening)
+const socketServer = new SocketServer({
+  server: webServer,
+  logger: debug('src:SocketServer')
+})
+socketServer.start(webServer)
+
+/**
+ * Create Alert Manager
+ */
+const alertManager = new AlertManager({
+  handlers: getHandlers(),
+  senders: [new SocketSender(socketServer)],
+  logger: debug('src:AlertManager')
+})
+alertManager.start()
+
 
 /**
  * Normalize a port into a number, string, or false.
@@ -77,9 +97,16 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 function onListening() {
-  const addr = server.address()
+  const addr = webServer.address()
   const bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port
-  debug('Listening on ' + bind)
+  logger('Listening on ' + bind)
+}
+
+function getHandlers() {
+  const handlerPath = path.resolve(__dirname, '../alerts/handlers')
+  return fs.readdirSync(handlerPath)
+    .filter(file => path.basename(file) !== 'index.js')
+    .map(file => require(path.resolve(handlerPath, file)))
 }

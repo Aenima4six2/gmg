@@ -5,7 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import gmgTheme from '../../theme/gmgTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import Home from '../Home'
-import AppBar from 'material-ui/AppBar'
+// import AppBar from 'material-ui/AppBar'
 import Navigation from '../Navi'
 
 export default class App extends Component {
@@ -42,7 +42,7 @@ export default class App extends Component {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(gmgTheme)}>
         <div className="app">
-          <AppBar className="app-logo" iconStyleLeft={{ visibility: 'hidden' }} />
+          {/* <AppBar className="app-logo" iconStyleLeft={{ visibility: 'hidden' }} /> */}
           {this.renderCards()}
           <Navigation
             onSelectedIndexChanged={this.selectedNavigationIndexChanged}

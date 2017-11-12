@@ -10,6 +10,11 @@
             "name": "Server",
             "program": "${workspaceFolder}/server/bin/www",
             "cwd": "${workspaceFolder}/server",
+            "skipFiles": [
+                "${workspaceRoot}/**/node_modules/**/*.js",
+                "${workspaceRoot}/**/lib/**/*.js",
+                "<node_internals>/**/*.js"
+            ],
             "env": {
                 "NODE_ENV": "development",
                 "DEBUG": "src.*",
