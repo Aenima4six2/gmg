@@ -42,7 +42,7 @@ export default class App extends Component {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(gmgTheme)}>
         <div className="app">
-          <AppBar className="app-logo" />
+          <AppBar className="app-logo" iconStyleLeft={{ visibility: 'hidden' }} />
           {this.renderCards()}
           <Navigation
             onSelectedIndexChanged={this.selectedNavigationIndexChanged}
