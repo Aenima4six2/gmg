@@ -3,5 +3,11 @@
     "host": "255.255.255.255",
     "port": 8080,
     "tries": 5
+  },
+  "alerts": {
+    "pollingInterval": 5000
+  },
+  "status":{
+    "pollingInterval": 5000
   }
 }
