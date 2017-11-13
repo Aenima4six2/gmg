@@ -1,13 +1,11 @@
 const Scheduler = require('../utilities/Scheduler')
 const config = require('config')
-const grillOptions = config.get('grill')
 const alertOptions = config.get('alerts')
-const gmg = require('GMGClient')
 
 class AlertManager {
-    constructor({ handlers, senders, logger }) {
+    constructor({ handlers, senders, client, logger }) {
         this._scheduler = new Scheduler({ ...alertOptions, logger })
-        this._client = new gmg.GMGClient({ ...grillOptions, logger })
+        this._client = client
         this._handlers = handlers
         this._senders = senders
         this._logger = (message) => {
@@ -17,7 +15,7 @@ class AlertManager {
     }
 
     async start() {
-        await this._scheduler.start(async () => {
+        await this._scheduler.run(async () => {
             // Get current grill status
             this._logger('Fetching grill status')
             const status = await this._client.getGrillStatus()
