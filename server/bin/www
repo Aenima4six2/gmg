@@ -1,37 +1,24 @@
 #!/usr/bin/env node
-
-/**
- * Module dependencies.
- */
 const debug = require('debug')
 const logger = debug('src:www')
 const http = require('http')
 const fs = require('fs')
 const path = require('path')
-const GMGClient = require('GMGClient').GMGClient
 const SocketServer = require('../sockets/SocketServer')
 const AlertManager = require('../alerts/AlertManager')
 const SocketSender = require('../alerts/senders/SocketSender')
+const clientFactory = require('../grill')
 const appFactory = require('../app')
-const config = require('config')
-const options = config.get('grill')
-
-/**
- * Create a Grill client
- */
-const client = new GMGClient({
-  ...options,
-  logger: debug('src:GMGClient')
-})
 
 /**
  * Ensure we can discover and connect to the grill
  */
-client.discoverGrill().then(() => {
+const client = clientFactory.initialize({ logger: debug('src:GMGClient') })
+client.discoverGrill({ tries: Number.MAX_VALUE }).then(() => {
   /**
    * Get port from environment and store in Express.
    */
-  const app = appFactory.create({ client })
+  const app = appFactory.create()
   const port = normalizePort(process.env.PORT || '3001')
   app.set('port', port)
 
