@@ -8,105 +8,124 @@ const logger = debug('src:www')
 const http = require('http')
 const fs = require('fs')
 const path = require('path')
+const GMGClient = require('GMGClient').GMGClient
 const SocketServer = require('../sockets/SocketServer')
 const AlertManager = require('../alerts/AlertManager')
 const SocketSender = require('../alerts/senders/SocketSender')
+const appFactory = require('../app')
+const config = require('config')
+const options = config.get('grill')
 
 /**
- * Get port from environment and store in Express.
+ * Create a Grill client
  */
-const app = require('../app')
-const port = normalizePort(process.env.PORT || '3001')
-app.set('port', port)
-
-/**
- * Create HTTP server.
- */
-const webServer = http.Server(app)
-webServer.listen(port)
-webServer.on('error', onError)
-webServer.on('listening', onListening)
-
-/**
- * Create Socket Server
- */
-const socketServer = new SocketServer({
-  server: webServer,
-  logger: debug('src:SocketServer')
+const client = new GMGClient({
+  ...options,
+  logger: debug('src:GMGClient')
 })
-socketServer.start(webServer)
 
 /**
- * Create Alert Manager
+ * Ensure we can discover and connect to the grill
  */
-const alertManager = new AlertManager({
-  handlers: getHandlers(),
-  senders: [new SocketSender(socketServer)],
-  logger: debug('src:AlertManager')
-})
-alertManager.start()
+client.discoverGrill().then(() => {
+  /**
+   * Get port from environment and store in Express.
+   */
+  const app = appFactory.create({ client })
+  const port = normalizePort(process.env.PORT || '3001')
+  app.set('port', port)
+
+  /**
+   * Create HTTP server.
+   */
+  const webServer = http.Server(app)
+  webServer.listen(port)
+  webServer.on('error', onError)
+  webServer.on('listening', onListening)
+
+  /**
+   * Create Socket Server
+   */
+  const socketServer = new SocketServer({
+    client,
+    server: webServer,
+    logger: debug('src:SocketServer')
+  })
+  socketServer.start(webServer)
+
+  /**
+   * Create Alert Manager
+   */
+  const alertManager = new AlertManager({
+    client,
+    handlers: getHandlers(),
+    senders: [new SocketSender(socketServer)],
+    logger: debug('src:AlertManager')
+  })
+  alertManager.start()
 
 
-/**
- * Normalize a port into a number, string, or false.
- */
-function normalizePort(val) {
-  const port = parseInt(val, 10)
+  /**
+   * Normalize a port into a number, string, or false.
+   */
+  function normalizePort(val) {
+    const port = parseInt(val, 10)
 
-  if (isNaN(port)) {
-    // named pipe
-    return val
+    if (isNaN(port)) {
+      // named pipe
+      return val
+    }
+
+    if (port >= 0) {
+      // port number
+      return port
+    }
+
+    return false
   }
 
-  if (port >= 0) {
-    // port number
-    return port
-  }
-
-  return false
-}
-
-/**
- * Event listener for HTTP server "error" event.
- */
-function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error
-  }
-
-  const bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port
-
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges')
-      process.exit(1)
-      break
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use')
-      process.exit(1)
-      break
-    default:
+  /**
+   * Event listener for HTTP server "error" event.
+   */
+  function onError(error) {
+    if (error.syscall !== 'listen') {
       throw error
+    }
+
+    const bind = typeof port === 'string'
+      ? 'Pipe ' + port
+      : 'Port ' + port
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+      case 'EACCES':
+        console.error(bind + ' requires elevated privileges')
+        process.exit(1)
+        break
+      case 'EADDRINUSE':
+        console.error(bind + ' is already in use')
+        process.exit(1)
+        break
+      default:
+        throw error
+    }
   }
-}
 
-/**
- * Event listener for HTTP server "listening" event.
- */
-function onListening() {
-  const addr = webServer.address()
-  const bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port
-  logger('Listening on ' + bind)
-}
+  /**
+   * Event listener for HTTP server "listening" event.
+   */
+  function onListening() {
+    const addr = webServer.address()
+    const bind = typeof addr === 'string'
+      ? 'pipe ' + addr
+      : 'port ' + addr.port
+    logger('Listening on ' + bind)
+  }
 
-function getHandlers() {
-  const handlerPath = path.resolve(__dirname, '../alerts/handlers')
-  return fs.readdirSync(handlerPath)
-    .filter(file => path.basename(file) !== 'index.js')
-    .map(file => require(path.resolve(handlerPath, file)))
-}
+  function getHandlers() {
+    const handlerPath = path.resolve(__dirname, '../alerts/handlers')
+    return fs.readdirSync(handlerPath)
+      .filter(file => path.basename(file) !== 'index.js')
+      .map(file => require(path.resolve(handlerPath, file)))
+  }
+})

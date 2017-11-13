@@ -1,9 +1,9 @@
-const client = require('./GMGClient')
+const GMGClient = require('./GMGClient')
 const AppError = require('./AppError')
 const InvalidCommand = require('./InvalidCommand')
 
 module.exports = {
-  GMGClient: client,
+  GMGClient,
   Errors: {
     AppError,
     InvalidCommand

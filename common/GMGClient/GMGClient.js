@@ -1,11 +1,8 @@
-const defaultPort = 8080
-const defaultHost = '255.255.255.255'
+const defaults = require('./defaultOptions')
 const dgram = require('dgram')
-const retryMs = 1500
 const ip = require('ip')
 const GrillStatus = require('./GrillStatus')
 const InvalidCommand = require('./InvalidCommand')
-
 const commands = Object.freeze({
   powerOn: 'UK001',
   powerOff: 'UK004',
@@ -25,11 +22,18 @@ const getCommandData = (command) => {
 }
 
 class GMGClient {
-  constructor({ port = defaultPort, host = defaultHost, tries = 5, logger = null } = {}) {
+  constructor({
+    port = defaults.port,
+    host = defaults.host,
+    tries = defaults.tries,
+    retryMs = defaults.retryMs,
+    logger
+  } = {}) {
     this.port = port
     this.host = host
     this.tries = tries
-    this.logger = (message) => {
+    this.retryMs = retryMs
+    this._logger = (message) => {
       if (!logger) return
       logger(message)
     }
@@ -52,7 +56,7 @@ class GMGClient {
     let status = await this.getGrillStatus()
     if (status.fanModeActive) {
       const error = new InvalidCommand('Cannot start grill when fan mode is active.')
-      this.logger(error)
+      this._logger(error)
       throw error
     }
 
@@ -64,11 +68,12 @@ class GMGClient {
     let status = await this.getGrillStatus()
     if (!status.isOn) {
       const error = new InvalidCommand('Cannot set grill temperature when the gill is off!')
-      this.logger(error)
+      this._logger(error)
       throw error
     }
 
-    const result = await this.sendCommand(commands.setGrillTempF(fahrenheit))
+    const command = commands.setGrillTempF(fahrenheit)
+    const result = await this.sendCommand(command)
     await this._validateResult(result, newState => newState.desiredGrillTemp === fahrenheit)
   }
 
@@ -76,11 +81,12 @@ class GMGClient {
     let status = await this.getGrillStatus()
     if (!status.isOn) {
       const error = new InvalidCommand('Cannot set food temperature when the gill is off!')
-      this.logger(error)
+      this._logger(error)
       throw error
     }
 
-    const result = await this.sendCommand(commands.setFoodTempF(fahrenheit))
+    const command = commands.setFoodTempF(fahrenheit)
+    const result = await this.sendCommand(command)
     await this._validateResult(result, newState => newState.desiredFoodTemp === fahrenheit)
   }
 
@@ -92,7 +98,7 @@ class GMGClient {
 
     let status = await this.getGrillStatus()
     if (!isValid(status)) {
-      throw new Error(`Grill accepted command but did not apply it`)
+      throw new Error('Grill accepted command but did not apply it')
     }
   }
 
@@ -114,45 +120,40 @@ class GMGClient {
         socket.on('message', (msg, info) => {
           const self = ip.address()
           if (info.address !== self) {
-            finish(info.address)
-            this.logger(`Received response dgram from Grill (${info.address}:${info.port})`)
-          }
-          else {
-            this.logger(`Ignoring received response dgram from Self (${info.address}:${info.port})`)
+            this.host = info.address
+            finish(this.host)
+            this._logger(`Received discovery response dgram from Grill (${info.address}:${info.port})`)
           }
         })
 
         // Send Commands
+        this._logger('Attempting grill discovery...')
         schedule = setInterval(() => {
           if (attempts >= this.tries) {
             const error = new Error(
               `No response from Grill (${this.host}:${this.port}) after [${attempts}] discovery attempts!`)
             finish(error)
-            this.logger(error)
-          }
-          else {
+            this._logger(error)
+          } else {
             attempts++
             socket.send(data, 0, data.byteLength, this.port, this.host, error => {
               if (error) {
                 finish(error)
-                this.logger(`Grill (${this.host}:${this.port}) discovery broadcast dgram send failed -> ${error}`)
-              }
-              else {
-                this.logger(`Grill (${this.host}:${this.port}) discovery broadcast dgram sent -> Attempt #${attempts}`)
+                this._logger(`Grill (${this.host}:${this.port}) discovery broadcast dgram send failed -> ${error}`)
+              } else {
+                this._logger(`Grill (${this.host}:${this.port}) discovery broadcast dgram sent -> Attempt #${attempts}`)
               }
             })
           }
-        }, retryMs)
+        }, this.retryMs)
       })
     })
   }
 
   async sendCommand(command) {
-    if (this.host === defaultHost) {
-      this.logger(`Grill broadcast host provided. Attempting discovery...`)
-      const newHost = await this.discoverGrill()
-      this.host = newHost
-      this.logger(`Grill discovered at ${newHost}:${this.port}!`)
+    if (this.host === defaults.host) {
+      this._logger('Grill host is broadcast address!')
+      await this.discoverGrill()
     }
 
     return await new Promise((res, rej) => {
@@ -160,6 +161,7 @@ class GMGClient {
       const data = getCommandData(command)
       const socket = dgram.createSocket('udp4')
       const offset = data.byteLength
+
       const finish = (result) => {
         if (schedule) clearInterval(schedule)
         socket.removeAllListeners('message')
@@ -171,10 +173,7 @@ class GMGClient {
       socket.on('message', (msg, info) => {
         if (info.address === this.host) {
           finish({ msg, info })
-          this.logger(`Received response dgram from Grill (${info.address}:${info.port})`)
-        }
-        else {
-          this.logger(`Ignoring received response dgram from ${info.address}:${info.port}`)
+          this._logger(`Received response dgram from Grill (${info.address}:${info.port})`)
         }
       })
 
@@ -183,21 +182,19 @@ class GMGClient {
         if (attempts > this.tries) {
           const error = new Error(`No response from Grill after [${attempts}] command sent attempts!`)
           finish(error)
-          this.logger(error)
-        }
-        else {
+          this._logger(error)
+        } else {
           attempts++
           socket.send(data, 0, offset, this.port, this.host, error => {
             if (error) {
               finish(error)
-              this.logger(`Grill (${this.host}:${this.port}) [${command}] command dgram send failed -> ${error}`)
-            }
-            else {
-              this.logger(`Grill (${this.host}:${this.port}) [${command}] command dgram sent -> Attempt #${attempts}.`)
+              this._logger(`Grill (${this.host}:${this.port}) [${command}] command dgram send failed -> ${error}`)
+            } else {
+              this._logger(`Grill (${this.host}:${this.port}) [${command}] command dgram sent -> Attempt #${attempts}.`)
             }
           })
         }
-      }, retryMs)
+      }, this.retryMs)
     })
   }
 }
