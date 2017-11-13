@@ -138,7 +138,6 @@ class GMGClient {
             attempts++
             socket.send(data, 0, data.byteLength, this.port, this.host, error => {
               if (error) {
-                finish(error)
                 this._logger(`Grill (${this.host}:${this.port}) discovery broadcast dgram send failed -> ${error}`)
               } else {
                 this._logger(`Grill (${this.host}:${this.port}) discovery broadcast dgram sent -> Attempt #${attempts}`)
@@ -187,7 +186,6 @@ class GMGClient {
           attempts++
           socket.send(data, 0, offset, this.port, this.host, error => {
             if (error) {
-              finish(error)
               this._logger(`Grill (${this.host}:${this.port}) [${command}] command dgram send failed -> ${error}`)
             } else {
               this._logger(`Grill (${this.host}:${this.port}) [${command}] command dgram sent -> Attempt #${attempts}.`)
