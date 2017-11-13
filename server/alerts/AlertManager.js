@@ -1,10 +1,10 @@
-const Scheduler = require('../utilities/Scheduler')
 const config = require('config')
 const alertOptions = config.get('alerts')
+const PollingManager = require('../utilities/PollingManager')
 
 class AlertManager {
     constructor({ handlers, senders, client, logger }) {
-        this._scheduler = new Scheduler({ ...alertOptions, logger })
+        this._pollingManager = new PollingManager({ ...alertOptions, logger })
         this._client = client
         this._handlers = handlers
         this._senders = senders
@@ -12,10 +12,13 @@ class AlertManager {
             if (!logger) return
             logger(message)
         }
+
+        this.start = this.start.bind(this)
+        this.stop = this.stop.bind(this)
     }
 
     async start() {
-        await this._scheduler.run(async () => {
+        await this._pollingManager.poll(async () => {
             // Get current grill status
             this._logger('Fetching grill status')
             const status = await this._client.getGrillStatus()
@@ -45,7 +48,7 @@ class AlertManager {
     }
 
     async stop() {
-        await this._scheduler.stop()
+        await this._pollingManager.stop()
     }
 }
 

@@ -1,18 +1,22 @@
 const socketIo = require('socket.io')
 const config = require('config')
 const statusOptions = config.get('status')
-const Scheduler = require('../utilities/Scheduler')
+const PollingManager = require('../utilities/PollingManager')
 
 class SocketServer {
   constructor({ server, client, logger }) {
     this._io = socketIo(server)
-    this._scheduler = new Scheduler({ ...statusOptions, logger })
+    this._pollingManager = new PollingManager({ ...statusOptions, logger })
     this._client = client
     this._sockets = []
     this._logger = (message) => {
       if (!logger) return
       logger(message)
     }
+
+    this.broadcast = this.broadcast.bind(this)
+    this.start = this.start.bind(this)
+    this.stop = this.stop.bind(this)
   }
 
   broadcast(event, payload) {
@@ -26,7 +30,7 @@ class SocketServer {
   }
 
   async start() {
-    if (this._scheduler.isStarted) return
+    if (this._pollingManager.isPolling) return
     this._logger('Started Socket.io status server')
 
     this._sockets = []
@@ -40,7 +44,7 @@ class SocketServer {
       })
     })
 
-    await this._scheduler.run(async () => {
+    await this._pollingManager.poll(async () => {
       if (this.hasConnections) {
         const status = await this._client.getGrillStatus()
         this._logger(`Sending [${this._sockets.length}] client(s) status -> ${JSON.stringify(status, null, 2)}`)
@@ -52,7 +56,7 @@ class SocketServer {
   }
 
   async stop() {
-    await this._scheduler.stop()
+    await this._pollingManager.stop()
   }
 }
 
