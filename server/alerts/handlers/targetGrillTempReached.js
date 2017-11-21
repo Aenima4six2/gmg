@@ -9,8 +9,13 @@ module.exports.handle = (status) => {
             status.desiredGrillTemp &&
             status.desiredFoodTemp >= status.desiredGrillTemp
         ),
-        type: alertTypes.targetGrillTempReached
+        createAlert() {
+            return {
+                type: alertTypes.targetGrillTempReached,
+                name: 'Target Grill Temperature Reached',
+                Reason: `Grill temperature has reached target temperature of ${status.desiredGrillTemp}`
+            }
+        }
     }
 }
-
 module.exports.reset = () => { }

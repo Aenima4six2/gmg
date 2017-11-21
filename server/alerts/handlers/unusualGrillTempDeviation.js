@@ -5,17 +5,19 @@ let desiredTempPrevReached
 module.exports.name = path.basename(__filename)
 module.exports.handle = (status) => {
     const delta = Math.abs(status.desiredGrillTemp - status.currentGrillTemp)
-    if (desiredTempPrevReached) {
-        return {
-            triggered: delta > 15,
-            type: alertTypes.unusualGrillTempDeviation
-        }
+    if (!desiredTempPrevReached) {
+        desiredTempPrevReached = delta <= 3
     }
 
-    desiredTempPrevReached = delta <= 3
     return {
-        triggered: false,
-        type: alertTypes.unusualGrillTempDeviation
+        triggered: desiredTempPrevReached && delta > 15,
+        createAlert() {
+            return {
+                type: alertTypes.unusualGrillTempDeviation,
+                name: 'Unusual Grill Temperature Deviation',
+                Reason: 'An unusual change in the grill temperature was detected!'
+            }
+        }
     }
 }
 

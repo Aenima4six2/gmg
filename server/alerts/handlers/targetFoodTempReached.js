@@ -10,7 +10,13 @@ module.exports.handle = (status) => {
             status.desiredFoodTemp &&
             status.currentFoodTemp >= status.desiredFoodTemp
         ),
-        type: alertTypes.targetFoodTempReached
+        createAlert() {
+            return {
+                type: alertTypes.targetFoodTempReached,
+                name: 'Target Food Temperature Reached',
+                Reason: `Food temperature has reached target temperature of ${status.desiredFoodTemp}`
+            }
+        }
     }
 }
 

@@ -25,8 +25,14 @@ export default class GrillTemperature extends Component {
     }
   }
 
-  handleOpen = () => this.setState({ open: true })
+  handleOpen = () => {
+    if (this.props.isEnabled) {
+      this.setState({ open: true })
+    }
+  }
+
   handleCancel = () => this.setState({ open: false, desiredGrillTemp: 0 })
+
   handleSubmit = () => {
     this.setState({ open: false })
     this.props.onSubmit(this.state.desiredGrillTemp)

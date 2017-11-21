@@ -11,5 +11,5 @@ module.exports.initialize = ({ logger }) => {
     return clientCache
 }
 
-module.exports.client = clientCache
+module.exports.createClient = () => clientCache
 

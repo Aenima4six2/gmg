@@ -24,8 +24,14 @@ export default class FoodTemperature extends Component {
     }
   }
 
-  handleOpen = () => this.setState({ open: true })
+  handleOpen = () => {
+    if (this.props.isEnabled) {
+      this.setState({ open: true })
+    }
+  }
+
   handleCancel = () => this.setState({ open: false, desiredFoodTemp: 0 })
+
   handleSubmit = () => {
     this.setState({ open: false })
     this.props.onSubmit(this.state.desiredFoodTemp)
@@ -61,9 +67,9 @@ export default class FoodTemperature extends Component {
     return (
       <Card>
         <CardMedia overlay={
-          <CardTitle title="Food Temp ℉" subtitle="Set the temperature of the food"/>
+          <CardTitle title="Food Temp ℉" subtitle="Set the temperature of the food" />
         }>
-          <img src={logo} alt=""/>
+          <img src={logo} alt="" />
         </CardMedia>
         <div className="controls">
           <List>
@@ -71,7 +77,7 @@ export default class FoodTemperature extends Component {
               disabled={true}
               leftAvatar={
                 <Avatar
-                  icon={<FontIcon className="fa fa-thermometer-empty"/>}
+                  icon={<FontIcon className="fa fa-thermometer-empty" />}
                   size={50}
                 />
               }
@@ -84,21 +90,21 @@ export default class FoodTemperature extends Component {
               disabled={true}
               leftAvatar={
                 <Avatar
-                  icon={<FontIcon className="fa fa-thermometer-full"/>}
+                  icon={<FontIcon className="fa fa-thermometer-full" />}
                   size={50}
                 />
               }
             >
               Desired: {this.props.desiredFoodTemp
-              ? `${this.props.desiredFoodTemp} ℉`
-              : 'Not set'}
+                ? `${this.props.desiredFoodTemp} ℉`
+                : 'Not set'}
             </ListItem>
           </List>
           <CardActions>
             <Button
               onTouchTap={this.handleOpen}
               disabled={!this.props.isEnabled}
-              label="Set Food Temperature"/>
+              label="Set Food Temperature" />
           </CardActions>
           <Dialog
             title="Set the desired food temperature"
