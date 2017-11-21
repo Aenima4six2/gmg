@@ -7,9 +7,9 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Server",
-            "program": "${workspaceFolder}/server/bin/www",
-            "cwd": "${workspaceFolder}/server",
+            "name": "Debug",
+            "program": "${workspaceFolder}/bin/www",
+            "cwd": "${workspaceFolder}",
             "skipFiles": [
                 "${workspaceRoot}/**/node_modules/**/*.js",
                 "${workspaceRoot}/**/lib/**/*.js",
