@@ -1,8 +1,9 @@
 const alertTypes = require('../../constants/alertTypes')
 const path = require('path')
-
 let desiredTempPrevReached
+
 module.exports.name = path.basename(__filename)
+
 module.exports.handle = (status) => {
     const delta = Math.abs(status.desiredGrillTemp - status.currentGrillTemp)
     if (!desiredTempPrevReached) {
@@ -15,7 +16,7 @@ module.exports.handle = (status) => {
             return {
                 type: alertTypes.unusualGrillTempDeviation,
                 name: 'Unusual Grill Temperature Deviation',
-                Reason: 'An unusual change in the grill temperature was detected!'
+                reason: 'An unusual change in the grill temperature was detected!'
             }
         }
     }

@@ -17,11 +17,12 @@ export default class Home extends Component {
   constructor() {
     super()
     this.state = {
-      commandsPending: 0,
       currentGrillTemp: 0,
       desiredGrillTemp: 0,
       currentFoodTemp: 0,
       desiredFoodTemp: 0,
+      commandsPending: 0,
+      fanModeActive: false,
       loading: true,
       connected: false,
       showTimers: false,
@@ -48,7 +49,12 @@ export default class Home extends Component {
     this.state.socket.removeAllListeners('status')
   }
 
+  get canExecuteCommand() {
+    return !this.state.loading && !this.state.fanModeActive && this.state.connected
+  }
+
   powerToggle = async () => {
+    if (!this.canExecuteCommand) return
     this.setState({
       loading: true,
       commandsPending: this.state.commandsPending + 1
@@ -66,6 +72,7 @@ export default class Home extends Component {
   }
 
   setDesiredGrillTemp = async (temperature) => {
+    if (!this.canExecuteCommand) return
     this.setState({
       loading: true,
       commandsPending: this.state.commandsPending + 1
@@ -83,6 +90,7 @@ export default class Home extends Component {
   }
 
   setDesiredFoodTemp = async (temperature) => {
+    if (!this.canExecuteCommand) return
     this.setState({
       loading: true,
       commandsPending: this.state.commandsPending + 1
@@ -100,6 +108,7 @@ export default class Home extends Component {
   }
 
   timerToggle = () => {
+    if (this.state.loading) return
     this.setState({ showTimers: !this.state.showTimers })
   }
 
@@ -114,11 +123,12 @@ export default class Home extends Component {
         <ToastContainer ref={ref => toast = ref} className="toast-top-right" />
         <div>
           <HomeControls
+            disabled={!this.canExecuteCommand}
             onPowerTouchTap={this.powerToggle}
             onTimersTouchTap={this.timerToggle}
-            isLoading={this.state.loading}
-            fanModeOn={this.state.fanModeActive}
-            isConnected={this.state.connected}
+            loading={this.state.loading}
+            fanModeActive={this.state.fanModeActive}
+            connected={this.state.connected}
             timersOn={this.state.showTimers}
             powerOn={this.state.isOn} />
         </div>

@@ -16409,7 +16409,7 @@ var IconButton = function (_Component) {
 
     return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = IconButton.__proto__ || (0, _getPrototypeOf2.default)(IconButton)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
       hovered: false,
-      isKeyboardFocused: false,
+      iskeyboardfocused: false,
       // Not to be confonded with the touch property.
       // This state is to determined if it's a mobile device.
       touch: false,
@@ -16425,7 +16425,7 @@ var IconButton = function (_Component) {
         _this.props.onFocus(event);
       }
     }, _this.handleMouseLeave = function (event) {
-      if (!_this.button.isKeyboardFocused()) {
+      if (!_this.button.iskeyboardfocused()) {
         _this.hideTooltip();
       }
       _this.setState({ hovered: false });
@@ -16451,14 +16451,14 @@ var IconButton = function (_Component) {
       if (_this.props.onTouchStart) {
         _this.props.onTouchStart(event);
       }
-    }, _this.handleKeyboardFocus = function (event, isKeyboardFocused) {
+    }, _this.handleKeyboardFocus = function (event, iskeyboardfocused) {
       var _this$props = _this.props,
           disabled = _this$props.disabled,
           onFocus = _this$props.onFocus,
           onBlur = _this$props.onBlur,
           onKeyboardFocus = _this$props.onKeyboardFocus;
 
-      if (isKeyboardFocused && !disabled) {
+      if (iskeyboardfocused && !disabled) {
         _this.showTooltip();
         if (onFocus) {
           onFocus(event);
@@ -16470,9 +16470,9 @@ var IconButton = function (_Component) {
         }
       }
 
-      _this.setState({ isKeyboardFocused: isKeyboardFocused });
+      _this.setState({ iskeyboardfocused: iskeyboardfocused });
       if (onKeyboardFocus) {
-        onKeyboardFocus(event, isKeyboardFocused);
+        onKeyboardFocus(event, iskeyboardfocused);
       }
     }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
   }
@@ -16525,7 +16525,7 @@ var IconButton = function (_Component) {
       var styles = getStyles(this.props, this.context);
       var tooltipPosition = tooltipPositionProp.split('-');
 
-      var hovered = (this.state.hovered || this.state.isKeyboardFocused) && !disabled;
+      var hovered = (this.state.hovered || this.state.iskeyboardfocused) && !disabled;
 
       var mergedRootStyles = (0, _simpleAssign2.default)(styles.root, style, hovered ? hoveredStyle : {});
 
@@ -16640,7 +16640,7 @@ IconButton.propTypes =  true ? {
    * Callback function fired when the element is focused or blurred by the keyboard.
    *
    * @param {object} event `focus` or `blur` event targeting the element.
-   * @param {boolean} keyboardFocused Indicates whether the element is focused.
+   * @param {boolean} keyboardfocused Indicates whether the element is focused.
    */
   onKeyboardFocus: _propTypes2.default.func,
   /** @ignore */
@@ -16947,11 +16947,11 @@ function getStyles(props, context, state) {
   var twoLine = secondaryText && secondaryTextLines === 1;
   var threeLine = secondaryText && secondaryTextLines > 1;
 
-  var isKeyboardFocused = (props.isKeyboardFocused !== undefined ? props : state).isKeyboardFocused;
+  var iskeyboardfocused = (props.iskeyboardfocused !== undefined ? props : state).iskeyboardfocused;
 
   var styles = {
     root: {
-      backgroundColor: (isKeyboardFocused || state.hovered) && !state.rightIconButtonHovered && !state.rightIconButtonKeyboardFocused ? hoverColor : null,
+      backgroundColor: (iskeyboardfocused || state.hovered) && !state.rightIconButtonHovered && !state.rightIconButtonkeyboardfocused ? hoverColor : null,
       color: textColor,
       display: 'block',
       fontSize: 16,
@@ -17066,14 +17066,14 @@ var ListItem = function (_Component) {
 
     return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = ListItem.__proto__ || (0, _getPrototypeOf2.default)(ListItem)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
       hovered: false,
-      isKeyboardFocused: false,
+      iskeyboardfocused: false,
       open: false,
       rightIconButtonHovered: false,
-      rightIconButtonKeyboardFocused: false,
+      rightIconButtonkeyboardfocused: false,
       touch: false
-    }, _this.handleKeyboardFocus = function (event, isKeyboardFocused) {
-      _this.setState({ isKeyboardFocused: isKeyboardFocused });
-      _this.props.onKeyboardFocus(event, isKeyboardFocused);
+    }, _this.handleKeyboardFocus = function (event, iskeyboardfocused) {
+      _this.setState({ iskeyboardfocused: iskeyboardfocused });
+      _this.props.onKeyboardFocus(event, iskeyboardfocused);
     }, _this.handleMouseEnter = function (event) {
       if (!_this.state.touch) _this.setState({ hovered: true });
       _this.props.onMouseEnter(event);
@@ -17107,17 +17107,17 @@ var ListItem = function (_Component) {
           }
         }));
       }
-    }, _this.handleRightIconButtonKeyboardFocus = function (event, isKeyboardFocused) {
-      if (isKeyboardFocused) {
+    }, _this.handleRightIconButtonKeyboardFocus = function (event, iskeyboardfocused) {
+      if (iskeyboardfocused) {
         _this.setState({
-          isKeyboardFocused: false,
-          rightIconButtonKeyboardFocused: isKeyboardFocused
+          iskeyboardfocused: false,
+          rightIconButtonkeyboardfocused: iskeyboardfocused
         });
       }
 
       var iconButton = _this.props.rightIconButton;
 
-      if (iconButton && iconButton.props.onKeyboardFocus) iconButton.props.onKeyboardFocus(event, isKeyboardFocused);
+      if (iconButton && iconButton.props.onKeyboardFocus) iconButton.props.onKeyboardFocus(event, iskeyboardfocused);
     }, _this.handleRightIconButtonMouseLeave = function (event) {
       var iconButton = _this.props.rightIconButton;
       _this.setState({ rightIconButtonHovered: false });
@@ -17279,7 +17279,7 @@ var ListItem = function (_Component) {
           nestedLevel = _props3.nestedLevel,
           nestedListStyle = _props3.nestedListStyle,
           onKeyboardFocus = _props3.onKeyboardFocus,
-          isKeyboardFocused = _props3.isKeyboardFocused,
+          iskeyboardfocused = _props3.iskeyboardfocused,
           onMouseEnter = _props3.onMouseEnter,
           onMouseLeave = _props3.onMouseLeave,
           onNestedListToggle = _props3.onNestedListToggle,
@@ -17294,7 +17294,7 @@ var ListItem = function (_Component) {
           secondaryText = _props3.secondaryText,
           secondaryTextLines = _props3.secondaryTextLines,
           style = _props3.style,
-          other = (0, _objectWithoutProperties3.default)(_props3, ['autoGenerateNestedIndicator', 'children', 'containerElement', 'disabled', 'disableKeyboardFocus', 'hoverColor', 'initiallyOpen', 'innerDivStyle', 'insetChildren', 'leftAvatar', 'leftCheckbox', 'leftIcon', 'nestedItems', 'nestedLevel', 'nestedListStyle', 'onKeyboardFocus', 'isKeyboardFocused', 'onMouseEnter', 'onMouseLeave', 'onNestedListToggle', 'onTouchStart', 'onTouchTap', 'rightAvatar', 'rightIcon', 'rightIconButton', 'rightToggle', 'primaryText', 'primaryTogglesNestedList', 'secondaryText', 'secondaryTextLines', 'style']);
+          other = (0, _objectWithoutProperties3.default)(_props3, ['autoGenerateNestedIndicator', 'children', 'containerElement', 'disabled', 'disableKeyboardFocus', 'hoverColor', 'initiallyOpen', 'innerDivStyle', 'insetChildren', 'leftAvatar', 'leftCheckbox', 'leftIcon', 'nestedItems', 'nestedLevel', 'nestedListStyle', 'onKeyboardFocus', 'iskeyboardfocused', 'onMouseEnter', 'onMouseLeave', 'onNestedListToggle', 'onTouchStart', 'onTouchTap', 'rightAvatar', 'rightIcon', 'rightIconButton', 'rightToggle', 'primaryText', 'primaryTogglesNestedList', 'secondaryText', 'secondaryTextLines', 'style']);
       var prepareStyles = this.context.muiTheme.prepareStyles;
 
       var styles = getStyles(this.props, this.context, this.state);
@@ -17389,7 +17389,7 @@ var ListItem = function (_Component) {
           (0, _extends3.default)({
             containerElement: containerElement
           }, other, {
-            disableKeyboardFocus: disableKeyboardFocus || this.state.rightIconButtonKeyboardFocused,
+            disableKeyboardFocus: disableKeyboardFocus || this.state.rightIconButtonkeyboardfocused,
             onKeyboardFocus: this.handleKeyboardFocus,
             onMouseLeave: this.handleMouseLeave,
             onMouseEnter: this.handleMouseEnter,
@@ -17493,7 +17493,7 @@ ListItem.propTypes =  true ? {
    * actual focus - and should only be used when you want to simulate
    * keyboard focus (eg. in a rich text input autocomplete).
    */
-  isKeyboardFocused: _propTypes2.default.bool,
+  iskeyboardfocused: _propTypes2.default.bool,
   /**
    * This is the `Avatar` element to be displayed on the left side.
    */
@@ -17523,7 +17523,7 @@ ListItem.propTypes =  true ? {
    * Callback function fired when the `ListItem` is focused or blurred by the keyboard.
    *
    * @param {object} event `focus` or `blur` event targeting the `ListItem`.
-   * @param {boolean} isKeyboardFocused If true, the `ListItem` is focused.
+   * @param {boolean} iskeyboardfocused If true, the `ListItem` is focused.
    */
   onKeyboardFocus: _propTypes2.default.func,
   /** @ignore */
@@ -18013,7 +18013,7 @@ function getStyles(props, context, state) {
     overlay: {
       height: buttonHeight,
       borderRadius: borderRadius,
-      backgroundColor: (state.keyboardFocused || state.hovered) && !disabled && (0, _colorManipulator.fade)(labelColor, amount),
+      backgroundColor: (state.keyboardfocused || state.hovered) && !disabled && (0, _colorManipulator.fade)(labelColor, amount),
       transition: _transitions2.default.easeOut(),
       top: 0
     },
@@ -18040,7 +18040,7 @@ var RaisedButton = function (_Component) {
 
     return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = RaisedButton.__proto__ || (0, _getPrototypeOf2.default)(RaisedButton)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
       hovered: false,
-      keyboardFocused: false,
+      keyboardfocused: false,
       touched: false,
       initialZDepth: 0,
       zDepth: 0
@@ -18062,7 +18062,7 @@ var RaisedButton = function (_Component) {
         _this.props.onMouseUp(event);
       }
     }, _this.handleMouseLeave = function (event) {
-      if (!_this.state.keyboardFocused) {
+      if (!_this.state.keyboardfocused) {
         _this.setState({
           zDepth: _this.state.initialZDepth,
           hovered: false
@@ -18072,7 +18072,7 @@ var RaisedButton = function (_Component) {
         _this.props.onMouseLeave(event);
       }
     }, _this.handleMouseEnter = function (event) {
-      if (!_this.state.keyboardFocused && !_this.state.touched) {
+      if (!_this.state.keyboardfocused && !_this.state.touched) {
         _this.setState({
           hovered: true
         });
@@ -18098,12 +18098,12 @@ var RaisedButton = function (_Component) {
       if (_this.props.onTouchEnd) {
         _this.props.onTouchEnd(event);
       }
-    }, _this.handleKeyboardFocus = function (event, keyboardFocused) {
-      var zDepth = keyboardFocused && !_this.props.disabled ? _this.state.initialZDepth + 1 : _this.state.initialZDepth;
+    }, _this.handleKeyboardFocus = function (event, keyboardfocused) {
+      var zDepth = keyboardfocused && !_this.props.disabled ? _this.state.initialZDepth + 1 : _this.state.initialZDepth;
 
       _this.setState({
         zDepth: zDepth,
-        keyboardFocused: keyboardFocused
+        keyboardfocused: keyboardfocused
       });
     }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
   }
@@ -19756,20 +19756,20 @@ var EnhancedButton = function (_Component) {
     }
 
     return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = EnhancedButton.__proto__ || (0, _getPrototypeOf2.default)(EnhancedButton)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      isKeyboardFocused: false
+      iskeyboardfocused: false
     }, _this.handleKeyDown = function (event) {
       if (!_this.props.disabled && !_this.props.disableKeyboardFocus) {
-        if ((0, _keycode2.default)(event) === 'enter' && _this.state.isKeyboardFocused) {
+        if ((0, _keycode2.default)(event) === 'enter' && _this.state.iskeyboardfocused) {
           _this.handleTouchTap(event);
         }
-        if ((0, _keycode2.default)(event) === 'esc' && _this.state.isKeyboardFocused) {
+        if ((0, _keycode2.default)(event) === 'esc' && _this.state.iskeyboardfocused) {
           _this.removeKeyboardFocus(event);
         }
       }
       _this.props.onKeyDown(event);
     }, _this.handleKeyUp = function (event) {
       if (!_this.props.disabled && !_this.props.disableKeyboardFocus) {
-        if ((0, _keycode2.default)(event) === 'space' && _this.state.isKeyboardFocused) {
+        if ((0, _keycode2.default)(event) === 'space' && _this.state.iskeyboardfocused) {
           _this.handleTouchTap(event);
         }
       }
@@ -19814,10 +19814,10 @@ var EnhancedButton = function (_Component) {
       var _props = this.props,
           disabled = _props.disabled,
           disableKeyboardFocus = _props.disableKeyboardFocus,
-          keyboardFocused = _props.keyboardFocused;
+          keyboardfocused = _props.keyboardfocused;
 
-      if (!disabled && keyboardFocused && !disableKeyboardFocus) {
-        this.setState({ isKeyboardFocused: true });
+      if (!disabled && keyboardfocused && !disableKeyboardFocus) {
+        this.setState({ iskeyboardfocused: true });
       }
     }
   }, {
@@ -19825,7 +19825,7 @@ var EnhancedButton = function (_Component) {
     value: function componentDidMount() {
       injectStyle();
       listenForTabPresses();
-      if (this.state.isKeyboardFocused) {
+      if (this.state.iskeyboardfocused) {
         this.button.focus();
         this.props.onKeyboardFocus(null, true);
       }
@@ -19833,8 +19833,8 @@ var EnhancedButton = function (_Component) {
   }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
-      if ((nextProps.disabled || nextProps.disableKeyboardFocus) && this.state.isKeyboardFocused) {
-        this.setState({ isKeyboardFocused: false });
+      if ((nextProps.disabled || nextProps.disableKeyboardFocus) && this.state.iskeyboardfocused) {
+        this.setState({ iskeyboardfocused: false });
         if (nextProps.onKeyboardFocus) {
           nextProps.onKeyboardFocus(null, false);
         }
@@ -19848,23 +19848,23 @@ var EnhancedButton = function (_Component) {
       }
     }
   }, {
-    key: 'isKeyboardFocused',
-    value: function isKeyboardFocused() {
-      return this.state.isKeyboardFocused;
+    key: 'iskeyboardfocused',
+    value: function iskeyboardfocused() {
+      return this.state.iskeyboardfocused;
     }
   }, {
     key: 'removeKeyboardFocus',
     value: function removeKeyboardFocus(event) {
-      if (this.state.isKeyboardFocused) {
-        this.setState({ isKeyboardFocused: false });
+      if (this.state.iskeyboardfocused) {
+        this.setState({ iskeyboardfocused: false });
         this.props.onKeyboardFocus(event, false);
       }
     }
   }, {
     key: 'setKeyboardFocus',
     value: function setKeyboardFocus(event) {
-      if (!this.state.isKeyboardFocused) {
-        this.setState({ isKeyboardFocused: true });
+      if (!this.state.iskeyboardfocused) {
+        this.setState({ iskeyboardfocused: true });
         this.props.onKeyboardFocus(event, true);
       }
     }
@@ -19890,14 +19890,14 @@ var EnhancedButton = function (_Component) {
           focusRippleOpacity = _props2.focusRippleOpacity,
           touchRippleColor = _props2.touchRippleColor,
           touchRippleOpacity = _props2.touchRippleOpacity;
-      var isKeyboardFocused = this.state.isKeyboardFocused;
+      var iskeyboardfocused = this.state.iskeyboardfocused;
 
       // Focus Ripple
 
-      var focusRipple = isKeyboardFocused && !disabled && !disableFocusRipple && !disableKeyboardFocus ? _react2.default.createElement(_FocusRipple2.default, {
+      var focusRipple = iskeyboardfocused && !disabled && !disableFocusRipple && !disableKeyboardFocus ? _react2.default.createElement(_FocusRipple2.default, {
         color: focusRippleColor,
         opacity: focusRippleOpacity,
-        show: isKeyboardFocused,
+        show: iskeyboardfocused,
         style: {
           overflow: 'hidden'
         },
@@ -19934,7 +19934,7 @@ var EnhancedButton = function (_Component) {
           focusRippleColor = _props3.focusRippleColor,
           focusRippleOpacity = _props3.focusRippleOpacity,
           href = _props3.href,
-          keyboardFocused = _props3.keyboardFocused,
+          keyboardfocused = _props3.keyboardfocused,
           touchRippleColor = _props3.touchRippleColor,
           touchRippleOpacity = _props3.touchRippleOpacity,
           onBlur = _props3.onBlur,
@@ -19947,7 +19947,7 @@ var EnhancedButton = function (_Component) {
           style = _props3.style,
           tabIndex = _props3.tabIndex,
           type = _props3.type,
-          other = (0, _objectWithoutProperties3.default)(_props3, ['centerRipple', 'children', 'containerElement', 'disabled', 'disableFocusRipple', 'disableKeyboardFocus', 'disableTouchRipple', 'focusRippleColor', 'focusRippleOpacity', 'href', 'keyboardFocused', 'touchRippleColor', 'touchRippleOpacity', 'onBlur', 'onClick', 'onFocus', 'onKeyUp', 'onKeyDown', 'onKeyboardFocus', 'onTouchTap', 'style', 'tabIndex', 'type']);
+          other = (0, _objectWithoutProperties3.default)(_props3, ['centerRipple', 'children', 'containerElement', 'disabled', 'disableFocusRipple', 'disableKeyboardFocus', 'disableTouchRipple', 'focusRippleColor', 'focusRippleOpacity', 'href', 'keyboardfocused', 'touchRippleColor', 'touchRippleOpacity', 'onBlur', 'onClick', 'onFocus', 'onKeyUp', 'onKeyDown', 'onKeyboardFocus', 'onTouchTap', 'style', 'tabIndex', 'type']);
       var _context$muiTheme = this.context.muiTheme,
           prepareStyles = _context$muiTheme.prepareStyles,
           enhancedButton = _context$muiTheme.enhancedButton;
@@ -20044,7 +20044,7 @@ EnhancedButton.propTypes =  true ? {
   focusRippleColor: _propTypes2.default.string,
   focusRippleOpacity: _propTypes2.default.number,
   href: _propTypes2.default.string,
-  keyboardFocused: _propTypes2.default.bool,
+  keyboardfocused: _propTypes2.default.bool,
   onBlur: _propTypes2.default.func,
   onClick: _propTypes2.default.func,
   onFocus: _propTypes2.default.func,
@@ -25813,7 +25813,7 @@ var connection = new SockJS(
 connection.onclose = function() {
   if (typeof console !== 'undefined' && typeof console.info === 'function') {
     console.info(
-      'The development server has disconnected.\nRefresh the page if necessary.'
+      'The development server has dconnected.\nRefresh the page if necessary.'
     );
   }
 };
@@ -52510,7 +52510,7 @@ SockJS.prototype._close = function(code, reason, wasClean) {
 
     this.dispatchEvent(e);
     this.onmessage = this.onclose = this.onerror = null;
-    debug('disconnected');
+    debug('dconnected');
   }.bind(this), 0);
 };
 
