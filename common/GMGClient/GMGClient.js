@@ -7,7 +7,7 @@ const commands = Object.freeze({
   powerOn: 'UK001',
   powerOff: 'UK004',
   getGrillStatus: 'UR001',
-  setGrillTempF: (temp) => `UR${temp}`,
+  setGrillTempF: (temp) => `UT${temp}`,
   setFoodTempF: (temp) => `UF${temp}`
 })
 
@@ -44,24 +44,23 @@ class GMGClient {
     return new GrillStatus(result.msg)
   }
 
+  async powerToggleGrill() {
+    let status = await this.getGrillStatus()
+    if (status.isOn) {
+      await this._powerOffGrill(status)
+    } else {
+      await this._powerOnGrill(status)
+    }
+  }
+
   async powerOffGrill() {
     let status = await this.getGrillStatus()
-    if (!status.isOn) return
-
-    const result = await this.sendCommand(commands.powerOff)
-    await this._validateResult(result, newState => newState.isOn)
+    await this._powerOffGrill(status)
   }
 
   async powerOnGrill() {
     let status = await this.getGrillStatus()
-    if (status.fanModeActive) {
-      const error = new InvalidCommand('Cannot start grill when fan mode is active.')
-      this._logger(error)
-      throw error
-    }
-
-    const result = await this.sendCommand(commands.powerOn)
-    await this._validateResult(result, newState => !newState.isOn)
+    await this._powerOnGrill(status)
   }
 
   async setGrillTemp(fahrenheit) {
@@ -88,18 +87,6 @@ class GMGClient {
     const command = commands.setFoodTempF(fahrenheit)
     const result = await this.sendCommand(command)
     await this._validateResult(result, newState => newState.desiredFoodTemp === fahrenheit)
-  }
-
-  async _validateResult(result, isValid) {
-    const response = result.msg.toString()
-    if (response !== results.OK) {
-      throw new Error(`Grill responded with non OK status -> ${response}`)
-    }
-
-    let status = await this.getGrillStatus()
-    if (!isValid(status)) {
-      throw new Error('Grill accepted command but did not apply it')
-    }
   }
 
   async discoverGrill({ tries = this.tries } = {}) {
@@ -195,6 +182,32 @@ class GMGClient {
       }, this.retryMs)
     })
   }
+
+
+  async _powerOffGrill(status) {
+    if (!status.isOn) return
+    const result = await this.sendCommand(commands.powerOff)
+    await this._validateResult(result, newState => !newState.isOn)
+  }
+
+  async _powerOnGrill(status) {
+    if (status.fanModeActive) {
+      const error = new InvalidCommand('Cannot start grill when fan mode is active.')
+      this._logger(error)
+      throw error
+    }
+
+    const result = await this.sendCommand(commands.powerOn)
+    await this._validateResult(result, newState => newState.isOn)
+  }
+
+  async _validateResult(result, validator) {
+    const response = result.msg.toString()
+    if (response !== results.OK) {
+      throw new Error(`Grill responded with non OK status -> ${response}`)
+    }
+  }
+
 }
 
 module.exports = GMGClient

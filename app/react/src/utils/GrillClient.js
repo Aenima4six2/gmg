@@ -13,25 +13,31 @@ export default class GrillClient {
     this.apiBaseAddress = formatAddress(apiBaseAddress)
   }
 
-  powerToggle() {
+  async powerToggle() {
     const url = `${this.apiBaseAddress}/api/powertoggle`
-    return fetch(url, { method: 'PUT' }).then(result => {
-      if (!result.ok) throw new Error(result.statusText)
-    })
+    const result = await fetch(url, { method: 'PUT' })
+    if (!result.ok) {
+      const body = await result.text()
+      throw new Error(body)
+    }
   }
 
-  setDesiredFoodTemp(temperature) {
+  async setDesiredFoodTemp(temperature) {
     const url = `${this.apiBaseAddress}/api/temperature/food/${temperature}`
-    return fetch(url, { method: 'PUT' }).then(result => {
-      if (!result.ok) throw new Error(result.statusText)
-    })
+    const result = await fetch(url, { method: 'PUT' })
+    if (!result.ok) {
+      const body = await result.text()
+      throw new Error(body)
+    }
   }
 
-  setDesiredGrillTemp(temperature) {
+  async setDesiredGrillTemp(temperature) {
     const url = `${this.apiBaseAddress}/api/temperature/grill/${temperature}`
-    return fetch(url, { method: 'PUT' }).then(result => {
-      if (!result.ok) throw new Error(result.statusText)
-    })
+    const result = await fetch(url, { method: 'PUT' })
+    if (!result.ok) {
+      const body = await result.text()
+      throw new Error(body)
+    }
   }
 
 }

@@ -1,18 +1,23 @@
-const getRawValue = (hex, position) => parseInt(hex.substr(position, 2), 16)
+const getRawValue = (hex, position) => {
+  const value = hex.substr(position, 2)
+  const parsed = parseInt(value, 16)
+  return parsed
+}
 
 const getGrillState = (hex) => {
-  let status = parseInt(hex.charAt(61))
-  if (status == 0) status = 'off'
-  else if (status == 1) status = 'on'
-  else if (status == 2) status = 'fan mode'
+  const statusCharacter = hex.charAt(61)
+  let status = parseInt(statusCharacter, 10)
+  if (status === 0) status = 'off'
+  else if (status === 1) status = 'on'
+  else if (status === 2) status = 'fan mode'
   else status = 'unknown'
   return status
 }
 
 const getCurrentGrillTemp = (hex) => {
   const first = getRawValue(hex, 4)
-  const second = getRawValue(hex, 6) * 256
-  return first + second
+  const second = getRawValue(hex, 6)
+  return first + (second * 256)
 }
 
 const getDesiredGrillTemp = (hex) => {
@@ -38,12 +43,12 @@ class GrillStatus {
     const hex = Buffer.from(bytes).toString('hex')
     this.state = getGrillState(hex)
     this._hex = hex
-    this.isOn = this.state == 'on'
+    this.isOn = this.state === 'on'
     this.currentGrillTemp = getCurrentGrillTemp(hex)
     this.desiredGrillTemp = this.isOn ? getDesiredGrillTemp(hex) : 0
     this.currentFoodTemp = getCurrentFoodTemp(hex)
     this.desiredFoodTemp = this.isOn ? getDesiredFoodTemp(hex) : 0
-    this.fanModeActive = this.state == 'fan mode'
+    this.fanModeActive = this.state === 'fan mode'
   }
 }
 

@@ -19,9 +19,9 @@ export default class HomeControls extends Component {
         <Toolbar style={{ height: '5rem' }}>
           <ToolbarGroup>
             <IconButton
-              tooltip={this.props.fanModeOn ? 'Grill cannot be powered on during fan mode!' : ''}
+              tooltip={this.props.fanModeActive ? 'Grill cannot be powered on during fan mode!' : ''}
               style={styles.powerIcon}
-              disabled={this.props.isLoading || this.props.fanModeOn}
+              disabled={this.props.disabled}
               onTouchTap={this.props.onPowerTouchTap}>
               <FontIcon
                 color={getButtonColor(this.props.powerOn)}
@@ -30,7 +30,7 @@ export default class HomeControls extends Component {
             <span style={styles.powerLabel}>Power</span>
             <IconButton
               style={styles.timersIcon}
-              disabled={this.props.isLoading}
+              disabled={this.props.disabled}
               onTouchTap={this.props.onTimersTouchTap}>
               <FontIcon
                 color={getButtonColor(this.props.timersOn)}
@@ -40,26 +40,26 @@ export default class HomeControls extends Component {
           </ToolbarGroup>
           <ToolbarGroup>
             <IconButton
-              tooltip={this.props.isConnected ? 'The grill is connected!' : ''}
-              disabled={this.props.isLoading || !this.props.isConnected}
+              tooltip={this.props.connected ? 'The grill is connected!' : ''}
+              disabled={this.props.disabled}
               disableTouchRipple={true}>
               <FontIcon
-                hoverColor={getWifiColor(this.props.isConnected)}
-                color={getWifiColor(this.props.isConnected)}
+                hoverColor={getWifiColor(this.props.connected)}
+                color={getWifiColor(this.props.connected)}
                 className="fa fa-wifi"/>
             </IconButton>
             <IconButton
-              tooltip={this.props.fanModeOn ? 'Fan mode is active!' : ''}
-              disabled={this.props.isLoading || !this.props.fanModeOn}
+              tooltip={this.props.fanModeActive ? 'Fan mode is active!' : ''}
+              disabled={this.props.disabled}
               disableTouchRipple={true}>
               <FontIcon
-                hoverColor={getAlertColor(this.props.fanModeOn)}
-                color={getAlertColor(this.props.fanModeOn)}
+                hoverColor={getAlertColor(this.props.fanModeActive)}
+                color={getAlertColor(this.props.fanModeActive)}
                 className="fa fa-exclamation-triangle"/>
             </IconButton>
           </ToolbarGroup>
         </Toolbar>
-        {this.props.isLoading && <LinearProgress mode="indeterminate"/>}
+        {this.props.loading && <LinearProgress mode="indeterminate"/>}
       </div>
     )
   }
@@ -70,11 +70,12 @@ HomeControls.propTypes = {
   onPowerTouchTap: PropTypes.func,
   timersOn: PropTypes.bool,
   onTimersTouchTap: PropTypes.func,
-  isLoading: PropTypes.bool,
-  fanModeOn: PropTypes.bool,
-  isConnected: PropTypes.bool
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
+  fanModeActive: PropTypes.bool,
+  connected: PropTypes.bool
 }
 
 HomeControls.defaultProps = {
-  isLoading: true
+  loading: true
 }

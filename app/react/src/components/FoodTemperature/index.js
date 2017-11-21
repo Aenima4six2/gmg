@@ -59,7 +59,7 @@ export default class FoodTemperature extends Component {
       <FlatButton
         label="Set"
         primary={true}
-        keyboardFocused={true}
+        keyboardfocused={true}
         onTouchTap={this.handleSubmit}
       />,
     ]
@@ -118,7 +118,7 @@ export default class FoodTemperature extends Component {
               value={this.state.desiredFoodTemp || ''}
               onChange={this.handleDesiredTempChange}
               errorText={this.state.desiredFoodTempError}
-              keyboardFocused={true}
+              keyboardfocused={true}
               hintText="Grill temperature ℉"
               floatingLabelText="Example: 225"
             />
