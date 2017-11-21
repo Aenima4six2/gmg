@@ -30,7 +30,7 @@ export default class HomeControls extends Component {
             <span style={styles.powerLabel}>Power</span>
             <IconButton
               style={styles.timersIcon}
-              disabled={this.props.disabled}
+              disabled={this.props.loading}
               onTouchTap={this.props.onTimersTouchTap}>
               <FontIcon
                 color={getButtonColor(this.props.timersOn)}
@@ -41,7 +41,7 @@ export default class HomeControls extends Component {
           <ToolbarGroup>
             <IconButton
               tooltip={this.props.connected ? 'The grill is connected!' : ''}
-              disabled={this.props.disabled}
+              disabled={!this.props.connected}
               disableTouchRipple={true}>
               <FontIcon
                 hoverColor={getWifiColor(this.props.connected)}
@@ -50,7 +50,7 @@ export default class HomeControls extends Component {
             </IconButton>
             <IconButton
               tooltip={this.props.fanModeActive ? 'Fan mode is active!' : ''}
-              disabled={this.props.disabled}
+              disabled={!this.props.fanModeActive}
               disableTouchRipple={true}>
               <FontIcon
                 hoverColor={getAlertColor(this.props.fanModeActive)}

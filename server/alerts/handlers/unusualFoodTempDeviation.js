@@ -11,7 +11,7 @@ module.exports.handle = (status) => {
     }
 
     return {
-        triggered: desiredTempPrevReached && delta > 5,
+        triggered: desiredTempPrevReached && status.isOn && delta > 5,
         createAlert() {
             return {
                 type: alertTypes.unusualFoodTempDeviation,
