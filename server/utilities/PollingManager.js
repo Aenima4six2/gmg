@@ -13,8 +13,8 @@ class PollingClient extends EventEmitter {
             logger(message)
         }
 
-        this.pollOnce = this.pollOnce.bind(this)
-        this.poll = this.poll.bind(this)
+        this.invokeWithRetry = this.invokeWithRetry.bind(this)
+        this.start = this.start.bind(this)
         this.stop = this.stop.bind(this)
     }
 
@@ -22,7 +22,7 @@ class PollingClient extends EventEmitter {
         return this._polling
     }
 
-    async pollOnce(task, context, { tries = this.tries } = {}) {
+    async invokeWithRetry(task, context, { tries = this.tries } = {}) {
         if (!task || typeof task !== 'function') {
             throw new Error('Task must be a function')
         }
@@ -43,9 +43,12 @@ class PollingClient extends EventEmitter {
         }
     }
 
-    async poll(task, context, { runCondition, runCount, tries = this.tries } = {}) {
-        if (!task || typeof task !== 'function') {
+    async start({ task, context, callback, runCondition, runCount, tries = this.tries } = {}) {
+        if (task && typeof task !== 'function') {
             throw new Error('Task must be a function')
+        }
+        if (callback && typeof callback !== 'function') {
+            throw new Error('Callback must be a function')
         }
         if (runCondition && typeof runCondition !== 'function') {
             throw new Error('Run Condition must be a function')
@@ -58,14 +61,17 @@ class PollingClient extends EventEmitter {
         let counter = 0
         let shouldRun = true
         this._polling = true
-        this.emit('polling')
+        this.emit('started')
         this._logger('Polling Manager polling')
         while (this._polling && shouldRun) {
 
             // Execute the task
             counter++
             await setTimeoutPromise(this._pollingInterval)
-            await this.pollOnce(task, context, { tries })
+            if (task) {
+                const result = await this.invokeWithRetry(task, context, { tries })
+                if (callback) callback(result)
+            }
 
             // Check if we should Exit Early
             if (runCondition && !runCondition()) {

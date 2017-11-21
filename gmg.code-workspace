@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "server",
+			"name": "Server"
+		},
+		{
+			"path": "app/react",
+			"name": "React"
+		},
+		{
+			"path": "common/GMGClient",
+			"name": "Client"
+		}
+	],
+	"settings": {}
+}

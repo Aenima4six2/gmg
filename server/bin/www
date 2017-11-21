@@ -4,8 +4,9 @@ const logger = debug('src:www')
 const http = require('http')
 const fs = require('fs')
 const path = require('path')
-const SocketServer = require('../sockets/SocketServer')
+const SocketManager = require('../sockets/SocketManager')
 const AlertManager = require('../alerts/AlertManager')
+const PollingClient = require('../grill/PollingClient')
 const SocketSender = require('../alerts/senders/SocketSender')
 const clientFactory = require('../grill')
 const appFactory = require('../app')
@@ -31,26 +32,36 @@ client.discoverGrill({ tries: Number.MAX_VALUE }).then(() => {
   webServer.on('listening', onListening)
 
   /**
+   * Create PollingClient
+   */
+  const pollingClient = new PollingClient({
+    client,
+    logger: debug('src:PollingClient')
+  })
+
+  /**
    * Create Socket Server
    */
-  const socketServer = new SocketServer({
-    client,
+  const socketManager = new SocketManager({
+    pollingClient,
     server: webServer,
-    logger: debug('src:SocketServer')
+    logger: debug('src:SocketManager')
   })
-  socketServer.start(webServer)
 
   /**
    * Create Alert Manager
    */
   const alertManager = new AlertManager({
-    client,
+    pollingClient,
     handlers: getHandlers(),
-    senders: [new SocketSender(socketServer)],
+    senders: [new SocketSender(socketManager)],
     logger: debug('src:AlertManager')
   })
-  alertManager.start()
 
+  // Start all 
+  socketManager.start()
+  alertManager.start()
+  pollingClient.start()
 
   /**
    * Normalize a port into a number, string, or false.
