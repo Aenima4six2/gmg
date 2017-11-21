@@ -2,10 +2,11 @@ const express = require('express')
 const gmg = require('GMGClient')
 const errors = gmg.Errors
 const router = express.Router()
-const client = require('../grill').client
+const clientFactory = require('../grill')
 
 router.get('/status', async (req, res, next) => {
   try {
+    const client = clientFactory.createClient()
     const result = await client.getGrillStatus()
     res.json(result)
   } catch (err) {
@@ -16,6 +17,7 @@ router.get('/status', async (req, res, next) => {
 
 router.put('/powertoggle', async (req, res, next) => {
   try {
+    const client = clientFactory.createClient()
     const result = await client.getGrillStatus()
     await result.isOn ? client.powerOffGrill() : client.powerOnGrill()
     res.sendStatus(200)
@@ -27,6 +29,7 @@ router.put('/powertoggle', async (req, res, next) => {
 
 router.put('/poweron', async (req, res, next) => {
   try {
+    const client = clientFactory.createClient()
     await client.powerOnGrill()
     res.sendStatus(200)
   } catch (err) {
@@ -37,6 +40,7 @@ router.put('/poweron', async (req, res, next) => {
 
 router.put('/poweroff', async (req, res, next) => {
   try {
+    const client = clientFactory.createClient()
     await client.powerOffGrill()
     res.sendStatus(200)
   } catch (err) {
@@ -47,6 +51,7 @@ router.put('/poweroff', async (req, res, next) => {
 
 router.put('/temperature/grill/:tempF', async (req, res, next) => {
   try {
+    const client = clientFactory.createClient()
     const temperature = req.params.tempF
     await client.setGrillTemp(temperature)
     res.sendStatus(200)
@@ -58,6 +63,7 @@ router.put('/temperature/grill/:tempF', async (req, res, next) => {
 
 router.put('/temperature/food/:tempF', async (req, res, next) => {
   try {
+    const client = clientFactory.createClient()
     const temperature = req.params.tempF
     await client.setFoodTemp(temperature)
     res.sendStatus(200)

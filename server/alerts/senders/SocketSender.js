@@ -1,9 +1,9 @@
 const path = require('path')
 
 class SocketSender {
-    constructor(socketServer) {
-        if (!socketServer) throw new Error('Socket server required')
-        this._socketServer = socketServer
+    constructor(socketManager) {
+        if (!socketManager) throw new Error('Socket server required')
+        this._socketManager = socketManager
     }
 
     get name() {
@@ -12,7 +12,7 @@ class SocketSender {
 
     send(alert) {
         if (!alert) throw new Error('Alert required')
-        this._socketServer.broadcast('alert', alert)
+        this._socketManager.broadcast('alert', alert)
     }
 }
 
