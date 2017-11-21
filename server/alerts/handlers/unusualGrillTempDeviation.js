@@ -11,7 +11,7 @@ module.exports.handle = (status) => {
     }
 
     return {
-        triggered: desiredTempPrevReached && delta > 15,
+        triggered: desiredTempPrevReached && status.isOn && delta > 15,
         createAlert() {
             return {
                 type: alertTypes.unusualGrillTempDeviation,

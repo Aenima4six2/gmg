@@ -5,6 +5,7 @@ let lastTemp = 0
 
 const createResults = (status) => ({
     triggered: !!(
+        status.isOn &&
         status.currentGrillTemp &&
         status.desiredGrillTemp &&
         status.currentGrillTemp >= status.desiredGrillTemp
