@@ -17,7 +17,7 @@
             ],
             "env": {
                 "NODE_ENV": "development",
-                "DEBUG": "src.*",
+                "DEBUG": "src:*",
                 "PORT": "3001"
             }
         }
