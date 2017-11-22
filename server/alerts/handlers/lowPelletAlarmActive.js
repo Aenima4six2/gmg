@@ -4,8 +4,8 @@ const moment = require('moment')
 let lastSent
 
 const createResults = (status) => {
-    // Only send the alert once every 5 min
-    const canSend = !lastSent || moment(lastSent).add(5, 'm').isBefore(moment())
+    // Only send the alert once every min
+    const canSend = !lastSent || moment(lastSent).add(1, 'm').isBefore(moment())
     if (canSend) lastSent = moment()
 
     return {
@@ -15,7 +15,8 @@ const createResults = (status) => {
                 type: alertTypes.lowPelletAlarmActive,
                 name: 'Grill Pellet Alarm',
                 reason: 'The grill is low on pellets. Please inspect the hopper as soon as possible!',
-                beep: 'alerts/warning.mp3'
+                beep: `alerts/${alertTypes.lowPelletAlarmActive}.mp3`,
+                level: 'warning'
             }
         }
     }

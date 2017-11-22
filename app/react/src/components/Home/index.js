@@ -40,6 +40,24 @@ export default class Home extends Component {
     }
   }
 
+  sendAlert = (alert) => {
+    const message = `<h2>${alert.name}</h2> \n${alert.reason}`
+    const options = this.getAlertOptions({ ...alert, html: true })
+    switch (alert.level) {
+      case 'error': {
+        Alert.error(message, options)
+        break
+      }
+      case 'warning': {
+        Alert.warning(message, options)
+        break
+      }
+      default: {
+        Alert.info(message, options)
+      }
+    }
+  }
+
   componentDidMount() {
     this.state.socket.on('status', status => {
       this.setState({
@@ -49,8 +67,7 @@ export default class Home extends Component {
       })
     })
     this.state.socket.on('alert', alert => {
-      const message = `<h2>${alert.name}</h2> \n${alert.reason}`
-      Alert.warning(message, this.getAlertOptions({ ...alert, html: true }))
+      this.sendAlert(alert)
     })
   }
 

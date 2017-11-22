@@ -16,7 +16,8 @@ module.exports.handle = (status) => {
             return {
                 type: alertTypes.unusualGrillTempDeviation,
                 name: 'Unusual Grill Temperature Deviation',
-                reason: 'An unusual change in the grill temperature was detected!'
+                reason: 'An unusual change in the grill temperature was detected!',
+                level: 'warning'
             }
         }
     }
