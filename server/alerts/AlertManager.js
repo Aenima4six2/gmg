@@ -19,7 +19,7 @@ class AlertManager {
         try {
             // Convert handlers to async calls
             const handlerNames = this._handlers.map(x => x.name).join(', ')
-            this._logger(`Executing alert handlers: ${handlerNames}`)
+            this._logger(`Executing alert handlers: [${handlerNames}]`)
             const asyncHandlers = this._handlers.map(handler => Promise.resolve().then(() => {
                 return handler.handle.call(handler, status)
             }))
@@ -39,7 +39,7 @@ class AlertManager {
                 .reduce((all, current) => current.concat(...all), [])
 
             // Send Alerts to all alert senders
-            const senderNames = this._senders.map(x => x.name).join()
+            const senderNames = this._senders.map(x => x.name).join(', ')
             const alertTypes = alerts.map(x => x.type).join()
             this._logger(`Sending alert for: [${alertTypes}] with senders: [${senderNames}]`)
             await Promise.all(asyncSenders)

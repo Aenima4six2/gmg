@@ -1,7 +1,15 @@
 {
   "grill": {
-    "host": "GRILL_HOST",
-    "port": "GRILL_PORT",
-    "tries": "GRILL_TRIES"
+    "host": "GMG_GRILL_HOST",
+    "port": "GMG_GRILL_PORT",
+    "tries": "GMG_GRILL_TRIES"
+  },
+  "status": {
+    "pollingInterval": "GMG_STATUS_POLLING_INTERVAL"
+  },
+  "alerts": {
+    "slack": {
+      "webhookUrl": "GMG_ALERTS_SLACK_WEBHOOKURL"
+    }
   }
 }

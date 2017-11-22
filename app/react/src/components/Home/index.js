@@ -34,7 +34,7 @@ export default class Home extends Component {
     return {
       position: 'top-right',
       effect: 'bouncyflip',
-      timeout: 20000,
+      timeout: 'none',
       offset: 10,
       ...overrides
     }
@@ -130,7 +130,7 @@ export default class Home extends Component {
     return (
       <div className="container">
         <Alert
-          stack={{ limit: 1 }}
+          stack={{ limit: 3 }}
           beep={{ warning: 'alerts/warning.mp3' }}
         />
         <div>

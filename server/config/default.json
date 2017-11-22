@@ -4,7 +4,15 @@
     "port": 8080,
     "tries": 5
   },
-  "status":{
+  "status": {
     "pollingInterval": 5000
+  },
+  "alerts": {
+    "slack": {
+      "webhookUrl": "https://hooks.slack.com/services/SOME-SLACK-WEBHOOK-ID-HERE",
+      "channel": "#testing",
+      "username": "grill-bot",
+      "iconEmoji": ":meat_on_bone:"
+    }
   }
 }
