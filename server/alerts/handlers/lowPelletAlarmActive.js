@@ -6,8 +6,8 @@ let lastSent
 const createResults = (status) => {
     // Only send the alert once every 5 min
     const canSend = !lastSent || moment(lastSent).add(5, 'm').isBefore(moment())
-    lastSent = moment()
-    
+    if (canSend) lastSent = moment()
+
     return {
         triggered: status.lowPelletAlarmActive && canSend,
         createAlert() {
