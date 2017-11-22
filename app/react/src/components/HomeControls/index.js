@@ -13,6 +13,12 @@ const getWifiColor = (enabled) => enabled ? '#00ff00' : 'rgb(113, 113, 113)'
 const getAlertColor = (enabled) => enabled ? 'rgb(255, 204, 0)' : 'rgb(113, 113, 113)'
 
 export default class HomeControls extends Component {
+  getAlert = () => {
+    if (this.props.fanModeActive) return 'Fan mode is active!'
+    if (this.props.lowPelletAlarmActive) return 'Low Pellet alarm is active!'
+    return ''
+  }
+
   render() {
     return (
       <div>
@@ -25,7 +31,7 @@ export default class HomeControls extends Component {
               onTouchTap={this.props.onPowerTouchTap}>
               <FontIcon
                 color={getButtonColor(this.props.powerOn)}
-                className="fa fa-power-off big"/>
+                className="fa fa-power-off big" />
             </IconButton>
             <span style={styles.powerLabel}>Power</span>
             <IconButton
@@ -34,7 +40,7 @@ export default class HomeControls extends Component {
               onTouchTap={this.props.onTimersTouchTap}>
               <FontIcon
                 color={getButtonColor(this.props.timersOn)}
-                className="fa fa-clock-o big"/>
+                className="fa fa-clock-o big" />
             </IconButton>
             <span style={styles.timersLabel}>Timers</span>
           </ToolbarGroup>
@@ -46,20 +52,20 @@ export default class HomeControls extends Component {
               <FontIcon
                 hoverColor={getWifiColor(this.props.connected)}
                 color={getWifiColor(this.props.connected)}
-                className="fa fa-wifi"/>
+                className="fa fa-wifi" />
             </IconButton>
             <IconButton
-              tooltip={this.props.fanModeActive ? 'Fan mode is active!' : ''}
-              disabled={!this.props.fanModeActive}
+              tooltip={this.getAlert()}
+              disabled={!this.getAlert()}
               disableTouchRipple={true}>
               <FontIcon
-                hoverColor={getAlertColor(this.props.fanModeActive)}
-                color={getAlertColor(this.props.fanModeActive)}
-                className="fa fa-exclamation-triangle"/>
+                hoverColor={getAlertColor(this.getAlert())}
+                color={getAlertColor(this.getAlert())}
+                className="fa fa-exclamation-triangle" />
             </IconButton>
           </ToolbarGroup>
         </Toolbar>
-        {this.props.loading && <LinearProgress mode="indeterminate"/>}
+        {this.props.loading && <LinearProgress mode="indeterminate" />}
       </div>
     )
   }
@@ -73,6 +79,7 @@ HomeControls.propTypes = {
   disabled: PropTypes.bool,
   loading: PropTypes.bool,
   fanModeActive: PropTypes.bool,
+  lowPelletAlarmActive: PropTypes.bool,
   connected: PropTypes.bool
 }
 

@@ -3,6 +3,5 @@ module.exports = {
     targetGrillTempReached: 'targetGrillTempReached',
     unusualGrillTempDeviation: 'unusualGrillTempDeviation',
     unusualFoodTempDeviation: 'unusualFoodTempDeviation',
-    grillLowFuel: 'grillLowFuel',
-    grillCountdownComplete: 'grillCountdownComplete'
+    lowPelletAlarmActive: 'lowPelletAlarmActive'
 }

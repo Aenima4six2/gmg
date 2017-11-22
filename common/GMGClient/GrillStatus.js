@@ -20,22 +20,30 @@ const getCurrentGrillTemp = (hex) => {
   return first + (second * 256)
 }
 
+const getLowPelletAlarmActive = (hex) => {
+  const first = getRawValue(hex, 48)
+  const second = getRawValue(hex, 50)
+  const value = first + (second * 256)
+  return value === 128
+}
+
 const getDesiredGrillTemp = (hex) => {
   const first = getRawValue(hex, 12)
-  const second = getRawValue(hex, 14) * 256
-  return first + second
+  const second = getRawValue(hex, 14)
+  return first + (second * 256)
 }
 
 const getCurrentFoodTemp = (hex) => {
   const first = getRawValue(hex, 8)
-  const second = getRawValue(hex, 10) * 256
-  const currentFoodTemp = first + second
+  const second = getRawValue(hex, 10)
+  const currentFoodTemp = first + (second * 256)
   return currentFoodTemp >= 557 ? 0 : currentFoodTemp
 }
+
 const getDesiredFoodTemp = (hex) => {
   const first = getRawValue(hex, 56)
-  const second = getRawValue(hex, 58) * 256
-  return first + second
+  const second = getRawValue(hex, 58)
+  return first + (second * 256)
 }
 
 class GrillStatus {
@@ -49,6 +57,7 @@ class GrillStatus {
     this.currentFoodTemp = getCurrentFoodTemp(hex)
     this.desiredFoodTemp = this.isOn ? getDesiredFoodTemp(hex) : 0
     this.fanModeActive = this.state === 'fan mode'
+    this.lowPelletAlarmActive = getLowPelletAlarmActive(hex)
   }
 }
 
