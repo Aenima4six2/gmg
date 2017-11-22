@@ -4,7 +4,8 @@ const moment = require('moment')
 let lastSent
 
 const createResults = (status) => {
-    const canSend = !lastSent || moment(lastSent).add(15, 'm').isBefore(moment())
+    // Only send the alert once every 5 min
+    const canSend = !lastSent || moment(lastSent).add(5, 'm').isBefore(moment())
     lastSent = moment()
     
     return {
