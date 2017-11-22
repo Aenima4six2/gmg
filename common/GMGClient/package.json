@@ -1,5 +1,5 @@
 {
-  "name": "gmgclient",
+  "name": "GMGClient",
   "version": "1.0.0",
   "description": "Green Mountain Grills API client",
   "main": "index.js",

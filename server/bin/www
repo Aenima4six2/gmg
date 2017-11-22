@@ -4,10 +4,13 @@ const logger = debug('src:www')
 const http = require('http')
 const fs = require('fs')
 const path = require('path')
+const config = require('config')
 const SocketManager = require('../sockets/SocketManager')
 const AlertManager = require('../alerts/AlertManager')
 const PollingClient = require('../grill/PollingClient')
 const SocketSender = require('../alerts/senders/SocketSender')
+const SlackSender = require('../alerts/senders/SlackSender')
+const slackConfig = config.get('alerts.slack')
 const clientFactory = require('../grill')
 const appFactory = require('../app')
 
@@ -54,7 +57,10 @@ client.discoverGrill({ tries: Number.MAX_VALUE }).then(() => {
   const alertManager = new AlertManager({
     pollingClient,
     handlers: getHandlers(),
-    senders: [new SocketSender(socketManager)],
+    senders: [
+      new SocketSender(socketManager),
+      new SlackSender(slackConfig)
+    ],
     logger: debug('src:AlertManager')
   })
 
