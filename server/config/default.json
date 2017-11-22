@@ -10,9 +10,8 @@
   "alerts": {
     "slack": {
       "webhookUrl": "https://hooks.slack.com/services/SOME-SLACK-WEBHOOK-ID-HERE",
-      "channel": "#testing",
-      "username": "grill-bot",
-      "iconEmoji": ":meat_on_bone:"
+      "channel": "#alerts",
+      "username": "grill-bot"
     }
   }
 }

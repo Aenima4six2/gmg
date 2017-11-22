@@ -14,7 +14,8 @@ const createResults = (status) => ({
         return {
             type: alertTypes.targetGrillTempReached,
             name: 'Target Grill Temperature Reached',
-            reason: `Grill temperature has reached target temperature of ${status.desiredGrillTemp}`
+            reason: `Grill temperature has reached target temperature of ${status.desiredGrillTemp}`,
+            beep: 'alerts/grillTempReached.mp3'
         }
     }
 })
