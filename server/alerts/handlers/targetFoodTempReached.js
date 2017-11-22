@@ -15,7 +15,8 @@ const createResults = (status) => ({
             type: alertTypes.targetFoodTempReached,
             name: 'Target Food Temperature Reached',
             reason: `Food temperature has reached target temperature of ${status.desiredFoodTemp}`,
-            beep: 'alerts/foodTempReached.mp3'
+            beep: `alerts/${alertTypes.targetFoodTempReached}.mp3`,
+            level: 'info'
         }
     }
 })

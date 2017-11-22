@@ -16,7 +16,8 @@ module.exports.handle = (status) => {
             return {
                 type: alertTypes.unusualFoodTempDeviation,
                 name: 'Unusual Food Temperature Deviation',
-                reason: 'An unusual change in the food temperature was detected!'
+                reason: 'An unusual change in the food temperature was detected!',
+                level: 'warning'
             }
         }
     }
