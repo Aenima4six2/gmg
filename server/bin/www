@@ -130,6 +130,7 @@ client.discoverGrill({ tries: Number.MAX_VALUE }).then(() => {
     const handlerPath = path.resolve(__dirname, '../alerts/handlers')
     return fs.readdirSync(handlerPath)
       .filter(file => path.basename(file) !== 'index.js')
+      .filter(file => !file.endsWith('.disabled'))
       .map(file => require(path.resolve(handlerPath, file)))
   }
 })
