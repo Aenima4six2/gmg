@@ -43,7 +43,7 @@ export default class Navigation extends Component {
               icon={<FontIcon className="fa fa-home"/>}
               onTouchTap={() => this.select(0)}
             />
-            <BottomNavigationItem
+            {/* <BottomNavigationItem
               label="Profiles"
               icon={<FontIcon className="fa fa-table"/>}
               onTouchTap={() => this.select(1)}
@@ -52,7 +52,7 @@ export default class Navigation extends Component {
               label="Settings"
               icon={<FontIcon className="fa fa-cog"/>}
               onTouchTap={() => this.select(2)}
-            />
+            /> */}
           </BottomNavigation>
         </Paper>
       </div>
