@@ -51,14 +51,11 @@ class SocketServer {
   _onConnection(socket) {
     this._logger('Client connected')
     this._sockets.push(socket)
-    const onDisconnect = () => {
+    socket.on('disconnect', () => {
       this._logger('Client disconnected')
       const idx = this._sockets.indexOf(socket)
       if (idx !== -1) this._sockets.splice(idx, 1);
-      socket.removeListener('disconnect', onDisconnect)
-    }
-
-    socket.on('disconnect', onDisconnect)
+    })
   }
 
   _onStatus(status) {

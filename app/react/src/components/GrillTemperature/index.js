@@ -7,13 +7,12 @@ import ListItem from 'material-ui/List/ListItem'
 import Button from 'material-ui/RaisedButton'
 import logo from './logo.png'
 import PropTypes from 'prop-types'
-import './index.css'
-import '../../../node_modules/font-awesome/css/font-awesome.css'
 import FlatButton from 'material-ui/FlatButton'
 import Dialog from 'material-ui/Dialog'
 import TextField from 'material-ui/TextField'
 import 'typeface-roboto'
-
+import './index.css'
+import '../../../node_modules/font-awesome/css/font-awesome.css'
 
 export default class GrillTemperature extends Component {
   constructor(props) {
@@ -68,9 +67,9 @@ export default class GrillTemperature extends Component {
     return (
       <Card>
         <CardMedia overlay={
-          <CardTitle title="Grill Temp ℉" subtitle="Set the temperature of the grill"/>
+          <CardTitle title="Grill Temp ℉" subtitle="Set the temperature of the grill" />
         }>
-          <img src={logo} alt=""/>
+          <img src={logo} alt="" />
         </CardMedia>
         <div className="controls">
           <List>
@@ -78,7 +77,7 @@ export default class GrillTemperature extends Component {
               disabled={true}
               leftAvatar={
                 <Avatar
-                  icon={<FontIcon className="fa fa-thermometer-empty"/>}
+                  icon={<FontIcon className="fa fa-thermometer-empty" />}
                   size={50}
                 />
               }
@@ -91,21 +90,21 @@ export default class GrillTemperature extends Component {
               disabled={true}
               leftAvatar={
                 <Avatar
-                  icon={<FontIcon className="fa fa-thermometer-full"/>}
+                  icon={<FontIcon className="fa fa-thermometer-full" />}
                   size={50}
                 />
               }
             >
               Desired: {this.props.desiredGrillTemp
-              ? `${this.props.desiredGrillTemp} ℉`
-              : 'Not set'}
+                ? `${this.props.desiredGrillTemp} ℉`
+                : 'Not set'}
             </ListItem>
           </List>
           <CardActions>
             <Button
               onTouchTap={this.handleOpen}
               disabled={!this.props.isEnabled}
-              label="Set Grill Temperature"/>
+              label="Set Grill Temperature" />
           </CardActions>
           <Dialog
             title="Set the desired grill temperature"

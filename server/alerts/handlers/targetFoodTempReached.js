@@ -1,48 +1,50 @@
 const alertTypes = require('../../constants/alertTypes')
 const path = require('path')
-let alreadyFired = false
-let lastTemp = 0
-
-const createResults = (status) => ({
-    triggered: (
-        status.isOn &&
-        status.currentFoodTemp &&
-        status.desiredFoodTemp &&
-        status.currentFoodTemp >= status.desiredFoodTemp
-    ),
-    createAlert() {
-        return {
-            type: alertTypes.targetFoodTempReached,
-            name: 'Target Food Temperature Reached',
-            reason: `Food temperature has reached target temperature of ${status.desiredFoodTemp}`,
-            beep: `alerts/${alertTypes.targetFoodTempReached}.mp3`,
-            level: 'info'
-        }
-    }
-})
+const moment = require('moment')
+const resendIntervalMin = 5
+let lastSent = null
+let lastState = null
 
 module.exports.name = path.basename(__filename)
 
 module.exports.handle = (status) => {
-    // Set or reset current state
-    const targetTemp = status.desiredFoodTemp
-    if (lastTemp !== targetTemp) {
-        alreadyFired = false
+    const result = {
+        triggered: (
+            status.isOn &&
+            status.currentFoodTemp &&
+            status.desiredFoodTemp &&
+            status.currentFoodTemp >= status.desiredFoodTemp
+        ),
+        createAlert() {
+            return {
+                type: alertTypes.targetFoodTempReached,
+                name: 'Target Food Temperature Reached',
+                reason: `Food temperature has reached target temperature of ${status.desiredFoodTemp}`,
+                beep: `alerts/${alertTypes.targetFoodTempReached}.mp3`,
+                level: 'info'
+            }
+        }
     }
-    lastTemp = targetTemp
 
-    // Only send the alert once per desired Food Temp 
-    const result = createResults(status)
-    if (alreadyFired) {
-        result.triggered = false
-    } else {
-        alreadyFired = result.triggered
+    // Determine if the alert can be resent
+    if (lastState !== null && lastSent !== null) {
+        const stateChanged = lastState !== status.desiredFoodTemp
+        const canResend = moment(lastSent).add(resendIntervalMin, 'm').isBefore(moment())
+        if (!stateChanged && !canResend) {
+            result.triggered = false
+        }
+    }
+
+    // Update state if sent
+    if (result.triggered) {
+        lastSent = moment()
+        lastState = status.desiredFoodTemp
     }
 
     return result
 }
 
 module.exports.reset = () => {
-    alreadyFired = false
-    lastTemp = 0
+    lastSent = null
+    lastState = null
 }

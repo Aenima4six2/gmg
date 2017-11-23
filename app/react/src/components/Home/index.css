@@ -22,6 +22,35 @@
     fontWeight: 40rem;
 }
 
+.connecting-box{
+    position: fixed;
+    z-index: 999999;
+    left: 0;
+    top: 0;
+    opacity: .8;
+    width: 100%;
+    height: 100%;
+    background: black;
+}
+
+.connecting-box .connecting-container{
+    left: 0;
+    top: 50%;
+    position: relative;
+    background: #232323;
+    opacity: .95;
+}
+
+.connecting-box .connecting-container .connecting-dialog{
+    font-weight: bold;
+    font-size: xx-large;
+    color: white;
+    left: calc(50% - 100px);
+    max-width: 200px;
+    position: relative;
+    font-family: 'Roboto'
+}
+
 .big {
     font-size: 2rem !important;
 }

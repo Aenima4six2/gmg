@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import './index.css'
-import 'typeface-roboto'
 import IconButton from 'material-ui/IconButton'
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar'
 import FontIcon from 'material-ui/FontIcon'
 import LinearProgress from 'material-ui/LinearProgress'
 import styles from './styles'
+import './index.css'
+import 'typeface-roboto'
 
 const getButtonColor = (enabled) => enabled ? '#00ff00' : 'rgb(238, 238, 238)'
 const getWifiColor = (enabled) => enabled ? '#00ff00' : 'rgb(113, 113, 113)'
@@ -27,7 +27,7 @@ export default class HomeControls extends Component {
             <IconButton
               tooltip={this.props.fanModeActive ? 'Grill cannot be powered on during fan mode!' : ''}
               style={styles.powerIcon}
-              disabled={this.props.disabled}
+              disabled={!this.props.isEnabled}
               onTouchTap={this.props.onPowerTouchTap}>
               <FontIcon
                 color={getButtonColor(this.props.powerOn)}
@@ -46,12 +46,13 @@ export default class HomeControls extends Component {
           </ToolbarGroup>
           <ToolbarGroup>
             <IconButton
-              tooltip={this.props.connected ? 'The grill is connected!' : ''}
-              disabled={!this.props.connected}
+              tooltip={this.props.grillConnected
+                ? 'The grill is connected!'
+                : 'The grill is disconnected!'}
               disableTouchRipple={true}>
               <FontIcon
-                hoverColor={getWifiColor(this.props.connected)}
-                color={getWifiColor(this.props.connected)}
+                hoverColor={getWifiColor(this.props.grillConnected)}
+                color={getWifiColor(this.props.grillConnected)}
                 className="fa fa-wifi" />
             </IconButton>
             <IconButton
@@ -76,11 +77,11 @@ HomeControls.propTypes = {
   onPowerTouchTap: PropTypes.func,
   timersOn: PropTypes.bool,
   onTimersTouchTap: PropTypes.func,
-  disabled: PropTypes.bool,
+  isEnabled: PropTypes.bool,
   loading: PropTypes.bool,
   fanModeActive: PropTypes.bool,
   lowPelletAlarmActive: PropTypes.bool,
-  connected: PropTypes.bool
+  grillConnected: PropTypes.bool
 }
 
 HomeControls.defaultProps = {
