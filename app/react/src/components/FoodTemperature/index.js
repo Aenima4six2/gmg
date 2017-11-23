@@ -19,15 +19,17 @@ export default class FoodTemperature extends Component {
     super(props)
     this.state = {
       open: false,
-      desiredFoodTemp: 0,
-      desiredFoodTempError: 0
+      desiredFoodTemp: '',
+      desiredFoodTempError: ''
     }
   }
 
   handleOpen = () => {
-    if (this.props.isEnabled) {
+    if (this.props.isEnabed) {
       this.setState({ open: true })
     }
+    this.setState({ open: true })
+    
   }
 
   handleCancel = () => this.setState({ open: false, desiredFoodTemp: 0 })
@@ -59,7 +61,6 @@ export default class FoodTemperature extends Component {
       <FlatButton
         label="Set"
         primary={true}
-        keyboardfocused={true}
         onTouchTap={this.handleSubmit}
       />,
     ]
@@ -114,11 +115,11 @@ export default class FoodTemperature extends Component {
             onRequestClose={this.handleSubmit}
           >
             <TextField
+              autoFocus
               id="desired-food-temp"
               value={this.state.desiredFoodTemp || ''}
               onChange={this.handleDesiredTempChange}
               errorText={this.state.desiredFoodTempError}
-              keyboardfocused={true}
               hintText="Grill temperature ℉"
               floatingLabelText="Example: 225"
             />
