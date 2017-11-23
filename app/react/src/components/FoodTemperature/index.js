@@ -7,12 +7,12 @@ import ListItem from 'material-ui/List/ListItem'
 import Button from 'material-ui/RaisedButton'
 import logo from './logo.png'
 import PropTypes from 'prop-types'
-import './index.css'
-import '../../../node_modules/font-awesome/css/font-awesome.css'
 import FlatButton from 'material-ui/FlatButton'
 import Dialog from 'material-ui/Dialog'
 import TextField from 'material-ui/TextField'
 import 'typeface-roboto'
+import './index.css'
+import '../../../node_modules/font-awesome/css/font-awesome.css'
 
 export default class FoodTemperature extends Component {
   constructor(props) {
@@ -27,9 +27,7 @@ export default class FoodTemperature extends Component {
   handleOpen = () => {
     if (this.props.isEnabed) {
       this.setState({ open: true })
-    }
-    this.setState({ open: true })
-    
+    }    
   }
 
   handleCancel = () => this.setState({ open: false, desiredFoodTemp: 0 })
