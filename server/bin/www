@@ -11,17 +11,22 @@ const PollingClient = require('../grill/PollingClient')
 const SocketSender = require('../alerts/senders/SocketSender')
 const SlackSender = require('../alerts/senders/SlackSender')
 const slackConfig = config.get('alerts.slack')
-const clientFactory = require('../grill')
 const appFactory = require('../app')
+const clientFactory = require('../grill')
+const client = clientFactory.initialize({ logger: debug('src:GMGClient') })
 
 /**
  * Ensure we can discover and connect to the grill
  */
-const client = clientFactory.initialize({ logger: debug('src:GMGClient') })
-client.discoverGrill({ tries: Number.MAX_VALUE }).then(() => {
+client.discoverGrill().then(() => startServices()).catch((err) => {
+  logger(err)
+  startServices()
+})
+
+function startServices() {
   /**
-   * Get port from environment and store in Express.
-   */
+ * Get port from environment and store in Express.
+ */
   const app = appFactory.create()
   const port = normalizePort(process.env.PORT || '3001')
   app.set('port', port)
@@ -31,8 +36,8 @@ client.discoverGrill({ tries: Number.MAX_VALUE }).then(() => {
    */
   const webServer = http.Server(app)
   webServer.listen(port)
-  webServer.on('error', onError)
-  webServer.on('listening', onListening)
+  webServer.on('error', err => onError(port, err))
+  webServer.on('listening', () => onListening(webServer))
 
   /**
    * Create PollingClient
@@ -56,7 +61,7 @@ client.discoverGrill({ tries: Number.MAX_VALUE }).then(() => {
    */
   const alertManager = new AlertManager({
     pollingClient,
-    handlers: getHandlers(),
+    handlers: getAlertHandlers(),
     senders: [
       new SocketSender(socketManager),
       new SlackSender(slackConfig)
@@ -68,69 +73,72 @@ client.discoverGrill({ tries: Number.MAX_VALUE }).then(() => {
   socketManager.start()
   alertManager.start()
   pollingClient.start()
+}
 
-  /**
-   * Normalize a port into a number, string, or false.
-   */
-  function normalizePort(val) {
-    const port = parseInt(val, 10)
+/**
+ * Normalize a port into a number, string, or false.
+ */
+function normalizePort(val) {
+  const port = parseInt(val, 10)
 
-    if (isNaN(port)) {
-      // named pipe
-      return val
-    }
-
-    if (port >= 0) {
-      // port number
-      return port
-    }
-
-    return false
+  if (isNaN(port)) {
+    // named pipe
+    return val
   }
 
-  /**
-   * Event listener for HTTP server "error" event.
-   */
-  function onError(error) {
-    if (error.syscall !== 'listen') {
+  if (port >= 0) {
+    // port number
+    return port
+  }
+
+  return false
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+function onError(port, error) {
+  if (error.syscall !== 'listen') {
+    throw error
+  }
+
+  const bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges')
+      process.exit(1)
+      break
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use')
+      process.exit(1)
+      break
+    default:
       throw error
-    }
-
-    const bind = typeof port === 'string'
-      ? 'Pipe ' + port
-      : 'Port ' + port
-
-    // handle specific listen errors with friendly messages
-    switch (error.code) {
-      case 'EACCES':
-        console.error(bind + ' requires elevated privileges')
-        process.exit(1)
-        break
-      case 'EADDRINUSE':
-        console.error(bind + ' is already in use')
-        process.exit(1)
-        break
-      default:
-        throw error
-    }
   }
+}
 
-  /**
-   * Event listener for HTTP server "listening" event.
-   */
-  function onListening() {
-    const addr = webServer.address()
-    const bind = typeof addr === 'string'
-      ? 'pipe ' + addr
-      : 'port ' + addr.port
-    logger('Listening on ' + bind)
-  }
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+function onListening(webServer) {
+  const addr = webServer.address()
+  const bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port
+  logger('Listening on ' + bind)
+}
 
-  function getHandlers() {
-    const handlerPath = path.resolve(__dirname, '../alerts/handlers')
-    return fs.readdirSync(handlerPath)
-      .filter(file => path.basename(file) !== 'index.js')
-      .filter(file => !file.endsWith('.disabled'))
-      .map(file => require(path.resolve(handlerPath, file)))
-  }
-})
+/**
+ * Scan's the alert directory for all available alert handlers
+ */
+function getAlertHandlers() {
+  const handlerPath = path.resolve(__dirname, '../alerts/handlers')
+  return fs.readdirSync(handlerPath)
+    .filter(file => path.basename(file) !== 'index.js')
+    .filter(file => !file.endsWith('.disabled'))
+    .map(file => require(path.resolve(handlerPath, file)))
+}

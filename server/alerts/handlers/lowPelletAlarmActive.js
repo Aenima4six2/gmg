@@ -1,15 +1,15 @@
 const alertTypes = require('../../constants/alertTypes')
 const path = require('path')
 const moment = require('moment')
-let lastSent
+const resendIntervalMin = 1
+let lastSent = null
+let lastState = null
 
-const createResults = (status) => {
-    // Only send the alert once every min
-    const canSend = !lastSent || moment(lastSent).add(1, 'm').isBefore(moment())
-    if (canSend) lastSent = moment()
+module.exports.name = path.basename(__filename)
 
-    return {
-        triggered: status.lowPelletAlarmActive && canSend,
+module.exports.handle = (status) => {
+    const result = {
+        triggered: status.lowPelletAlarmActive,
         createAlert() {
             return {
                 type: alertTypes.lowPelletAlarmActive,
@@ -20,10 +20,27 @@ const createResults = (status) => {
             }
         }
     }
+
+    // Determine if the alert can be resent
+    if (lastState !== null && lastSent !== null) {
+        const stateChanged = lastState !== status.lowPelletAlarmActive
+        const canResend = moment(lastSent).add(resendIntervalMin, 'm').isBefore(moment())
+        if (!stateChanged && !canResend) {
+            result.triggered = false
+        }
+    }
+
+    // Update state if sent
+    if (result.triggered) {
+        lastSent = moment()
+        lastState = status.lowPelletAlarmActive
+    }
+
+    return result
 }
 
-module.exports.name = path.basename(__filename)
 
-module.exports.handle = (status) => createResults(status)
-
-module.exports.reset = () => { }
+module.exports.reset = () => {
+    lastSent = null
+    lastState = null
+}

@@ -6,6 +6,7 @@ import HomeControls from '../HomeControls'
 import io from 'socket.io-client'
 import GrillClient from '../../utils/GrillClient'
 import Alert from 'react-s-alert'
+import Connecting from './Connecting'
 import 'react-s-alert/dist/s-alert-default.css'
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css'
 import './index.css'
@@ -23,11 +24,16 @@ export default class Home extends Component {
       commandsPending: 0,
       lowPelletAlarmActive: false,
       fanModeActive: false,
-      loading: true,
-      connected: false,
-      showTimers: false,
-      socket: io(window.location.origin)
+      loading: false,
+      grillConnected: false,
+      socketConnected: false,
+      showTimers: false
     }
+
+    // Setup Socket.IO
+    this.socket = io(window.location.origin)
+    this.socket.on('connect', () => this.setState({ socketConnected: true }))
+    this.socket.on('disconnect', () => this.setState({ socketConnected: false }))
   }
 
   getAlertOptions = (overrides = {}) => {
@@ -59,24 +65,27 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    this.state.socket.on('status', status => {
+    this.socket.on('status', status => {
       this.setState({
         ...status,
-        connected: true,
+        grillConnected: true,
         loading: !!this.state.commandsPending
       })
     })
-    this.state.socket.on('alert', alert => {
+    this.socket.on('alert', alert => {
       this.sendAlert(alert)
     })
   }
 
   componentWillUnmount() {
-    this.state.socket.removeAllListeners('status')
+    this.socket.removeAllListeners('status')
   }
 
   get canExecuteCommand() {
-    return !this.state.loading && !this.state.fanModeActive && this.state.connected
+    return this.state.grillConnected &&
+      this.state.isOn &&
+      !this.state.loading &&
+      !this.state.fanModeActive
   }
 
   powerToggle = async () => {
@@ -139,39 +148,32 @@ export default class Home extends Component {
   }
 
   render() {
-    const commandsEnabled =
-      this.state.connected &&
-      this.state.isOn &&
-      !this.state.loading &&
-      !this.state.fanModeActive
     return (
       <div className="container">
-        <Alert
-          stack={{ limit: 3 }}
-          beep={{ warning: 'alerts/warning.mp3' }}
-        />
+        <Alert stack={{ limit: 3 }} />
+        {!this.state.socketConnected && <Connecting />}
         <div>
           <HomeControls
-            disabled={!this.canExecuteCommand}
+            isEnabled={this.canExecuteCommand}
             onPowerTouchTap={this.powerToggle}
             onTimersTouchTap={this.timerToggle}
             loading={this.state.loading}
             fanModeActive={this.state.fanModeActive}
             lowPelletAlarmActive={this.state.lowPelletAlarmActive}
-            connected={this.state.connected}
+            grillConnected={this.state.grillConnected}
             timersOn={this.state.showTimers}
             powerOn={this.state.isOn} />
         </div>
         <div className="card-container ">
           <GrillTemperature
-            isEnabled={commandsEnabled}
+            isEnabled={this.canExecuteCommand}
             onSubmit={this.setDesiredGrillTemp}
             desiredGrillTemp={this.state.desiredGrillTemp}
             currentGrillTemp={this.state.currentGrillTemp} />
         </div>
         <div className="card-container ">
           <FoodTemperature
-            isEnabled={commandsEnabled}
+            isEnabled={this.canExecuteCommand}
             onSubmit={this.setDesiredFoodTemp}
             desiredFoodTemp={this.state.desiredFoodTemp}
             currentFoodTemp={this.state.currentFoodTemp} />

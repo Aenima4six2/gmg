@@ -22,7 +22,7 @@ class PollingClient extends EventEmitter {
         return this._polling
     }
 
-    async invokeWithRetry(task, context, { tries = this.tries } = {}) {
+    async invokeWithRetry(task, context, { tries = this._tries } = {}) {
         if (!task || typeof task !== 'function') {
             throw new Error('Task must be a function')
         }
@@ -43,7 +43,7 @@ class PollingClient extends EventEmitter {
         }
     }
 
-    async start({ task, context, callback, runCondition, runCount, tries = this.tries } = {}) {
+    async start({ task, context, callback, runCondition, runCount, tries = this._tries } = {}) {
         if (task && typeof task !== 'function') {
             throw new Error('Task must be a function')
         }
@@ -69,8 +69,12 @@ class PollingClient extends EventEmitter {
             counter++
             await setTimeoutPromise(this._pollingInterval)
             if (task) {
-                const result = await this.invokeWithRetry(task, context, { tries })
-                if (callback) callback(result)
+                try {
+                    const result = await this.invokeWithRetry(task, context, { tries })
+                    if (callback) callback(result)
+                } catch (err) {
+                    if (callback) callback(err)
+                }
             }
 
             // Check if we should Exit Early
