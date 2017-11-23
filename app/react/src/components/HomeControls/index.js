@@ -48,7 +48,8 @@ export default class HomeControls extends Component {
             <IconButton
               tooltip={this.props.grillConnected
                 ? 'The grill is connected!'
-                : 'The grill is disconnected!'}
+                : `The grill is not connected! 
+                The application will continue trying to connect in the background .`}
               disableTouchRipple={true}>
               <FontIcon
                 hoverColor={getWifiColor(this.props.grillConnected)}
