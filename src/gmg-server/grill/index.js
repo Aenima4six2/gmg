@@ -1,4 +1,4 @@
-const GMGClient = require('GMGClient').GMGClient
+const GMGClient = require('gmg-client').GMGClient
 const config = require('config')
 const options = config.get('grill')
 let clientCache

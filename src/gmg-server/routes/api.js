@@ -1,5 +1,5 @@
 const express = require('express')
-const gmg = require('GMGClient')
+const gmg = require('gmg-client')
 const errors = gmg.Errors
 const router = express.Router()
 const clientFactory = require('../grill')
