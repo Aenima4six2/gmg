@@ -5,12 +5,8 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 
 module.exports.create = () => {
-  // view engine setup
+  // Other middleware  
   const app = express()
-  app.set('views', path.join(__dirname, 'views'))
-  app.set('view engine', 'pug')
-
-  // Other middleware
   app.use(logger('dev'))
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: false }))
@@ -30,6 +26,7 @@ module.exports.create = () => {
     next()
   })
 
+  // Register routes
   app.use('/api', require('./routes/api'))
 
   // catch 404 and forward to error handler

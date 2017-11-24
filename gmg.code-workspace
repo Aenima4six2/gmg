@@ -1,16 +1,16 @@
 {
 	"folders": [
 		{
-			"path": "server",
+			"path": "gmg-server",
 			"name": "Server"
 		},
 		{
-			"path": "app/react",
-			"name": "React"
+			"path": "gmg-client",
+			"name": "Client"
 		},
 		{
-			"path": "common/GMGClient",
-			"name": "Client"
+			"path": "gmg-app",
+			"name": "App"
 		}
 	],
 	"settings": {}
