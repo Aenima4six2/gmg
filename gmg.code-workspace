@@ -1,16 +1,16 @@
 {
 	"folders": [
 		{
-			"path": "src/gmg-server",
-			"name": "Server"
+			"path": "src"
 		},
 		{
-			"path": "src/gmg-client",
-			"name": "Client"
+			"path": "src/gmg-app"
 		},
 		{
-			"path": "src/gmg-app",
-			"name": "App"
+			"path": "src/gmg-client"
+		},
+		{
+			"path": "src/gmg-server"
 		}
 	],
 	"settings": {}

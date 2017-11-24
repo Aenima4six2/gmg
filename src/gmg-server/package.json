@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "export NODE_ENV=development && export DEBUG=src.* && export PORT=3001 && node ./bin/www"
+    "start:dev": "export NODE_ENV=development && export DEBUG=src.* && export PORT=3001 && node ./bin/www",
+    "start:release": "export NODE_ENV=production && export DEBUG=src.* && export PORT=80 && node ./bin/www"
   },
   "dependencies": {
     "gmg-client": "file:../gmg-client",

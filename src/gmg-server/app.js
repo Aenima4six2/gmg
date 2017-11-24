@@ -13,8 +13,10 @@ module.exports.create = () => {
   app.use(cookieParser())
 
   // Static content
-  const public = path.join(__dirname, 'public')
-  app.use(express.static(public))
+  const publicPath = path.join(__dirname, 'public')
+  app.use(express.static(publicPath))
+  const appPath = path.join(__dirname, 'public/app')
+  app.use(express.static(appPath))
 
   // Routes
   app.use((req, res, next) => {
