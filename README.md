@@ -16,5 +16,19 @@ Well, I like to Grill, and I often utilize the grill overnight when cooking larg
 ## Configuration
 There are number of way to configure the server. You can set env variables in Docker to override any config that is provided in "custom-environment-variables" file located in the config directory. Alternatively, just override the default values set in default.json. The only option that you need to configure is the Slack web hook URL (`GMG_ALERTS_SLACK_WEBHOOKURL`). If you want to set your own alert sounds, simply override the corresponding mp3 file in the `public/alerts` directory.
 
+## Setup and Run with Docker 
+1. Clone this repo
+1. Set your slack webhook URL (see above)
+1. Install docker
+1. `cd` into the `src` directory
+1. `docker build -t gmg . && docker run gmg -p 80:80`
+
+## Setup and Run without Docker (*nix/mac only)
+1. Clone this repo
+1. Set your slack webhook URL (see above)
+1. `cd` into the `src` directory
+1. `./build.sh`
+1. `cd gmg-server && npm run start:release`
+
 ## Preview
 ![alt text](assets/preview.jpg)
