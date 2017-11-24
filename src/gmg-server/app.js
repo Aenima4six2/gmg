@@ -14,9 +14,7 @@ module.exports.create = () => {
 
   // Static content
   const public = path.join(__dirname, 'public')
-  const appPath = path.resolve(path.join(__dirname, '../app/react/build'))
   app.use(express.static(public))
-  app.use(express.static(appPath))
 
   // Routes
   app.use((req, res, next) => {
