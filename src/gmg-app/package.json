@@ -18,9 +18,12 @@
     "typeface-roboto": "0.0.43",
     "whatwg-fetch": "^2.0.3"
   },
+  "devDependencies": {
+    "rimraf": "^2.6.2"
+  },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && mv ./build/* ../gmg-server/public",
+    "build": "rimraf ../gmg-server/public/app && react-scripts build && mv ./build ../gmg-server/public/app",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
