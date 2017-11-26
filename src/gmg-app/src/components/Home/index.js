@@ -88,8 +88,14 @@ export default class Home extends Component {
       !this.state.fanModeActive
   }
 
+  get canPowerOn() {
+    return this.state.grillConnected &&
+      !this.state.loading &&
+      !this.state.fanModeActive
+  }
+
   powerToggle = async () => {
-    if (!this.canExecuteCommand) return
+    if (!this.canPowerOn) return
     this.setState({
       loading: true,
       commandsPending: this.state.commandsPending + 1
@@ -154,7 +160,6 @@ export default class Home extends Component {
         {!this.state.socketConnected && <Connecting />}
         <div>
           <HomeControls
-            isEnabled={this.canExecuteCommand}
             onPowerTouchTap={this.powerToggle}
             onTimersTouchTap={this.timerToggle}
             loading={this.state.loading}
