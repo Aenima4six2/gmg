@@ -5,7 +5,10 @@ COPY ./gmg-app ./gmg-app
 COPY ./gmg-client ./gmg-client
 COPY ./gmg-server ./gmg-server
 COPY ./build.sh .
-RUN ./build.sh
+RUN apt-get update && \
+    apt-get install dos2unix && \
+    dos2unix ./build.sh && \
+    /bin/bash ./build.sh
 
 # Run Phase
 FROM node:8.9.1 as runtime
