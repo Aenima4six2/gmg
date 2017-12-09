@@ -25,7 +25,7 @@ export default class FoodTemperature extends Component {
   }
 
   handleOpen = () => {
-    if (this.props.isEnabed) {
+    if (this.props.isEnabled) {
       this.setState({ open: true })
     }    
   }
