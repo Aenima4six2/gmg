@@ -81,7 +81,7 @@ export default class Home extends Component {
     this.socket.removeAllListeners('status')
   }
 
-  get canExecuteCommand() {
+  get canChangeTemp() {
     return this.state.grillConnected &&
       this.state.isOn &&
       !this.state.loading &&
@@ -113,7 +113,7 @@ export default class Home extends Component {
   }
 
   setDesiredGrillTemp = async (temperature) => {
-    if (!this.canExecuteCommand) return
+    if (!this.canChangeTemp) return
     this.setState({
       loading: true,
       commandsPending: this.state.commandsPending + 1
@@ -131,7 +131,7 @@ export default class Home extends Component {
   }
 
   setDesiredFoodTemp = async (temperature) => {
-    if (!this.canExecuteCommand) return
+    if (!this.canChangeTemp) return
     this.setState({
       loading: true,
       commandsPending: this.state.commandsPending + 1
@@ -171,14 +171,14 @@ export default class Home extends Component {
         </div>
         <div className="card-container ">
           <GrillTemperature
-            isEnabled={this.canExecuteCommand}
+            isEnabled={this.canChangeTemp}
             onSubmit={this.setDesiredGrillTemp}
             desiredGrillTemp={this.state.desiredGrillTemp}
             currentGrillTemp={this.state.currentGrillTemp} />
         </div>
         <div className="card-container ">
           <FoodTemperature
-            isEnabled={this.canExecuteCommand}
+            isEnabled={this.canChangeTemp}
             onSubmit={this.setDesiredFoodTemp}
             desiredFoodTemp={this.state.desiredFoodTemp}
             currentFoodTemp={this.state.currentFoodTemp} />

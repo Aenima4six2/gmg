@@ -1,7 +1,7 @@
 const alertTypes = require('../../constants/alertTypes')
 const path = require('path')
 const moment = require('moment')
-const resendIntervalMin = 5
+const resendIntervalMin = Number.MAX_SAFE_INTEGER
 let lastSent = null
 let lastState = null
 
