@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 const path = require('path')
 
-class SlackSender {
+class WebhookSender {
     constructor({ webhookUrl, alertMapper = (alert) => alert }) {
         if (!webhookUrl) throw new Error('Webhook URL required!')
         if (!alertMapper) throw new Error('Alert Mapper function required!')
@@ -39,4 +39,4 @@ class SlackSender {
     }
 }
 
-module.exports = SlackSender
+module.exports = WebhookSender
