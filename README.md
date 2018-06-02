@@ -31,5 +31,46 @@ Note: You can omit the GMG_ALERTS_SLACK_WEBHOOKURL env variable if you are not u
 1. `./build.sh`
 1. `cd gmg-server && npm run start:release`
 
+## Setup and Run on a Raspberry PI with Ubuntu-mate
+### [Install ubuntu-mate on RPi](https://ubuntu-mate.org/raspberry-pi/)
+### Update all apt sources:
+
+```
+sudo apt-get update
+```
+
+### Install nodejs and npm
+```
+wget https://nodejs.org/dist/v8.9.0/node-v8.9.0-linux-armv6l.tar.gz
+tar -xzf node-v8.9.0-linux-armv6l.tar.gz
+cd node-v8.9.0-linux-armv6l/
+sudo cp -R * /usr/local/
+```
+
+### Ensure nodejs and npm are installed:
+```
+node -v
+npm -v
+```
+
+### Update npm:
+```
+sudo npm i -g npm@latest
+```
+
+### Pull the Green Mountain Grill App and install:
+
+```
+git clone https://github.com/Aenima4six2/gmg.git
+cd /gmg/src
+sudo ./build.sh
+```
+
+## Start the service:
+```
+cd gmg-server && sudo npm run start:release
+```
+
+
 ## Preview
 ![alt text](assets/preview.jpg)
