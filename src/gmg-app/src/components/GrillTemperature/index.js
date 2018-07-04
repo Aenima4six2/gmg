@@ -54,13 +54,13 @@ export default class GrillTemperature extends Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        onTouchTap={this.handleCancel}
+        onClick={this.handleCancel}
       />,
       <FlatButton
         label="Set"
         primary={true}
         keyboardfocused={true}
-        onTouchTap={this.handleSubmit}
+        onClick={this.handleSubmit}
       />,
     ]
 
@@ -102,7 +102,7 @@ export default class GrillTemperature extends Component {
           </List>
           <CardActions>
             <Button
-              onTouchTap={this.handleOpen}
+              onClick={this.handleOpen}
               disabled={!this.props.isEnabled}
               label="Set Grill Temperature" />
           </CardActions>

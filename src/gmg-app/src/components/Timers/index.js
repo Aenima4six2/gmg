@@ -140,13 +140,13 @@ export default class Timers extends Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        onTouchTap={this.handleCancel}
+        onClick={this.handleCancel}
       />,
       <FlatButton
         disabled={!!this.state.desiredCountDownError}
         label="Set"
         primary={true}
-        onTouchTap={this.handleSubmit}
+        onClick={this.handleSubmit}
       />,
     ]
 
@@ -172,7 +172,7 @@ export default class Timers extends Component {
           </List>
           <CardActions>
             <Button
-              onTouchTap={() => this.state.countUpActive ? this.cancelCountUp() : this.countUp()}
+              onClick={() => this.state.countUpActive ? this.cancelCountUp() : this.countUp()}
               disabled={!this.props.isEnabled}
               label={this.state.countUpActive ? "Cancel" : "Start"}/>
           </CardActions>
@@ -190,7 +190,7 @@ export default class Timers extends Component {
           </List>
           <CardActions>
             <Button
-              onTouchTap={() => this.state.countDownActive ? this.cancelCountDown() : this.handleOpen()}
+              onClick={() => this.state.countDownActive ? this.cancelCountDown() : this.handleOpen()}
               disabled={!this.props.isEnabled}
               label={this.state.countDownActive ? "Cancel" : "Start"}/>
           </CardActions>

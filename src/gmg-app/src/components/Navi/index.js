@@ -41,17 +41,17 @@ export default class Navigation extends Component {
             <BottomNavigationItem
               label="Home"
               icon={<FontIcon className="fa fa-home"/>}
-              onTouchTap={() => this.select(0)}
+              onClick={() => this.select(0)}
             />
             {/* <BottomNavigationItem
               label="Profiles"
               icon={<FontIcon className="fa fa-table"/>}
-              onTouchTap={() => this.select(1)}
+              onClick={() => this.select(1)}
             />
             <BottomNavigationItem
               label="Settings"
               icon={<FontIcon className="fa fa-cog"/>}
-              onTouchTap={() => this.select(2)}
+              onClick={() => this.select(2)}
             /> */}
           </BottomNavigation>
         </Paper>

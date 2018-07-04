@@ -14284,12 +14284,12 @@ var AppBar = function (_Component) {
     }
 
     return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = AppBar.__proto__ || (0, _getPrototypeOf2.default)(AppBar)).call.apply(_ref, [this].concat(args))), _this), _this.handleTouchTapLeftIconButton = function (event) {
-      if (_this.props.onLeftIconButtonTouchTap) {
-        _this.props.onLeftIconButtonTouchTap(event);
+      if (_this.props.onLeftIconButtonClick) {
+        _this.props.onLeftIconButtonClick(event);
       }
     }, _this.handleTouchTapRightIconButton = function (event) {
-      if (_this.props.onRightIconButtonTouchTap) {
-        _this.props.onRightIconButtonTouchTap(event);
+      if (_this.props.onRightIconButtonClick) {
+        _this.props.onRightIconButtonClick(event);
       }
     }, _this.handleTitleTouchTap = function (event) {
       if (_this.props.onTitleTouchTap) {
@@ -14319,13 +14319,13 @@ var AppBar = function (_Component) {
           iconElementRight = _props.iconElementRight,
           iconClassNameLeft = _props.iconClassNameLeft,
           iconClassNameRight = _props.iconClassNameRight,
-          onLeftIconButtonTouchTap = _props.onLeftIconButtonTouchTap,
-          onRightIconButtonTouchTap = _props.onRightIconButtonTouchTap,
+          onLeftIconButtonClick = _props.onLeftIconButtonClick,
+          onRightIconButtonClick = _props.onRightIconButtonClick,
           className = _props.className,
           style = _props.style,
           zDepth = _props.zDepth,
           children = _props.children,
-          other = (0, _objectWithoutProperties3.default)(_props, ['title', 'titleStyle', 'iconStyleLeft', 'iconStyleRight', 'onTitleTouchTap', 'showMenuIconButton', 'iconElementLeft', 'iconElementRight', 'iconClassNameLeft', 'iconClassNameRight', 'onLeftIconButtonTouchTap', 'onRightIconButtonTouchTap', 'className', 'style', 'zDepth', 'children']);
+          other = (0, _objectWithoutProperties3.default)(_props, ['title', 'titleStyle', 'iconStyleLeft', 'iconStyleRight', 'onTitleTouchTap', 'showMenuIconButton', 'iconElementLeft', 'iconElementRight', 'iconClassNameLeft', 'iconClassNameRight', 'onLeftIconButtonClick', 'onRightIconButtonClick', 'className', 'style', 'zDepth', 'children']);
       var prepareStyles = this.context.muiTheme.prepareStyles;
 
       var styles = getStyles(this.props, this.context);
@@ -14338,7 +14338,7 @@ var AppBar = function (_Component) {
       var titleComponent = typeof title === 'string' || title instanceof String ? 'h1' : 'div';
 
       var titleElement = _react2.default.createElement(titleComponent, {
-        onTouchTap: this.handleTitleTouchTap,
+        onClick: this.handleTitleTouchTap,
         style: prepareStyles((0, _simpleAssign2.default)(styles.title, styles.mainElement, titleStyle))
       }, title);
 
@@ -14355,8 +14355,8 @@ var AppBar = function (_Component) {
             iconElementLeftProps.iconStyle = (0, _simpleAssign2.default)({}, iconButtonIconStyle, iconElementLeft.props.iconStyle);
           }
 
-          if (!iconElementLeft.props.onTouchTap && this.props.onLeftIconButtonTouchTap) {
-            iconElementLeftProps.onTouchTap = this.handleTouchTapLeftIconButton;
+          if (!iconElementLeft.props.onClick && this.props.onLeftIconButtonClick) {
+            iconElementLeftProps.onClick = this.handleTouchTapLeftIconButton;
           }
 
           menuElementLeft = _react2.default.createElement(
@@ -14371,7 +14371,7 @@ var AppBar = function (_Component) {
               style: iconLeftStyle,
               iconStyle: styles.iconButtonIconStyle,
               iconClassName: iconClassNameLeft,
-              onTouchTap: this.handleTouchTapLeftIconButton
+              onClick: this.handleTouchTapLeftIconButton
             },
             iconClassNameLeft ? '' : _react2.default.createElement(_menu2.default, { style: (0, _simpleAssign2.default)({}, styles.iconButtonIconStyle) })
           );
@@ -14402,8 +14402,8 @@ var AppBar = function (_Component) {
           default:
         }
 
-        if (!iconElementRight.props.onTouchTap && this.props.onRightIconButtonTouchTap) {
-          iconElementRightProps.onTouchTap = this.handleTouchTapRightIconButton;
+        if (!iconElementRight.props.onClick && this.props.onRightIconButtonClick) {
+          iconElementRightProps.onClick = this.handleTouchTapRightIconButton;
         }
 
         menuElementRight = _react2.default.createElement(
@@ -14416,7 +14416,7 @@ var AppBar = function (_Component) {
           style: iconRightStyle,
           iconStyle: styles.iconButtonIconStyle,
           iconClassName: iconClassNameRight,
-          onTouchTap: this.handleTouchTapRightIconButton
+          onClick: this.handleTouchTapRightIconButton
         });
       }
 
@@ -14488,13 +14488,13 @@ AppBar.propTypes =  true ? {
    *
    * @param {object} event TouchTap event targeting the left `IconButton`.
    */
-  onLeftIconButtonTouchTap: _propTypes2.default.func,
+  onLeftIconButtonClick: _propTypes2.default.func,
   /**
    * Callback function for when the right icon is selected via a touch tap.
    *
    * @param {object} event TouchTap event targeting the right `IconButton`.
    */
-  onRightIconButtonTouchTap: _propTypes2.default.func,
+  onRightIconButtonClick: _propTypes2.default.func,
   /**
    * Callback function for when the title text is selected via a touch tap.
    *
@@ -14898,7 +14898,7 @@ var Card = function (_Component) {
         if (expanded === false && currentChild.props.expandable === true) return;
         if (currentChild.props.actAsExpander === true) {
           doClone = true;
-          newProps.onTouchTap = _this2.handleExpanding;
+          newProps.onClick = _this2.handleExpanding;
           newProps.style = (0, _simpleAssign2.default)({ cursor: 'pointer' }, currentChild.props.style);
         }
         if (currentChild.props.showExpandableButton === true) {
@@ -15221,7 +15221,7 @@ var CardExpandable = function (_Component) {
         _IconButton2.default,
         {
           style: (0, _simpleAssign2.default)(styles.root, this.props.style),
-          onTouchTap: this.props.onExpanding,
+          onClick: this.props.onExpanding,
           iconStyle: this.props.iconStyle
         },
         this.props.expanded ? this.props.openIcon : this.props.closeIcon
@@ -16656,7 +16656,7 @@ IconButton.propTypes =  true ? {
    *
    * @param {object} event TouchTap event targeting the button.
    */
-  onTouchTap: _propTypes2.default.func,
+  onClick: _propTypes2.default.func,
   /**
    * Override the inline-styles of the root element.
    */
@@ -17081,8 +17081,8 @@ var ListItem = function (_Component) {
       _this.setState({ hovered: false });
       _this.props.onMouseLeave(event);
     }, _this.handleTouchTap = function (event) {
-      if (_this.props.onTouchTap) {
-        _this.props.onTouchTap(event);
+      if (_this.props.onClick) {
+        _this.props.onClick(event);
       }
 
       if (_this.props.primaryTogglesNestedList) {
@@ -17130,12 +17130,12 @@ var ListItem = function (_Component) {
       var iconButton = _this.props.rightIconButton;
       event.stopPropagation();
       if (iconButton && iconButton.props.onMouseUp) iconButton.props.onMouseUp(event);
-    }, _this.handleRightIconButtonTouchTap = function (event) {
+    }, _this.handleRightIconButtonClick = function (event) {
       var iconButton = _this.props.rightIconButton;
 
       // Stop the event from bubbling up to the list-item
       event.stopPropagation();
-      if (iconButton && iconButton.props.onTouchTap) iconButton.props.onTouchTap(event);
+      if (iconButton && iconButton.props.onClick) iconButton.props.onClick(event);
     }, _this.handleTouchStart = function (event) {
       _this.setState({ touch: true });
       _this.props.onTouchStart(event);
@@ -17284,7 +17284,7 @@ var ListItem = function (_Component) {
           onMouseLeave = _props3.onMouseLeave,
           onNestedListToggle = _props3.onNestedListToggle,
           onTouchStart = _props3.onTouchStart,
-          onTouchTap = _props3.onTouchTap,
+          onClick = _props3.onClick,
           rightAvatar = _props3.rightAvatar,
           rightIcon = _props3.rightIcon,
           rightIconButton = _props3.rightIconButton,
@@ -17294,7 +17294,7 @@ var ListItem = function (_Component) {
           secondaryText = _props3.secondaryText,
           secondaryTextLines = _props3.secondaryTextLines,
           style = _props3.style,
-          other = (0, _objectWithoutProperties3.default)(_props3, ['autoGenerateNestedIndicator', 'children', 'containerElement', 'disabled', 'disableKeyboardFocus', 'hoverColor', 'initiallyOpen', 'innerDivStyle', 'insetChildren', 'leftAvatar', 'leftCheckbox', 'leftIcon', 'nestedItems', 'nestedLevel', 'nestedListStyle', 'onKeyboardFocus', 'iskeyboardfocused', 'onMouseEnter', 'onMouseLeave', 'onNestedListToggle', 'onTouchStart', 'onTouchTap', 'rightAvatar', 'rightIcon', 'rightIconButton', 'rightToggle', 'primaryText', 'primaryTogglesNestedList', 'secondaryText', 'secondaryTextLines', 'style']);
+          other = (0, _objectWithoutProperties3.default)(_props3, ['autoGenerateNestedIndicator', 'children', 'containerElement', 'disabled', 'disableKeyboardFocus', 'hoverColor', 'initiallyOpen', 'innerDivStyle', 'insetChildren', 'leftAvatar', 'leftCheckbox', 'leftIcon', 'nestedItems', 'nestedLevel', 'nestedListStyle', 'onKeyboardFocus', 'iskeyboardfocused', 'onMouseEnter', 'onMouseLeave', 'onNestedListToggle', 'onTouchStart', 'onClick', 'rightAvatar', 'rightIcon', 'rightIconButton', 'rightToggle', 'primaryText', 'primaryTogglesNestedList', 'secondaryText', 'secondaryTextLines', 'style']);
       var prepareStyles = this.context.muiTheme.prepareStyles;
 
       var styles = getStyles(this.props, this.context, this.state);
@@ -17337,7 +17337,7 @@ var ListItem = function (_Component) {
           onKeyboardFocus: this.handleRightIconButtonKeyboardFocus,
           onMouseEnter: this.handleRightIconButtonMouseEnter,
           onMouseLeave: this.handleRightIconButtonMouseLeave,
-          onTouchTap: this.handleRightIconButtonTouchTap,
+          onClick: this.handleRightIconButtonClick,
           onMouseDown: this.handleRightIconButtonMouseUp,
           onMouseUp: this.handleRightIconButtonMouseUp
         };
@@ -17353,7 +17353,7 @@ var ListItem = function (_Component) {
             null,
             _react2.default.createElement(_expandMore2.default, null)
           );
-          rightIconButtonHandlers.onTouchTap = this.handleNestedListToggle;
+          rightIconButtonHandlers.onClick = this.handleNestedListToggle;
         }
 
         this.pushElement(contentChildren, rightIconButtonElement, (0, _simpleAssign2.default)({}, styles.rightIconButton), rightIconButtonHandlers);
@@ -17395,7 +17395,7 @@ var ListItem = function (_Component) {
             onMouseEnter: this.handleMouseEnter,
             onTouchStart: this.handleTouchStart,
             onTouchEnd: this.handleTouchEnd,
-            onTouchTap: this.handleTouchTap,
+            onClick: this.handleTouchTap,
             disabled: disabled,
             ref: function ref(node) {
               return _this2.button = node;
@@ -17545,7 +17545,7 @@ ListItem.propTypes =  true ? {
    *
    * @param {object} event TouchTap event targeting the list item.
    */
-  onTouchTap: _propTypes2.default.func,
+  onClick: _propTypes2.default.func,
   /**
    * Control toggle state of nested list.
    */
@@ -18322,7 +18322,7 @@ RaisedButton.propTypes =  true ? {
    *
    * @param {object} event TouchTap event targeting the button.
    */
-  onTouchTap: _propTypes2.default.func,
+  onClick: _propTypes2.default.func,
   /**
    * Override the inline style of the button overlay.
    */
@@ -18911,8 +18911,8 @@ var Tab = function (_Component) {
     }
 
     return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = Tab.__proto__ || (0, _getPrototypeOf2.default)(Tab)).call.apply(_ref, [this].concat(args))), _this), _this.handleTouchTap = function (event) {
-      if (_this.props.onTouchTap) {
-        _this.props.onTouchTap(_this.props.value, event, _this);
+      if (_this.props.onClick) {
+        _this.props.onClick(_this.props.value, event, _this);
       }
     }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
   }
@@ -18924,14 +18924,14 @@ var Tab = function (_Component) {
           icon = _props.icon,
           index = _props.index,
           onActive = _props.onActive,
-          onTouchTap = _props.onTouchTap,
+          onClick = _props.onClick,
           selected = _props.selected,
           label = _props.label,
           buttonStyle = _props.buttonStyle,
           style = _props.style,
           value = _props.value,
           width = _props.width,
-          other = (0, _objectWithoutProperties3.default)(_props, ['icon', 'index', 'onActive', 'onTouchTap', 'selected', 'label', 'buttonStyle', 'style', 'value', 'width']);
+          other = (0, _objectWithoutProperties3.default)(_props, ['icon', 'index', 'onActive', 'onClick', 'selected', 'label', 'buttonStyle', 'style', 'value', 'width']);
 
 
       var styles = getStyles(this.props, this.context);
@@ -18958,7 +18958,7 @@ var Tab = function (_Component) {
           touchRippleColor: rippleColor,
           focusRippleOpacity: rippleOpacity,
           touchRippleOpacity: rippleOpacity,
-          onTouchTap: this.handleTouchTap
+          onClick: this.handleTouchTap
         }),
         _react2.default.createElement(
           'div',
@@ -19008,7 +19008,7 @@ Tab.propTypes =  true ? {
    * @ignore
    * This property is overriden by the Tabs component.
    */
-  onTouchTap: _propTypes2.default.func,
+  onClick: _propTypes2.default.func,
   /**
    * @ignore
    * Defines if the current tab is selected or not.
@@ -19325,7 +19325,7 @@ var Tabs = function (_Component) {
           index: index,
           selected: _this2.getSelected(tab, index),
           width: width + '%',
-          onTouchTap: _this2.handleTabTouchTap
+          onClick: _this2.handleTabTouchTap
         });
       });
 
@@ -19803,7 +19803,7 @@ var EnhancedButton = function (_Component) {
       if (!_this.props.disabled) {
         tabPressed = false;
         _this.removeKeyboardFocus(event);
-        _this.props.onTouchTap(event);
+        _this.props.onClick(event);
       }
     }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
   }
@@ -19943,11 +19943,11 @@ var EnhancedButton = function (_Component) {
           onKeyUp = _props3.onKeyUp,
           onKeyDown = _props3.onKeyDown,
           onKeyboardFocus = _props3.onKeyboardFocus,
-          onTouchTap = _props3.onTouchTap,
+          onClick = _props3.onClick,
           style = _props3.style,
           tabIndex = _props3.tabIndex,
           type = _props3.type,
-          other = (0, _objectWithoutProperties3.default)(_props3, ['centerRipple', 'children', 'containerElement', 'disabled', 'disableFocusRipple', 'disableKeyboardFocus', 'disableTouchRipple', 'focusRippleColor', 'focusRippleOpacity', 'href', 'keyboardfocused', 'touchRippleColor', 'touchRippleOpacity', 'onBlur', 'onClick', 'onFocus', 'onKeyUp', 'onKeyDown', 'onKeyboardFocus', 'onTouchTap', 'style', 'tabIndex', 'type']);
+          other = (0, _objectWithoutProperties3.default)(_props3, ['centerRipple', 'children', 'containerElement', 'disabled', 'disableFocusRipple', 'disableKeyboardFocus', 'disableTouchRipple', 'focusRippleColor', 'focusRippleOpacity', 'href', 'keyboardfocused', 'touchRippleColor', 'touchRippleOpacity', 'onBlur', 'onClick', 'onFocus', 'onKeyUp', 'onKeyDown', 'onKeyboardFocus', 'onClick', 'style', 'tabIndex', 'type']);
       var _context$muiTheme = this.context.muiTheme,
           prepareStyles = _context$muiTheme.prepareStyles,
           enhancedButton = _context$muiTheme.enhancedButton;
@@ -19998,7 +19998,7 @@ var EnhancedButton = function (_Component) {
         onFocus: this.handleFocus,
         onKeyUp: this.handleKeyUp,
         onKeyDown: this.handleKeyDown,
-        onTouchTap: this.handleTouchTap,
+        onClick: this.handleTouchTap,
         tabIndex: disabled || disableKeyboardFocus ? -1 : tabIndex
       });
 
@@ -20026,7 +20026,7 @@ EnhancedButton.defaultProps = {
   onKeyDown: function onKeyDown() {},
   onKeyUp: function onKeyUp() {},
   onKeyboardFocus: function onKeyboardFocus() {},
-  onTouchTap: function onTouchTap() {},
+  onClick: function onClick() {},
   tabIndex: 0,
   type: 'button'
 };
@@ -20051,7 +20051,7 @@ EnhancedButton.propTypes =  true ? {
   onKeyDown: _propTypes2.default.func,
   onKeyUp: _propTypes2.default.func,
   onKeyboardFocus: _propTypes2.default.func,
-  onTouchTap: _propTypes2.default.func,
+  onClick: _propTypes2.default.func,
   style: _propTypes2.default.object,
   tabIndex: _propTypes2.default.number,
   touchRippleColor: _propTypes2.default.string,
@@ -46708,8 +46708,8 @@ var dependencies = [
 var eventTypes = {
   touchTap: {
     phasedRegistrationNames: {
-      bubbled: keyOf({onTouchTap: null}),
-      captured: keyOf({onTouchTapCapture: null})
+      bubbled: keyOf({onClick: null}),
+      captured: keyOf({onClickCapture: null})
     },
     dependencies: dependencies
   }
@@ -62612,7 +62612,7 @@ var _jsxFileName = '/Users/peej/Projects/gmg/src/app/react/src/index.js';
 
 
 
-// Needed for onTouchTap
+// Needed for onClick
 // http://stackoverflow.com/a/34015469/988941
 __WEBPACK_IMPORTED_MODULE_5_react_tap_event_plugin___default()();
 

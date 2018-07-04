@@ -9,7 +9,7 @@ namespace Gmg.Emulator.Requests
     {
         private const string GRILL_INFO = "UR001!";
         private const string SET_GRILL_TEMP = @"UT(\d{3})!";
-        private const string SET_PROBE_TEMP = @"UF(\d{3)!";
+        private const string SET_PROBE_TEMP = @"UF(\d{3})!";
         private const string POWER_ON = "UK001!";
         private const string POWER_OFF = "UK004!";
         private const string GRILL_ID = "UL!";

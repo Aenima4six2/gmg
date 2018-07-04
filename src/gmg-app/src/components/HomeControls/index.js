@@ -28,7 +28,7 @@ export default class HomeControls extends Component {
               tooltip={this.props.fanModeActive ? 'Grill cannot be powered on during fan mode!' : ''}
               style={styles.powerIcon}
               disabled={!this.props.grillConnected || this.props.fanModeActive}
-              onTouchTap={this.props.onPowerTouchTap}>
+              onClick={this.props.onPowerTouchTap}>
               <FontIcon
                 color={getButtonColor(this.props.powerOn)}
                 className="fa fa-power-off big" />
@@ -37,7 +37,7 @@ export default class HomeControls extends Component {
             <IconButton
               style={styles.timersIcon}
               disabled={this.props.loading}
-              onTouchTap={this.props.onTimersTouchTap}>
+              onClick={this.props.onTimersTouchTap}>
               <FontIcon
                 color={getButtonColor(this.props.timersOn)}
                 className="fa fa-clock-o big" />
