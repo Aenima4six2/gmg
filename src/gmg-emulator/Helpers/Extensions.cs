@@ -16,10 +16,24 @@ namespace Gmg.Emulator.Helpers
             return self;
         }
 
+
+        public static T[] Fill<T>(this T[] self, int index, T value, int length)
+        {
+            var filler = new T[length];
+            for (var i = 0; i < length; i++) filler[i] = value;
+            return self.Set(index, filler);
+        }
+
         public static byte[] ToBytes(this string input) => Encoding.ASCII.GetBytes(input);
-        public static byte[] ToBytes(this ushort input) => BitConverter.GetBytes(input);
-        public static byte[] ToBytes(this WarnCode input) => ((ushort) input).ToBytes();
-        public static byte[] ToBytes(this FireState input) => ((ushort) input).ToBytes();
-        public static byte[] ToBytes(this GrillState input) => ((ushort) input).ToBytes();
+
+        public static byte[] Initialize(this byte[] array, byte value)
+        {
+            for (var i = 0; i < array.Length; i++)
+            {
+                array[i] = value;
+            }
+
+            return array;
+        }
     }
 }

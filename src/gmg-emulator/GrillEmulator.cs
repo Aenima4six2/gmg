@@ -24,7 +24,7 @@ namespace Gmg.Emulator
             grillTemp: CurrentGrillTemp,
             probeTemp: CurrentProbeTemp,
             grillSetTemp: TargetGrillTemp,
-            probeSetTemp: CurrentProbeTemp,
+            probeSetTemp: TargetProbeTemp,
             grillState: IsOn ? GrillState.ON : GrillState.OFF
         );
 
