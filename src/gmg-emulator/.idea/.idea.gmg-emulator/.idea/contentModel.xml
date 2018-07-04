@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$USER_HOME$/Library/Caches/Rider2018.1/resharper-host/local/Transient/ReSharperHost/v12/SolutionCaches/_gmg-emulator.-1163193180.00" t="ExcludeRecursive" />
+    <e p="$PROJECT_DIR$" t="IncludeRecursive">
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="Configuration" t="Include">
+        <e p="CommandLineOptions.cs" t="Include" />
+      </e>
+      <e p="Enums" t="Include">
+        <e p="FireState.cs" t="Include" />
+        <e p="GrillState.cs" t="Include" />
+        <e p="WarnCode.cs" t="Include" />
+      </e>
+      <e p="gmg-emulator.csproj" t="IncludeRecursive" />
+      <e p="gmg-emulator.sln" t="IncludeFlat" />
+      <e p="GrillEmulator.cs" t="Include" />
+      <e p="GrillStateMachine.cs" t="Include" />
+      <e p="Helpers" t="Include">
+        <e p="Extensions.cs" t="Include" />
+      </e>
+      <e p="obj" t="ExcludeRecursive">
+        <e p="Debug" t="Include">
+          <e p="netcoreapp2.1" t="Include">
+            <e p="gmg-emulator.AssemblyInfo.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Program.cs" t="Include" />
+      <e p="Requests" t="Include">
+        <e p="GrillInfoRequest.cs" t="Include" />
+        <e p="IRequest.cs" t="Include" />
+        <e p="IRequestProcessor.cs" t="Include" />
+        <e p="PowerOffRequest.cs" t="Include" />
+        <e p="PowerOnRequest.cs" t="Include" />
+        <e p="RequestBase.cs" t="Include" />
+        <e p="RequestFactory.cs" t="Include" />
+        <e p="SetGrillTempRequest.cs" t="Include" />
+        <e p="SetProbeTempRequest.cs" t="Include" />
+      </e>
+      <e p="Responses" t="Include">
+        <e p="GrillInfoResponse.cs" t="Include" />
+        <e p="IResponse.cs" t="Include" />
+        <e p="OkResponse.cs" t="Include" />
+        <e p="ResponseBase.cs" t="Include" />
+      </e>
+      <e p="Server.cs" t="Include" />
+      <e p="ServerOptions.cs" t="Include" />
+    </e>
+  </component>
+</project>
