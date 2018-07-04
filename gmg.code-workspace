@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "src/gmg-server"
+		},
+		{
+			"path": "src/gmg-emulator"
 		}
 	],
 	"settings": {}
