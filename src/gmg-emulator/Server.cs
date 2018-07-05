@@ -1,5 +1,7 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using Gmg.Emulator.Helpers;
 using Gmg.Emulator.Requests;
@@ -20,7 +22,8 @@ namespace Gmg.Emulator
 
         public void Listen(CancellationToken token = default(CancellationToken))
         {
-            var address = string.IsNullOrWhiteSpace(options.Address)
+            var address = string.IsNullOrWhiteSpace(options.Address) ||
+                          string.Equals("*", options.Address, StringComparison.OrdinalIgnoreCase)
                 ? IPAddress.Any
                 : IPAddress.Parse(options.Address);
 
@@ -28,19 +31,31 @@ namespace Gmg.Emulator
             var client = new UdpClient(endpoint);
             var sender = new IPEndPoint(IPAddress.Any, 0);
 
+            Log.Logger.Information("Now listening for traffic on at {address}:{port}",
+                address, options.Port);
+
             while (!token.IsCancellationRequested)
             {
                 var requestBytes = client.Receive(ref sender);
+                var requestTxt = Encoding.ASCII.GetString(requestBytes);
+                Log.Logger.Information("Recieved Request: [{ip}] -> {requestTxt}", sender, requestTxt);
+
                 var request = RequestFactory.CreateFromBytes(requestBytes);
-                Log.Logger.Information("Receiced Request: {name} ({type})",
-                    request.GetType().Name.ToWords(), request.ToString());
+                if (request == null)
+                {
+                    Log.Logger.Warning("The request [{requestTxt}] is not supported!", requestTxt);
+                    continue;
+                }
+
+                Log.Logger.Information("Parsed Request: [{ip}] -> {name} ({type})",
+                    sender, request.GetType().Name.ToWords(), request.ToString());
 
                 var response = emulator.HandleRequest(request);
-                var responseBytes = response.Body;
+                var responseBytes = response.ToBytes();
 
                 client.Send(responseBytes, responseBytes.Length, sender);
-                Log.Logger.Information("Sent Response: {name} ({data})",
-                    response.GetType().Name.ToWords(), response.ToString());
+                Log.Logger.Information("Sent Response: [{ip}] -> {name} ({data})",
+                    sender, response.GetType().Name.ToWords(), response.ToString());
             }
         }
     }

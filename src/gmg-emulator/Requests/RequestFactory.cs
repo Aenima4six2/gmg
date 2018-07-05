@@ -14,13 +14,16 @@ namespace Gmg.Emulator.Requests
         private const string POWER_OFF = "UK004!";
         private const string GRILL_ID = "UL!";
         private const string GRILL_FIRMWARE = "UN!";
+        private const string TODO = "UA!";
 
         private static readonly Dictionary<string, Func<Match, IRequest>> FactoryMaps =
             new Dictionary<string, Func<Match, IRequest>>
             {
-                {POWER_ON, codeMatch => new PowerOnRequest(codeMatch.Value)},
-                {POWER_OFF, codeMatch => new PowerOffRequest(codeMatch.Value)},
-                {GRILL_INFO, codeMatch => new GrillInfoRequest(codeMatch.Value)},
+                {POWER_ON, code => new PowerOnRequest(code.Value)},
+                {POWER_OFF, code => new PowerOffRequest(code.Value)},
+                {GRILL_INFO, code => new GrillInfoRequest(code.Value)},
+                {GRILL_ID, code => new GrillIdRequest(code.Value)},
+                {GRILL_FIRMWARE, code => new GrillFirmwareRequest(code.Value)},
                 {SET_GRILL_TEMP, ParseGetGrillTemp},
                 {SET_PROBE_TEMP, ParseGetProbeTemp}
             };
@@ -41,7 +44,7 @@ namespace Gmg.Emulator.Requests
                 return cmd;
             }
 
-            throw new ArgumentException($"The command [{commandCode}] is not supported!");
+            return null;
         }
 
         private static IRequest ParseGetGrillTemp(Match codeMatch)

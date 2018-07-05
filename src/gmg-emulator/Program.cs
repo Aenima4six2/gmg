@@ -12,11 +12,7 @@ namespace Gmg.Emulator
             Parser.Default.ParseArguments<ServerOptions>(args)
                 .WithParsed(opts =>
                 {
-                    var port = opts.Port;
-                    var address = string.IsNullOrWhiteSpace(opts.Address) ? "*" : opts.Address;
-                    Log.Logger.Information("Starting Grill emulation server on port {address}:{port}",
-                        address, port);
-
+                    Log.Logger.Information("Starting Grill emulation server");
                     var server = new Server(opts);
                     server.Listen();
                 })
