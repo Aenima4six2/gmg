@@ -4,10 +4,10 @@ namespace Gmg.Emulator
 {
     public class ServerOptions
     {
-        [Option(shortName: 'r', longName: "port", Default = 8080)]
+        [Option(shortName: 'p', longName: "port", Default = 8080)]
         public int Port { get; set; }
 
-        [Option(shortName: 'a', longName: "address", Default = "127.0.0.1")]
+        [Option(shortName: 'a', longName: "address", Default = "*")]
         public string Address { get; set; }
     }
 }

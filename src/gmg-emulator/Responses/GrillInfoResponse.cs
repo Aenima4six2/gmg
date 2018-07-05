@@ -1,11 +1,10 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using Gmg.Emulator.Enums;
 using Gmg.Emulator.Helpers;
 
 namespace Gmg.Emulator.Responses
 {
-    public class GrillInfoResponse : ResponseBase
+    public class GrillInfoResponse : IResponse
     {
         // UR [2 Byte Prefix]
         private const byte PREFIX = 00; // 2 Byte
@@ -53,7 +52,6 @@ namespace Gmg.Emulator.Responses
             GrillSetTemp = grillSetTemp;
             ProbeSetTemp = probeSetTemp;
             GrillState = grillState;
-            Body = CreateBody();
         }
 
         public ushort GrillTemp { get; }
@@ -62,7 +60,7 @@ namespace Gmg.Emulator.Responses
         public ushort ProbeSetTemp { get; }
         public GrillState GrillState { get; }
 
-        private byte[] CreateBody()
+        public byte[] ToBytes()
         {
             var body = new byte[36];
 
@@ -100,7 +98,6 @@ namespace Gmg.Emulator.Responses
             .AppendFormat("{0}: {1}, ", nameof(GrillSetTemp).ToWords(), GrillSetTemp)
             .AppendFormat("{0}: {1}, ", nameof(ProbeSetTemp).ToWords(), ProbeSetTemp)
             .AppendFormat("{0}: {1}, ", nameof(GrillState).ToWords(), GrillState)
-            .AppendFormat("{0}: {1}", nameof(Body).ToWords(), BitConverter.ToString(Body).Replace("-", string.Empty))
             .ToString();
     }
 }

@@ -4,11 +4,12 @@ const ip = require('ip')
 const GrillStatus = require('./GrillStatus')
 const InvalidCommand = require('./InvalidCommand')
 const commands = Object.freeze({
-  powerOn: 'UK001',
-  powerOff: 'UK004',
-  getGrillStatus: 'UR001',
-  setGrillTempF: (temp) => `UT${temp}`,
-  setFoodTempF: (temp) => `UF${temp}`
+  powerOn: 'UK001!',
+  powerOff: 'UK004!',
+  getGrillStatus: 'UR001!',
+  getGrillId: 'UL!',
+  setGrillTempF: (temp) => `UT${temp}!`,
+  setFoodTempF: (temp) => `UF${temp}!`
 })
 
 const results = Object.freeze({
@@ -37,6 +38,11 @@ class GMGClient {
       if (!logger) return
       logger(message)
     }
+  }
+
+  async getGrillId() {
+    const result = await this.sendCommand(commands.getGrillId)
+    return result.msg.toString()
   }
 
   async getGrillStatus() {
@@ -93,7 +99,7 @@ class GMGClient {
     return new Promise((res, rej) => {
       let attempts = 0, schedule
       const socket = dgram.createSocket('udp4')
-      const data = getCommandData(commands.getGrillStatus)
+      const data = getCommandData(commands.getGrillId)
       const finish = (result) => {
         if (schedule) clearInterval(schedule)
         socket.removeAllListeners('message')

@@ -2,6 +2,6 @@
 {
     public interface IResponse
     {
-        byte[] Body { get; }
+        byte[] ToBytes();
     }
 }

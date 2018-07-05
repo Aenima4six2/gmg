@@ -9,5 +9,7 @@ namespace Gmg.Emulator.Requests
         IResponse HandleRequest(PowerOnRequest request);
         IResponse HandleRequest(SetGrillTempRequest request);
         IResponse HandleRequest(SetProbeTempRequest request);
+        IResponse HandleRequest(GrillIdRequest request);
+        IResponse HandleRequest(GrillFirmwareRequest request);
     }
 }
