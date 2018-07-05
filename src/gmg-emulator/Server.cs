@@ -43,7 +43,7 @@ namespace Gmg.Emulator
                 var request = RequestFactory.CreateFromBytes(requestBytes);
                 if (request == null)
                 {
-                    Log.Logger.Warning("Invalid Request: [{ip}] -> [{requestTxt}] is not supported!", requestTxt);
+                    Log.Logger.Warning("Invalid Request: [{ip}] -> [{requestTxt}] not supported!", sender, requestTxt);
                     continue;
                 }
 
