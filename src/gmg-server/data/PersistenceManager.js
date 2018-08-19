@@ -41,6 +41,10 @@ class PersistenceManager {
     }
 
     _onStatus(status) {
+        if (!status.isOn) {
+            return
+        }
+
         const insert_statement = this.db.prepare(`
             INSERT INTO temperature_log (timestamp, grill_temperature, food_temperature)
             VALUES (strftime('%s','now'), ?, ?)
