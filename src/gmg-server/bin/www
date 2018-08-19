@@ -7,6 +7,7 @@ const path = require('path')
 const config = require('config')
 const SocketManager = require('../sockets/SocketManager')
 const AlertManager = require('../alerts/AlertManager')
+const PersistenceManager = require('../data/PersistenceManager')
 const PollingClient = require('../grill/PollingClient')
 const SocketSender = require('../alerts/senders/SocketSender')
 const SlackSender = require('../alerts/senders/SlackSender')
@@ -69,9 +70,15 @@ function startServices() {
     logger: debug('src:AlertManager')
   })
 
-  // Start all 
+  const persistenceManager = new PersistenceManager({
+    pollingClient,
+    logger: debug('src:PersistenceManager')
+  })
+
+  // Start all
   socketManager.start()
   alertManager.start()
+  persistenceManager.start()
   pollingClient.start()
 }
 

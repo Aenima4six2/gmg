@@ -7,16 +7,17 @@
     "start:release": "export NODE_ENV=production && export DEBUG=src.* && export PORT=80 && node ./bin/www"
   },
   "dependencies": {
-    "gmg-client": "file:../gmg-client",
     "body-parser": "~1.18.3",
     "config": "^1.30.0",
     "cookie-parser": "~1.4.3",
     "debug": "~3.1.0",
     "express": "~4.16.3",
+    "gmg-client": "file:../gmg-client",
     "moment": "^2.22.2",
     "morgan": "~1.9.0",
     "node-fetch": "^2.1.2",
     "serve-favicon": "~2.5.0",
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.1.1",
+    "sqlite3": "^4.0.2"
   }
 }
