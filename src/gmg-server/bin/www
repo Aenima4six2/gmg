@@ -15,6 +15,9 @@ const slackConfig = config.get('alerts.slack')
 const appFactory = require('../app')
 const clientFactory = require('../grill')
 const client = clientFactory.initialize({ logger: debug('src:gmg-client') })
+const dbFactory = require('../data')
+
+dbFactory.initialize({ logger: debug('src:db-factory') })
 
 /**
  * Ensure we can discover and connect to the grill
