@@ -48,8 +48,8 @@ router.get('/temperature/history', util.routeHandler(async (req, res) => {
     const rows = await db.all(`
         SELECT temperature_log_id, timestamp, grill_temperature, food_temperature
         FROM temperature_log
-        WHERE timestamp >= :since
-    `, Math.floor(Date.now() / 1000) - (10 * 60 * 1000))
+        WHERE timestamp >= ?;
+    `, parseInt(req.query.since, 10))
 
     res.json(rows)
 }))
