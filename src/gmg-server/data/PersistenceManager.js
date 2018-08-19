@@ -1,5 +1,4 @@
-const SQLite = require('sqlite3')
-const Path = require('path')
+const dbFactory = require('./index')
 
 class PersistenceManager {
     constructor({ pollingClient, logger }) {
@@ -14,14 +13,14 @@ class PersistenceManager {
         this._onStatus = this._onStatus.bind(this)
     }
 
-    start() {
+    async start() {
         if (this._started) throw new Error('Already started!')
         this._started = true
 
-        this.db = new SQLite.Database(Path.join(__dirname, './grill_data.db'))
+        this.db = await dbFactory.createDb()
 
-        this.db.run(`
-            CREATE TABLE temperature_log (
+        await this.db.run(`
+            CREATE TABLE IF NOT EXISTS temperature_log (
                 temperature_log_id INTEGER PRIMARY KEY,
                 timestamp integer UNIQUE,
                 grill_temperature integer(2) NOT NULL,
@@ -33,26 +32,25 @@ class PersistenceManager {
         this._pollingClient.on('status', this._onStatus)
     }
 
-    stop() {
+    async stop() {
         if (!this._started) throw new Error('Already stopped!')
         this._started = false
         this._pollingClient.removeListener('status', this._onStatus)
-        this.db.close()
+        await this.db.close()
     }
 
-    _onStatus(status) {
+    async _onStatus(status) {
         if (!status.isOn) {
             return
         }
 
-        const insert_statement = this.db.prepare(`
+        await this.db.run(`
             INSERT INTO temperature_log (timestamp, grill_temperature, food_temperature)
-            VALUES (strftime('%s','now'), ?, ?)
-        `)
-
-        insert_statement.run(status.currentGrillTemp, status.currentFoodTemp)
-
-        insert_statement.finalize()
+            VALUES (strftime('%s','now'), $grill_temperature, $food_temperature)
+        `, {
+            $grill_temperature: status.currentGrillTemp,
+            $food_temperature: status.currentFoodTemp,
+        })
     }
 }
 
