@@ -21,7 +21,7 @@ class PersistenceManager {
 
         await this.db.run(`
             CREATE TABLE IF NOT EXISTS temperature_log (
-                temperature_log_id INTEGER PRIMARY KEY,
+                temperature_log_id integer PRIMARY KEY,
                 timestamp integer UNIQUE,
                 grill_temperature integer(2) NOT NULL,
                 food_temperature integer(2) NULL
