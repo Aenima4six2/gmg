@@ -16,6 +16,9 @@ import { Line, Chart } from 'react-chartjs-2'
 import 'chartjs-plugin-streaming'
 import * as moment from 'moment'
 
+const GRILL_TEMPERATURE_DATASET = 0
+const FOOD_TEMPERATURE_DATASET = 1
+
 export default class Home extends Component {
   constructor() {
     super()
@@ -86,12 +89,12 @@ export default class Home extends Component {
 
   componentDidMount() {
     this.socket.on('status', status => {
-      this.state.datasets[0].data.push({
+      this.state.datasets[GRILL_TEMPERATURE_DATASET].data.push({
         x: Date.now(),
         y: status.currentGrillTemp,
       })
 
-      this.state.datasets[1].data.push({
+      this.state.datasets[FOOD_TEMPERATURE_DATASET].data.push({
         x: Date.now(),
         y: status.currentFoodTemp,
       })
@@ -115,10 +118,10 @@ export default class Home extends Component {
 
         this.setState({
           datasets: [{
-            ...this.state.datasets[0],
+            ...this.state.datasets[GRILL_TEMPERATURE_DATASET],
             data: history.map(d => ({ x: d.timestamp * 1000, y: d.grill_temperature }))
           }, {
-            ...this.state.datasets[1],
+            ...this.state.datasets[FOOD_TEMPERATURE_DATASET],
             data: history.map(d => ({ x: d.timestamp * 1000, y: d.food_temperature }))
           }]
         })
