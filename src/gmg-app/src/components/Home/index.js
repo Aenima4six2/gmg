@@ -14,6 +14,7 @@ import './index.css'
 import 'typeface-roboto'
 import { Line, Chart } from 'react-chartjs-2'
 import 'chartjs-plugin-streaming'
+import * as moment from 'moment'
 
 export default class Home extends Component {
   constructor() {
@@ -101,9 +102,27 @@ export default class Home extends Component {
         loading: !!this.state.commandsPending
       })
     })
+
     this.socket.on('alert', alert => {
       this.sendAlert(alert)
     })
+
+    this.client.getTemperatureHistory(moment().subtract(8, 'hours').unix(Number))
+      .then(history => {
+        if (history.length === 0) {
+          return
+        }
+
+        this.setState({
+          datasets: [{
+            ...this.state.datasets[0],
+            data: history.map(d => ({ x: d.timestamp * 1000, y: d.grill_temperature }))
+          }, {
+            ...this.state.datasets[1],
+            data: history.map(d => ({ x: d.timestamp * 1000, y: d.food_temperature }))
+          }]
+        })
+      })
   }
 
   componentWillUnmount() {
