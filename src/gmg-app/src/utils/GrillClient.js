@@ -40,4 +40,15 @@ export default class GrillClient {
     }
   }
 
+  async getTemperatureHistory(since) {
+    const url = `${this.apiBaseAddress}/api/temperature/history?since=${since}`
+    const result = await fetch(url)
+
+    if (!result.ok) {
+      const body = await result.text()
+      throw new Error(body)
+    }
+
+    return result.json()
+  }
 }
