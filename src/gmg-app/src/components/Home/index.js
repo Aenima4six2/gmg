@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Card } from 'material-ui/Card'
 import GrillTemperature from '../GrillTemperature'
 import FoodTemperature from '../FoodTemperature'
+import GrillHistory from '../GrillHistory'
 import Timers from "../Timers/index"
 import HomeControls from '../HomeControls'
 import io from 'socket.io-client'
@@ -50,7 +50,8 @@ export default class Home extends Component {
       loading: false,
       grillConnected: false,
       socketConnected: false,
-      showTimers: false
+      showTimers: false,
+      showHistory: false
     }
 
     // Setup Socket.IO
@@ -102,7 +103,8 @@ export default class Home extends Component {
       this.setState({
         ...status,
         grillConnected: true,
-        loading: !!this.state.commandsPending
+        loading: !!this.state.commandsPending,
+        datasets: this.state.datasets
       })
     })
 
@@ -110,22 +112,20 @@ export default class Home extends Component {
       this.sendAlert(alert)
     })
 
-    this.client.getTemperatureHistory(moment().subtract(8, 'hours').unix(Number))
-      .then(history => {
-        if (history.length === 0) {
-          return
-        }
+    const since = moment().subtract(8, 'hours').unix(Number)
+    this.client.getTemperatureHistory(since).then(history => {
+      if (history.length === 0) return
 
-        this.setState({
-          datasets: [{
-            ...this.state.datasets[GRILL_TEMPERATURE_DATASET],
-            data: history.map(d => ({ x: d.timestamp * 1000, y: d.grill_temperature }))
-          }, {
-            ...this.state.datasets[FOOD_TEMPERATURE_DATASET],
-            data: history.map(d => ({ x: d.timestamp * 1000, y: d.food_temperature }))
-          }]
-        })
+      this.setState({
+        datasets: [{
+          ...this.state.datasets[GRILL_TEMPERATURE_DATASET],
+          data: history.map(d => ({ x: d.timestamp * 1000, y: d.grill_temperature }))
+        }, {
+          ...this.state.datasets[FOOD_TEMPERATURE_DATASET],
+          data: history.map(d => ({ x: d.timestamp * 1000, y: d.food_temperature }))
+        }]
       })
+    })
   }
 
   componentWillUnmount() {
@@ -204,6 +204,11 @@ export default class Home extends Component {
     this.setState({ showTimers: !this.state.showTimers })
   }
 
+  historyToggle = () => {
+    if (this.state.loading) return
+    this.setState({ showHistory: !this.state.showHistory })
+  }
+
   render() {
     return (
       <div className="container">
@@ -213,36 +218,14 @@ export default class Home extends Component {
           <HomeControls
             onPowerTouchTap={this.powerToggle}
             onTimersTouchTap={this.timerToggle}
+            onHistoryTouchTap={this.historyToggle}
             loading={this.state.loading}
             fanModeActive={this.state.fanModeActive}
             lowPelletAlarmActive={this.state.lowPelletAlarmActive}
             grillConnected={this.state.grillConnected}
             timersOn={this.state.showTimers}
+            historyOn={this.state.showHistory}
             powerOn={this.state.isOn} />
-        </div>
-        <div className="card-container">
-          <Card>
-            <Line data={{
-                datasets: this.state.datasets
-              }}
-              options={{
-                scales: {
-                  xAxes: [{
-                    type: 'realtime',
-                    time: { unit: 'minute' }
-                  }],
-                  tooltips: {
-                    mode: 'nearest',
-                    intersect: false
-                  },
-                  hover: {
-                    mode: 'nearest',
-                    intersect: false
-                  },
-                }
-              }}
-            />
-          </Card>
         </div>
         <div className="card-container">
           <GrillTemperature
@@ -262,6 +245,12 @@ export default class Home extends Component {
           <div className="card-container">
             <Timers
               isEnabled={true} />
+          </div>}
+          {this.state.showHistory &&
+          <div className="card-container">
+            <GrillHistory
+              datasets={this.state.datasets}
+            />
           </div>}
       </div>
     )

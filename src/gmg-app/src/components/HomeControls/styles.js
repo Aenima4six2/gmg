@@ -12,7 +12,17 @@ const styles = {
   timersIcon: {
     bottom: '7px'
   },
+  historyIcon: {
+    bottom: '7px'
+  },
   timersLabel: {
+    position: 'relative',
+    right: '43px',
+    top: '19px',
+    color: 'rgb(238, 238, 238)',
+    fontSize: '14px'
+  },
+  historyLabel: {
     position: 'relative',
     right: '43px',
     top: '19px',
