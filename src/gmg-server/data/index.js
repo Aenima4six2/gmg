@@ -8,7 +8,7 @@ module.exports.initialize = ({ logger }) => {
 
    logger('Initializing db: [%s]', db_path)
 
-   db = SQLite.open(Path.join(__dirname, './grill_data.db'), { Promise })
+   db = SQLite.open(db_path, { Promise })
 }
 
 module.exports.createDb = async () => db

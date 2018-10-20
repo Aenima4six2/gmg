@@ -43,6 +43,15 @@ export default class HomeControls extends Component {
                 className="fa fa-clock-o big" />
             </IconButton>
             <span style={styles.timersLabel}>Timers</span>
+            <IconButton
+              style={styles.historyIcon}
+              disabled={this.props.loading}
+              onClick={this.props.onHistoryTouchTap}>
+              <FontIcon
+                color={getButtonColor(this.props.historyOn)}
+                className="fa fa-history big" />
+            </IconButton>
+            <span style={styles.historyLabel}>History</span>
           </ToolbarGroup>
           <ToolbarGroup>
             <IconButton
@@ -77,7 +86,9 @@ HomeControls.propTypes = {
   powerOn: PropTypes.bool,
   onPowerTouchTap: PropTypes.func,
   timersOn: PropTypes.bool,
+  historyOn: PropTypes.bool,
   onTimersTouchTap: PropTypes.func,
+  onHistoryTouchTap: PropTypes.func,
   loading: PropTypes.bool,
   fanModeActive: PropTypes.bool,
   lowPelletAlarmActive: PropTypes.bool,
