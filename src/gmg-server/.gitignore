@@ -1,3 +1,6 @@
+# Grill Data
+*.db
+
 # Logs
 logs
 *.log

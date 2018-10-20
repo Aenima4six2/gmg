@@ -1,75 +1,57 @@
 const express = require('express')
-const gmg = require('gmg-client')
-const errors = gmg.Errors
 const router = express.Router()
+const dbFactory = require('../data')
 const clientFactory = require('../grill')
+const util = require('./util')
 
-router.get('/status', async (req, res, next) => {
-  try {
+router.get('/status', util.routeHandler(async (req, res) => {
     const client = clientFactory.createClient()
     const result = await client.getGrillStatus()
     res.json(result)
-  } catch (err) {
-    if (err instanceof errors.InvalidCommand) res.status(400).send(err.message)
-    else next(err)
-  }
-})
+}))
 
-router.put('/powertoggle', async (req, res, next) => {
-  try {
+router.put('/powertoggle', util.routeHandler(async (req, res) => {
     const client = clientFactory.createClient()
     await client.powerToggleGrill()
     res.sendStatus(200)
-  } catch (err) {
-    if (err instanceof errors.InvalidCommand) res.status(400).send(err.message)
-    else next(err)
-  }
-})
+}))
 
-router.put('/poweron', async (req, res, next) => {
-  try {
+router.put('/poweron', util.routeHandler(async (req, res) => {
     const client = clientFactory.createClient()
     await client.powerOnGrill()
     res.sendStatus(200)
-  } catch (err) {
-    if (err instanceof errors.InvalidCommand) res.status(400).send(err.message)
-    else next(err)
-  }
-})
+}))
 
-router.put('/poweroff', async (req, res, next) => {
-  try {
+router.put('/poweroff', util.routeHandler(async (req, res) => {
     const client = clientFactory.createClient()
     await client.powerOffGrill()
     res.sendStatus(200)
-  } catch (err) {
-    if (err instanceof errors.InvalidCommand) res.status(400).send(err.message)
-    else next(err)
-  }
-})
+}))
 
-router.put('/temperature/grill/:tempF', async (req, res, next) => {
-  try {
+router.put('/temperature/grill/:tempF', util.routeHandler(async (req, res) => {
     const client = clientFactory.createClient()
     const temperature = req.params.tempF
     await client.setGrillTemp(temperature)
     res.sendStatus(200)
-  } catch (err) {
-    if (err instanceof errors.InvalidCommand) res.status(400).send(err.message)
-    else next(err)
-  }
-})
+}))
 
-router.put('/temperature/food/:tempF', async (req, res, next) => {
-  try {
+router.put('/temperature/food/:tempF', util.routeHandler(async (req, res) => {
     const client = clientFactory.createClient()
     const temperature = req.params.tempF
     await client.setFoodTemp(temperature)
     res.sendStatus(200)
-  } catch (err) {
-    if (err instanceof errors.InvalidCommand) res.status(400).send(err.message)
-    else next(err)
-  }
-})
+}))
+
+router.get('/temperature/history', util.routeHandler(async (req, res) => {
+    const db = await dbFactory.createDb()
+
+    const rows = await db.all(`
+        SELECT temperature_log_id, timestamp, grill_temperature, food_temperature
+        FROM temperature_log
+        WHERE timestamp >= ?;
+    `, parseInt(req.query.since, 10))
+
+    res.json(rows)
+}))
 
 module.exports = router
