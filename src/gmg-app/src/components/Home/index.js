@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Card } from 'material-ui/Card'
 import GrillTemperature from '../GrillTemperature'
 import FoodTemperature from '../FoodTemperature'
 import Timers from "../Timers/index"
@@ -11,12 +12,34 @@ import 'react-s-alert/dist/s-alert-default.css'
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css'
 import './index.css'
 import 'typeface-roboto'
+import { Line, Chart } from 'react-chartjs-2'
+import 'chartjs-plugin-streaming'
+import * as moment from 'moment'
+
+const GRILL_TEMPERATURE_DATASET = 0
+const FOOD_TEMPERATURE_DATASET = 1
 
 export default class Home extends Component {
   constructor() {
     super()
+    Chart.defaults.global.plugins.streaming.duration = 1000 * 60 * 30
     this.client = new GrillClient(window.location.origin)
     this.state = {
+      datasets: [{
+        label: 'Grill Temp',
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        fill: false,
+        pointRadius: 0,
+        data: []
+      }, {
+        label: 'Food Temp',
+        borderColor: 'rgb(54, 162, 235)',
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        fill: false,
+        pointRadius: 0,
+        data: []
+      }],
       currentGrillTemp: 0,
       desiredGrillTemp: 0,
       currentFoodTemp: 0,
@@ -66,15 +89,43 @@ export default class Home extends Component {
 
   componentDidMount() {
     this.socket.on('status', status => {
+      this.state.datasets[GRILL_TEMPERATURE_DATASET].data.push({
+        x: Date.now(),
+        y: status.currentGrillTemp,
+      })
+
+      this.state.datasets[FOOD_TEMPERATURE_DATASET].data.push({
+        x: Date.now(),
+        y: status.currentFoodTemp,
+      })
+
       this.setState({
         ...status,
         grillConnected: true,
         loading: !!this.state.commandsPending
       })
     })
+
     this.socket.on('alert', alert => {
       this.sendAlert(alert)
     })
+
+    this.client.getTemperatureHistory(moment().subtract(8, 'hours').unix(Number))
+      .then(history => {
+        if (history.length === 0) {
+          return
+        }
+
+        this.setState({
+          datasets: [{
+            ...this.state.datasets[GRILL_TEMPERATURE_DATASET],
+            data: history.map(d => ({ x: d.timestamp * 1000, y: d.grill_temperature }))
+          }, {
+            ...this.state.datasets[FOOD_TEMPERATURE_DATASET],
+            data: history.map(d => ({ x: d.timestamp * 1000, y: d.food_temperature }))
+          }]
+        })
+      })
   }
 
   componentWillUnmount() {
@@ -169,14 +220,38 @@ export default class Home extends Component {
             timersOn={this.state.showTimers}
             powerOn={this.state.isOn} />
         </div>
-        <div className="card-container ">
+        <div className="card-container">
+          <Card>
+            <Line data={{
+                datasets: this.state.datasets
+              }}
+              options={{
+                scales: {
+                  xAxes: [{
+                    type: 'realtime',
+                    time: { unit: 'minute' }
+                  }],
+                  tooltips: {
+                    mode: 'nearest',
+                    intersect: false
+                  },
+                  hover: {
+                    mode: 'nearest',
+                    intersect: false
+                  },
+                }
+              }}
+            />
+          </Card>
+        </div>
+        <div className="card-container">
           <GrillTemperature
             isEnabled={this.canChangeTemp}
             onSubmit={this.setDesiredGrillTemp}
             desiredGrillTemp={this.state.desiredGrillTemp}
             currentGrillTemp={this.state.currentGrillTemp} />
         </div>
-        <div className="card-container ">
+        <div className="card-container">
           <FoodTemperature
             isEnabled={this.canChangeTemp}
             onSubmit={this.setDesiredFoodTemp}
