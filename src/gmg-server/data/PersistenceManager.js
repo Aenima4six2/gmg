@@ -49,7 +49,7 @@ class PersistenceManager {
             VALUES (strftime('%s','now'), $grill_temperature, $food_temperature)
         `, {
             $grill_temperature: status.currentGrillTemp,
-            $food_temperature: status.currentFoodTemp,
+            $food_temperature: status.currentFoodTemp
         })
     }
 }
