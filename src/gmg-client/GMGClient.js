@@ -111,8 +111,8 @@ class GMGClient {
         // Listen for response
         socket.setBroadcast(true)
         socket.on('message', (msg, info) => {
-          const self = ip.address()
-          if (info.address !== self) {
+          // Make sure the response is not a broadcast to ourself
+          if (!msg.equals(data)) {
             this.host = info.address
             finish(this.host)
             this._logger(`Received discovery response dgram from Grill (${info.address}:${info.port})`)

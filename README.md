@@ -30,6 +30,18 @@ Note: You can omit the GMG_ALERTS_SLACK_WEBHOOKURL env variable if you are not u
 1. `cd` into the `src` directory
 1. `./build.sh`
 1. `cd gmg-server && npm run start:release`
+1. Optionally start the emulator `dotnet bin/Debug/netcoreapp2.1/gmg-emulator.dll`
+
+## Development and Debugging Setup
+1. Ensure you have node v8+, npm, and dotnet core 2.1+ SDK installed
+1. Clone this repo
+1. Server: Start node and attach to `src/gmg-server/bin/www` with IDE of choice (VSCode, Atom, WebStorm, etc.)
+    1. If using VSCode, open workspace `gmg.code-workspace`
+    2. Open Debug tab and click **Start Debugging** `Debug (gmg-server)`
+1. UI: `(cd src/gmg-app && npm run start)` to start the development web server and webpack watch
+1. Emulator: Open solution `src/gmg-emulator/gmg-emulator.sln` with IDE of choice (Rider, VSCode, Visual Studio, etc.)
+    1. If using VSCode, open workspace `gmg.code-workspace`
+    2. Open Debug tab and click **Start Debugging**  `Debug (gmg-emulator)`
 
 ## Setup and Run on a Raspberry PI with Ubuntu-mate
 ### [Install ubuntu-mate on RPi](https://ubuntu-mate.org/raspberry-pi/)
