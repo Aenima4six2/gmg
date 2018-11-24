@@ -12,7 +12,7 @@ import 'react-s-alert/dist/s-alert-default.css'
 import 'react-s-alert/dist/s-alert-css-effects/bouncyflip.css'
 import './index.css'
 import 'typeface-roboto'
-import { Line, Chart } from 'react-chartjs-2'
+import { Chart } from 'react-chartjs-2'
 import 'chartjs-plugin-streaming'
 import * as moment from 'moment'
 

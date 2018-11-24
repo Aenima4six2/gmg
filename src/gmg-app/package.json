@@ -7,14 +7,14 @@
     "chartjs-plugin-streaming": "^1.5.0",
     "font-awesome": "^4.7.0",
     "lodash.merge": "latest",
-    "material-ui": "^0.20.1",
+    "material-ui": "^0.20.2",
     "moment": "^2.22.2",
     "prop-types": "latest",
-    "react": "^16.4.1",
+    "react": "^16.6.3",
     "react-chartjs-2": "^2.7.4",
-    "react-dom": "^16.4.1",
+    "react-dom": "^16.6.3",
     "react-s-alert": "^1.4.1",
-    "react-scripts": "1.1.4",
+    "react-scripts": "2.1.1",
     "react-tap-event-plugin": "^3.0.3",
     "socket.io-client": "^2.1.1",
     "typeface-roboto": "0.0.54",
@@ -28,5 +28,14 @@
     "build": "react-scripts build",
     "publish": "rimraf ../gmg-server/public/app && npm run build && mv ./build ../gmg-server/public/app",
     "test": "react-scripts test --env=jsdom"
-  }
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
