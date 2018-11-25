@@ -86,6 +86,10 @@ namespace Gmg.Emulator
             iterations = 0;
         }
 
+        private ushort ConstrainGrillTemp(ushort temp) => Math.Min(Math.Max(temp, MIN_GRILL_TEMP), MAX_GRILL_TEMP);
+
+        private ushort ConstrainPropeTemp(ushort temp) => Math.Min(Math.Max(temp, MIN_PROBE_TEMP), MAX_GRILL_TEMP);
+
         private void StartInterpolationLoop()
         {
             Task.Run(async () =>
@@ -97,13 +101,13 @@ namespace Gmg.Emulator
                     if (iterations < MAX_ITERATIONS)
                     {
                         iterations++;
-                        CurrentGrillTemp = (ushort)Math.Min(Math.Max(CurrentGrillTemp + 2, MIN_GRILL_TEMP), MAX_GRILL_TEMP);
-                        CurrentProbeTemp = (ushort)Math.Min(Math.Max(CurrentProbeTemp + 1, MIN_PROBE_TEMP), MAX_GRILL_TEMP);
+                        CurrentGrillTemp = ConstrainGrillTemp((ushort)Math.Min(CurrentGrillTemp + 2, TargetGrillTemp));
+                        CurrentProbeTemp = ConstrainPropeTemp((ushort)Math.Min(CurrentProbeTemp + 1, TargetGrillTemp));
                     }
                     else
                     {
-                        CurrentGrillTemp = Math.Min(Math.Max(TargetGrillTemp, MIN_GRILL_TEMP), MAX_GRILL_TEMP);
-                        CurrentProbeTemp = Math.Min(Math.Max(TargetGrillTemp, MIN_PROBE_TEMP), MAX_GRILL_TEMP);
+                        CurrentGrillTemp = ConstrainGrillTemp(TargetGrillTemp);
+                        CurrentProbeTemp = ConstrainPropeTemp(TargetGrillTemp);
                     }
                 }
             });
