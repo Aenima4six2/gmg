@@ -13,7 +13,7 @@ namespace Gmg.Emulator
         private const ushort MIN_PROBE_TEMP = 80;
         private const int MAX_ITERATIONS = 300;
 
-        private int iterations;
+        private double iterations;
         private int onCounter;
 
         public string GrillId { get; } = "GMG10116294";
@@ -88,15 +88,6 @@ namespace Gmg.Emulator
 
         private void StartInterpolationLoop()
         {
-            ushort Interpolate(ushort current, ushort target, double factor = 1)
-            {
-                var delta = target - current;
-                var step = (delta / 30.0) * factor;
-                var @new = current + step;
-                var temp = Math.Round(@new, 0);
-                return (ushort)(temp == current ? current + 1 : temp);
-            }
-
             Task.Run(async () =>
             {
                 while (true)
@@ -106,10 +97,8 @@ namespace Gmg.Emulator
                     if (iterations < MAX_ITERATIONS)
                     {
                         iterations++;
-                        var newGrillTemp = Interpolate(CurrentGrillTemp, TargetGrillTemp);
-                        var newProbeTemp = Interpolate(CurrentProbeTemp, TargetGrillTemp, 0.65);
-                        CurrentGrillTemp = Math.Min(Math.Max(newGrillTemp, MIN_GRILL_TEMP), MAX_GRILL_TEMP);
-                        CurrentProbeTemp = Math.Min(Math.Max(newProbeTemp, MIN_PROBE_TEMP), MAX_GRILL_TEMP);
+                        CurrentGrillTemp = (ushort)Math.Min(Math.Max(CurrentGrillTemp + 2, MIN_GRILL_TEMP), MAX_GRILL_TEMP);
+                        CurrentProbeTemp = (ushort)Math.Min(Math.Max(CurrentProbeTemp + 1, MIN_PROBE_TEMP), MAX_GRILL_TEMP);
                     }
                     else
                     {
