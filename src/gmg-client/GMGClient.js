@@ -1,6 +1,5 @@
 const defaults = require('./defaultOptions')
 const dgram = require('dgram')
-const ip = require('ip')
 const GrillStatus = require('./GrillStatus')
 const InvalidCommand = require('./InvalidCommand')
 const commands = Object.freeze({

@@ -6,6 +6,8 @@ namespace Gmg.Emulator.Responses
 {
     public class GrillInfoResponse : IResponse
     {
+        private const byte NO_OP = 0xFF;
+
         // UR [2 Byte Prefix]
         private const byte PREFIX = 00; // 2 Byte
 
@@ -44,7 +46,8 @@ namespace Gmg.Emulator.Responses
             ushort probeTemp = 0,
             ushort grillSetTemp = 0,
             ushort probeSetTemp = 0,
-            GrillState grillState = GrillState.OFF
+            GrillState grillState = GrillState.OFF,
+            WarnCode warnCode = WarnCode.NONE
         )
         {
             GrillTemp = grillTemp;
@@ -52,6 +55,7 @@ namespace Gmg.Emulator.Responses
             GrillSetTemp = grillSetTemp;
             ProbeSetTemp = probeSetTemp;
             GrillState = grillState;
+            WarnCode = warnCode;
         }
 
         public ushort GrillTemp { get; }
@@ -59,22 +63,23 @@ namespace Gmg.Emulator.Responses
         public ushort GrillSetTemp { get; }
         public ushort ProbeSetTemp { get; }
         public GrillState GrillState { get; }
+        public WarnCode WarnCode { get; }
 
         public byte[] ToBytes()
         {
             var body = new byte[36];
 
-            var grillTempHigh = (byte) (GrillTemp / 256);
-            var grillTemp = (byte) (GrillTemp - grillTempHigh);
+            var grillTempHigh = (byte)(GrillTemp / 256);
+            var grillTemp = (byte)(GrillTemp - (grillTempHigh * 256));
 
-            var probeTempHigh = (byte) (ProbeTemp / 256);
-            var probeTemp = (byte) (ProbeTemp - probeTempHigh);
+            var probeTempHigh = (byte)(ProbeTemp / 256);
+            var probeTemp = (byte)(ProbeTemp - (probeTempHigh * 256));
 
-            var grillSetTempHigh = (byte) (GrillSetTemp / 256);
-            var grillSetTemp = (byte) (GrillSetTemp - grillSetTempHigh);
+            var grillSetTempHigh = (byte)(GrillSetTemp / 256);
+            var grillSetTemp = (byte)(GrillSetTemp - (grillSetTempHigh * 256));
 
-            var probeSetTempHigh = (byte) (ProbeSetTemp / 256);
-            var probeSetTemp = (byte) (ProbeSetTemp - probeSetTempHigh);
+            var probeSetTempHigh = (byte)(ProbeSetTemp / 256);
+            var probeSetTemp = (byte)(ProbeSetTemp - (probeSetTempHigh * 256));
 
             body.Set(PREFIX, "UR".ToBytes());
             body.Set(GRILL_TEMP, grillTemp);
@@ -84,11 +89,13 @@ namespace Gmg.Emulator.Responses
             body.Set(GRILL_SET_TEMP, grillSetTemp);
             body.Set(GRILL_SET_TEMP_HIGH, grillSetTempHigh);
 
-            body.Fill(20, (byte) 0xFF, 4);
+            body.Fill(CURVE_REMAIN_TIME, NO_OP, 4);
+            body.Set(WARN_CODE, (byte)WarnCode);
 
             body.Set(PROBE_SET_TEMP, probeSetTemp);
             body.Set(PROBE_SET_TEMP_HIGH, probeSetTempHigh);
-            body.Set(GRILL_STATE, (byte) GrillState);
+            body.Set(GRILL_STATE, (byte)GrillState);
+
             return body;
         }
 
