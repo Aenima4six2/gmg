@@ -11,7 +11,7 @@ namespace Gmg.Emulator
         private const ushort MAX_GRILL_TEMP = 500;
         private const ushort MIN_GRILL_TEMP = 90;
         private const ushort MIN_PROBE_TEMP = 80;
-        private const int MAX_ITERATIONS = 300;
+        private const int MAX_ITERATIONS = 500;
 
         private double iterations;
         private int onCounter;
@@ -88,7 +88,7 @@ namespace Gmg.Emulator
 
         private ushort ConstrainGrillTemp(ushort temp) => Math.Min(Math.Max(temp, MIN_GRILL_TEMP), MAX_GRILL_TEMP);
 
-        private ushort ConstrainPropeTemp(ushort temp) => Math.Min(Math.Max(temp, MIN_PROBE_TEMP), MAX_GRILL_TEMP);
+        private ushort ConstrainProbeTemp(ushort temp) => Math.Min(Math.Max(temp, MIN_PROBE_TEMP), MAX_GRILL_TEMP);
 
         private void StartInterpolationLoop()
         {
@@ -101,13 +101,18 @@ namespace Gmg.Emulator
                     if (iterations < MAX_ITERATIONS)
                     {
                         iterations++;
-                        CurrentGrillTemp = ConstrainGrillTemp((ushort)Math.Min(CurrentGrillTemp + 2, TargetGrillTemp));
-                        CurrentProbeTemp = ConstrainPropeTemp((ushort)Math.Min(CurrentProbeTemp + 1, TargetGrillTemp));
+                        CurrentGrillTemp = ConstrainGrillTemp(TargetGrillTemp > CurrentGrillTemp
+                            ? (ushort)Math.Min(CurrentGrillTemp + 2, TargetGrillTemp)
+                            : (ushort)Math.Max(CurrentGrillTemp - 2, TargetGrillTemp));
+
+                        CurrentProbeTemp = ConstrainProbeTemp(TargetGrillTemp > CurrentGrillTemp
+                            ? (ushort)Math.Min(CurrentProbeTemp + 1, TargetGrillTemp)
+                            : (ushort)Math.Max(CurrentProbeTemp - 1, TargetGrillTemp));
                     }
                     else
                     {
                         CurrentGrillTemp = ConstrainGrillTemp(TargetGrillTemp);
-                        CurrentProbeTemp = ConstrainPropeTemp(TargetGrillTemp);
+                        CurrentProbeTemp = ConstrainProbeTemp(TargetGrillTemp);
                     }
                 }
             });
