@@ -31,7 +31,7 @@ image: manifest ## Build Docker Image
 	cd src; docker build -t $(APP):$(date) -t $(APP):latest .
 
 image-nc: manifest ## Build Docker Image with no caching
-	cd src; docker build --no-cache -t $(APP):$(date) -t $(APP):latest gmg .
+	cd src; docker build --no-cache -t $(APP):$(date) -t $(APP):latest .
 
 push-image: prepare image ## Push Docker Image to Docker hub (You may need to auth to Docker hub)
 	cd src; docker push $(APP):$(date)
