@@ -24,6 +24,15 @@ There are number of way to configure the server. You can set env variables in Do
 1. `docker run -it -p 80:80 -e "GMG_GRILL_HOST=xx.xx.xx.xx" -e "GMG_ALERTS_SLACK_WEBHOOKURL=https://your_slack_webhook_address" <GMG_IMAGE_NAME>`
 Note: You can omit the GMG_ALERTS_SLACK_WEBHOOKURL env variable if you are not using slack.
 
+### Makefile
+There is also now a `Makefile` included that can help simplify some development tasks for the image and iterating on it.
+
+Try `make help` to get the targets availabile.
+
+#### .env
+
+To use `make run` you'll need to set `GMG_GRILL_HOST` and optionally `GMG_ALERTS_SLACK_WEBHOOKURL` or `GMG_EXTERNAL_PORT`. You can also just put those in a `.env` file in the base of this project.
+
 ## Setup and Run without Docker (*nix/mac only - Server will auto discover the grill)
 1. Clone this repo
 1. Set your slack webhook URL (see above)
