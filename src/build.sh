@@ -11,4 +11,7 @@ set -e
 (cd ./gmg-server && npm i)
 
 # Build Emulator
-(cd ./gmg-emulator && dotnet restore && dotnet build)
+# This isn't needed in the container.
+if [ -d "./gmg-emulator" ] ; then
+  (cd ./gmg-emulator && dotnet restore && dotnet build)
+fi
