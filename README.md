@@ -39,10 +39,10 @@ To use `make run` you'll need to set `GMG_GRILL_HOST` and optionally `GMG_ALERTS
 1. `cd` into the `src` directory
 1. `./build.sh`
 1. `cd gmg-server && npm run start:release`
-1. Optionally start the emulator `dotnet bin/Debug/netcoreapp2.1/gmg-emulator.dll`
+1. Optionally start the emulator `dotnet bin/Debug/netcoreapp3.1/gmg-emulator.dll`
 
 ## Development and Debugging Setup
-1. Ensure you have node v8+, npm, and dotnet core 2.1+ SDK installed
+1. Ensure you have node v14+, npm, and dotnet core 3.1+ SDK installed
 1. Clone this repo
 1. Server: Start node and attach to `src/gmg-server/bin/www` with IDE of choice (VSCode, Atom, WebStorm, etc.)
     1. If using VSCode, open workspace `gmg.code-workspace`
@@ -62,9 +62,9 @@ sudo apt-get update
 
 ### Install nodejs and npm
 ```
-wget https://nodejs.org/dist/v8.9.0/node-v8.9.0-linux-armv6l.tar.gz
-tar -xzf node-v8.9.0-linux-armv6l.tar.gz
-cd node-v8.9.0-linux-armv6l/
+wget https://nodejs.org/dist/v14.18.0/node-v14.18.0-linux-armv6l.tar.gz
+tar -xzf node-v14.18.0-linux-armv6l.tar.gz
+cd node-v14.18.0-linux-armv6l/
 sudo cp -R * /usr/local/
 ```
 
