@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Source files from .env if availabile
+. .env
+
+runstring='docker run -it '
+
+if [ -z "$GMG_EXTERNAL_PORT" ] ; then
+  GMG_EXTERNAL_PORT=80
+fi
+runstring="$runstring -p $GMG_EXTERNAL_PORT:80 "
+
+# TODO look into using avahi to discover IP address
+if [ -z "$GMG_GRILL_HOST" ] ; then
+    echo "GMG_GRILL_HOST must be set to the grill's IP address (or the address of your emulator)."
+    exit 1
+fi
+runstring="$runstring -e \"GMG_GRILL_HOST=$GMG_GRILL_HOST\" "
+
+if [ -n "$GMG_ALERTS_SLACK_WEBHOOKURL" ] ; then
+  runstring="$runstring  -e \"GMG_ALERTS_SLACK_WEBHOOKURL=$GMG_ALERTS_SLACK_WEBHOOKURL\""
+fi
+
+runstring="$runstring gmg"
+
+echo "$runstring"
+$runstring
