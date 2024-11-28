@@ -118,11 +118,12 @@ class GMGClient {
         // Listen for response
         socket.setBroadcast(true)
         socket.on('message', (msg, info) => {
-          const meta = JSON.stringify({ msg: String(msg), info })
+          const msgStr = String(msg);
+          const meta = JSON.stringify({ msg: msgStr, info })
           this._logger(`Received response: ${meta}`)
 
           // Make sure the response is not a broadcast to ourself
-          if (!finished && !msg.equals(data)) {
+          if (!finished && msgStr.trim() !== "" && !msg.equals(data)) {
             this.host = info.address
             finish(this.host)
             this._logger(`Received discovery response dgram from Grill (${info.address}:${info.port})`)
@@ -131,8 +132,9 @@ class GMGClient {
 
         this._logger('Attempting grill discovery...')
         const work = () => {
+          jp
           if (finished) return
-          
+
           if (attempts >= tries) {
             const error = new Error(`No response from Grill (${this.host}:${this.port}) after [${attempts}] discovery attempts!`)
             finish(error)
@@ -148,7 +150,7 @@ class GMGClient {
             })
           }
         }
-        
+
         // Send Commands
         work()
         schedule = setInterval(work, this.retryMs)
@@ -182,10 +184,11 @@ class GMGClient {
       // Listen for response
       if (shouldRespond) {
         socket.on('message', (msg, info) => {
-          const meta = JSON.stringify({ msg: String(msg), info })
+          const msgStr = String(msg);
+          const meta = JSON.stringify({ msg: msgStr, info })
           this._logger(`Received response: ${meta}`)
 
-          if (!finished && info.address === this.host) {
+          if (!finished && msgStr.trim() !== "" && info.address === this.host) {
             finish({ msg, info })
             this._logger(`Received response dgram from Grill (${info.address}:${info.port})`)
           }
