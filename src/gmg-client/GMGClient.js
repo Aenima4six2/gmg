@@ -117,7 +117,7 @@ class GMGClient {
         // Listen for response
         socket.setBroadcast(true)
         socket.on('message', (msg, info) => {
-          const meta = JSON.stringify({msg, info})
+          const meta = JSON.stringify({ msg, info })
           this._logger(`Received response: ${meta}`)
 
           // Make sure the response is not a broadcast to ourself
