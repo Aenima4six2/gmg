@@ -117,7 +117,7 @@ class GMGClient {
         // Listen for response
         socket.setBroadcast(true)
         socket.on('message', (msg, info) => {
-          const meta = JSON.stringify({ msg, info })
+          const meta = JSON.stringify({ msg: String(msg), info })
           this._logger(`Received response: ${meta}`)
 
           // Make sure the response is not a broadcast to ourself
@@ -174,6 +174,9 @@ class GMGClient {
 
       // Listen for response
       socket.on('message', (msg, info) => {
+        const meta = JSON.stringify({ msg: String(msg), info })
+        this._logger(`Received response: ${meta}`)
+        
         if (info.address === this.host) {
           finish({ msg, info })
           this._logger(`Received response dgram from Grill (${info.address}:${info.port})`)
