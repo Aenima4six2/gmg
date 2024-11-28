@@ -46,12 +46,12 @@ class GMGClient {
   }
 
   async getGrillId() {
-    const result = await this.sendCommand(commands.getGrillId)
+    const result = await this.sendCommand(commands.getGrillId, { ignoreEmpty: true })
     return result.msg.toString()
   }
 
   async getGrillStatus() {
-    const result = await this.sendCommand(commands.getGrillStatus)
+    const result = await this.sendCommand(commands.getGrillStatus, { ignoreEmpty: true })
     return new GrillStatus(result.msg)
   }
 
@@ -118,11 +118,12 @@ class GMGClient {
         // Listen for response
         socket.setBroadcast(true)
         socket.on('message', (msg, info) => {
-          const msgStr = String(msg);
+          const msgStr = msg.toString('utf8')
           const meta = JSON.stringify({ msg: msgStr, info })
           this._logger(`Received response: ${meta}`)
 
           // Make sure the response is not a broadcast to ourself
+          // The response should be the grill ID
           if (!finished && msgStr.trim() !== "" && !msg.equals(data)) {
             this.host = info.address
             finish(this.host)
@@ -159,7 +160,7 @@ class GMGClient {
     await this.initGrill()
   }
 
-  async sendCommand(command, { tries = this.tries, shouldRespond = true } = {}) {
+  async sendCommand(command, { tries = this.tries, shouldRespond = true, ignoreEmpty = false } = {}) {
     if (this.host === defaults.host) {
       this._logger('Grill host is broadcast address!')
       await this.discoverGrill()
@@ -183,11 +184,11 @@ class GMGClient {
       // Listen for response
       if (shouldRespond) {
         socket.on('message', (msg, info) => {
-          const msgStr = String(msg);
+          const msgStr = msg.toString('utf8')
           const meta = JSON.stringify({ msg: msgStr, info })
           this._logger(`Received response: ${meta}`)
 
-          if (!finished && msgStr.trim() !== "" && info.address === this.host) {
+          if (!finished && (!ignoreEmpty || msgStr.trim() !== "") && info.address === this.host) {
             finish({ msg, info })
             this._logger(`Received response dgram from Grill (${info.address}:${info.port})`)
           }
