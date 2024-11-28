@@ -41,6 +41,7 @@ class GMGClient {
   }
 
   async initGrill() {
+    this._logger("Sending init command...")
     await this.sendCommand(commands.init)
     await this.sendCommand(commands.init)
   }
@@ -116,6 +117,9 @@ class GMGClient {
         // Listen for response
         socket.setBroadcast(true)
         socket.on('message', (msg, info) => {
+          const meta = JSON.stringify({msg, info})
+          this._logger(`Received response: ${meta}`)
+
           // Make sure the response is not a broadcast to ourself
           if (!msg.equals(data)) {
             this.host = info.address

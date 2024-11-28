@@ -14,7 +14,7 @@ RUN apt-get update && \
 FROM node:14.18-bullseye-slim AS runtime
 COPY --from=builder /app/gmg-client /app/gmg-client
 COPY --from=builder /app/gmg-server /app/gmg-server
-COPY Dockerfile /
+
 WORKDIR /app/gmg-server
 CMD ["npm", "run", "start:release"]
 EXPOSE 80:80
