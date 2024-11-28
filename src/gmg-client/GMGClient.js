@@ -7,6 +7,7 @@ const commands = Object.freeze({
   powerOff: 'UK004!',
   getGrillStatus: 'UR001!',
   getGrillId: 'UL!',
+  init: 'UN!',
   setGrillTempF: (temp) => `UT${temp}!`,
   setFoodTempF: (temp) => `UF${temp}!`
 })
@@ -37,6 +38,11 @@ class GMGClient {
       if (!logger) return
       logger(message)
     }
+  }
+
+  async initGrill() {
+    await this.sendCommand(commands.init)
+    await this.sendCommand(commands.init)
   }
 
   async getGrillId() {
@@ -95,7 +101,7 @@ class GMGClient {
   }
 
   async discoverGrill({ tries = this.tries } = {}) {
-    return new Promise((res, rej) => {
+    await new Promise((res, rej) => {
       let attempts = 0, schedule
       const socket = dgram.createSocket('udp4')
       const data = getCommandData(commands.getGrillId)
@@ -139,6 +145,8 @@ class GMGClient {
         }, this.retryMs)
       })
     })
+
+    await this.initGrill()
   }
 
   async sendCommand(command, { tries = this.tries } = {}) {
