@@ -129,11 +129,10 @@ class GMGClient {
           }
         })
 
-        // Send Commands
         this._logger('Attempting grill discovery...')
-        schedule = setInterval(() => {
+        const work = () => {
           if (finished) return
-
+          
           if (attempts >= tries) {
             const error = new Error(`No response from Grill (${this.host}:${this.port}) after [${attempts}] discovery attempts!`)
             finish(error)
@@ -148,7 +147,11 @@ class GMGClient {
               }
             })
           }
-        }, this.retryMs)
+        }
+        
+        // Send Commands
+        work()
+        schedule = setInterval(work, this.retryMs)
       })
     })
 
@@ -189,8 +192,7 @@ class GMGClient {
         })
       }
 
-      // Send Commands
-      schedule = setInterval(() => {
+      const work = () => {
         if (finished) return
 
         if (attempts > tries) {
@@ -208,7 +210,11 @@ class GMGClient {
             }
           })
         }
-      }, this.retryMs)
+      }
+
+      // Send Commands
+      work()
+      schedule = setInterval(work, this.retryMs)
     })
   }
 
