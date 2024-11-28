@@ -1,5 +1,5 @@
 # Build Phase
-FROM node:14.18-bullseye-slim as builder
+FROM node:14.18-bullseye-slim AS builder
 WORKDIR /app
 COPY ./gmg-app ./gmg-app
 COPY ./gmg-client ./gmg-client
@@ -11,7 +11,7 @@ RUN apt-get update && \
     /bin/bash ./build.sh
 
 # Run Phase
-FROM node:14.18-bullseye-slim as runtime
+FROM node:14.18-bullseye-slim AS runtime
 COPY --from=builder /app/gmg-client /app/gmg-client
 COPY --from=builder /app/gmg-server /app/gmg-server
 COPY Dockerfile /

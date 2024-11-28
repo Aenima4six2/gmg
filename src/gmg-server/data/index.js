@@ -18,4 +18,4 @@ module.exports.initialize = ({ logger }) => {
    })
 }
 
-module.exports.createDb = Promise.resolve(db)
+module.exports.createDb = () => Promise.resolve(db)
