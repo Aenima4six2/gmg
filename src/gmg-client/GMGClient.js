@@ -132,7 +132,6 @@ class GMGClient {
 
         this._logger('Attempting grill discovery...')
         const work = () => {
-          jp
           if (finished) return
 
           if (attempts >= tries) {
