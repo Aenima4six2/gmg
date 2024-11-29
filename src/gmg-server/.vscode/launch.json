@@ -5,6 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Attach",
+            "port": 9229,
+            "request": "attach",
+            "skipFiles": [
+                "${workspaceRoot}/node_modules/**/*.js",
+                "${workspaceRoot}/lib/**/*.js",
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+
+        {
             "type": "node",
             "request": "launch",
             "name": "Debug",
@@ -14,13 +26,13 @@
             "skipFiles": [
                 "${workspaceRoot}/node_modules/**/*.js",
                 "${workspaceRoot}/lib/**/*.js",
-                "<node_internals>/**/*.js"
+                "<node_internals>/**"
             ],
             "env": {
-                "PORT": "3001",
+                "PORT": "3000",
                 "DEBUG": "src:*",
                 "NODE_ENV": "debug"
-            },
+            }
         },
     ]
 }
