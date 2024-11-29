@@ -17,8 +17,7 @@ const results = Object.freeze({
 })
 
 const getCommandData = (command) => {
-  const fullCommand = `${command}!\n`
-  const data = Buffer.from(fullCommand, 'ascii')
+  const data = Buffer.from(command, 'ascii')
   return data
 }
 
@@ -78,7 +77,6 @@ class GMGClient {
     let status = await this.getGrillStatus()
     if (!status.isOn) {
       const error = new InvalidCommand('Cannot set grill temperature when the gill is off!')
-      this._logger(error)
       throw error
     }
 
@@ -91,7 +89,6 @@ class GMGClient {
     let status = await this.getGrillStatus()
     if (!status.isOn) {
       const error = new InvalidCommand('Cannot set food temperature when the gill is off!')
-      this._logger(error)
       throw error
     }
 
@@ -101,7 +98,7 @@ class GMGClient {
   }
 
   async discoverGrill({ tries = this.tries } = {}) {
-    if (this.host.includes("255")) {
+    if (!this.host.includes("255")) {
       this._logger(`Grilled host ${this.host} does not contain broadcast octet, skipping discovery...`)
       return
     }
@@ -145,7 +142,6 @@ class GMGClient {
             this._logger('Attempting grill discovery...')
             if (attempts >= tries) {
               const error = new Error(`No response from Grill (${this.host}:${this.port}) after [${attempts}] discovery attempts!`)
-              this._logger(error)
               return finish(error)
             }
 
@@ -212,7 +208,6 @@ class GMGClient {
 
           if (attempts > tries) {
             const error = new Error(`No response from Grill after [${attempts}] command sent attempts!`)
-            this._logger(error)
             return finish(error)
           }
 
@@ -246,7 +241,6 @@ class GMGClient {
   async _powerOnGrill(status) {
     if (status.fanModeActive) {
       const error = new InvalidCommand('Cannot start grill when fan mode is active.')
-      this._logger(error)
       throw error
     }
 
