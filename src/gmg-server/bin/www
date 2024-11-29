@@ -22,10 +22,13 @@ dbFactory.initialize({ logger: debug('src:db-factory') })
 /**
  * Ensure we can discover and connect to the grill
  */
-client.discoverGrill().then(() => startServices()).catch((err) => {
-  logger(err)
-  startServices()
-})
+client.discoverGrill()
+  .then(() => client.initGrill())
+  .then(() => startServices())
+  .catch((err) => {
+    logger(err)
+    startServices()
+  })
 
 function startServices() {
   /**

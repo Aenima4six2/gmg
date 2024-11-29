@@ -101,45 +101,54 @@ class GMGClient {
   }
 
   async discoverGrill({ tries = this.tries } = {}) {
-    await new Promise((res, rej) => {
-      let attempts = 0, schedule
-      const socket = dgram.createSocket('udp4')
-      const data = getCommandData(commands.getGrillId)
-      let finished = false
+    if (this.host.includes("255")) {
+      this._logger(`Grilled host ${this.host} does not contain broadcast octet, skipping discovery...`)
+      return
+    }
 
-      const finish = (result) => {
-        if (schedule) clearInterval(schedule)
-        socket.removeAllListeners('message')
-        socket.close()
-        result instanceof Error ? rej(result) : res(result)
-      }
+    let attempts = 0, finished = false, schedule, socket
+    const data = getCommandData(commands.getGrillId)
 
-      socket.bind(() => {
-        // Listen for response
-        socket.setBroadcast(true)
-        socket.on('message', (msg, info) => {
-          const msgStr = msg.toString('utf8')
-          const meta = JSON.stringify({ msg: msgStr, info })
-          this._logger(`Received response: ${meta}`)
+    try {
+      await new Promise((res, rej) => {
+        socket = dgram.createSocket('udp4')
 
-          // Make sure the response is not a broadcast to ourself
-          // The response should be the grill ID
-          if (!finished && msgStr.trim() !== "" && !msg.equals(data)) {
-            this.host = info.address
-            finish(this.host)
-            this._logger(`Received discovery response dgram from Grill (${info.address}:${info.port})`)
-          }
-        })
+        const finish = (result) => {
+          finished = true
+          if (schedule) clearInterval(schedule)
+          if (result instanceof Error) rej(result)
+          else res(result)
+        }
 
-        this._logger('Attempting grill discovery...')
-        const work = () => {
-          if (finished) return
+        socket.bind(() => {
+          socket.setBroadcast(true)
 
-          if (attempts >= tries) {
-            const error = new Error(`No response from Grill (${this.host}:${this.port}) after [${attempts}] discovery attempts!`)
-            finish(error)
-            this._logger(error)
-          } else {
+          // Listen for response
+          socket.on('message', (msg, info) => {
+            const msgStr = msg.toString('utf8')
+            const meta = JSON.stringify({ msg: msgStr, info })
+            this._logger(`Received response: ${meta}`)
+
+            if (finished) return
+
+            // Make sure the response is not a broadcast to ourself
+            if (msgStr.trim() !== "" && !msg.equals(data)) {
+              this.host = info.address
+              this._logger(`Response is discovery dgram from Grill (${info.address}:${info.port})`)
+              finish(this.host)
+            }
+          })
+
+          const work = () => {
+            if (finished) return
+
+            this._logger('Attempting grill discovery...')
+            if (attempts >= tries) {
+              const error = new Error(`No response from Grill (${this.host}:${this.port}) after [${attempts}] discovery attempts!`)
+              this._logger(error)
+              return finish(error)
+            }
+
             attempts++
             socket.send(data, 0, data.byteLength, this.port, this.host, error => {
               if (error) {
@@ -147,80 +156,86 @@ class GMGClient {
               } else {
                 this._logger(`Grill (${this.host}:${this.port}) discovery broadcast dgram sent -> Attempt #${attempts}`)
               }
+
+              if (!schedule) schedule = setInterval(work, this.retryMs)
             })
           }
-        }
 
-        // Send Commands
-        work()
-        schedule = setInterval(work, this.retryMs)
+          work()
+        })
       })
-    })
-
-    await this.initGrill()
+    } finally {
+      socket?.removeAllListeners('message')
+      socket?.close()
+    }
   }
 
   async sendCommand(command, { tries = this.tries, shouldRespond = true, ignoreEmpty = false } = {}) {
     if (this.host === defaults.host) {
-      this._logger('Grill host is broadcast address!')
-      await this.discoverGrill()
+      throw new Error('Grill host is broadcast address! Please discover first')
     }
 
-    return await new Promise((res, rej) => {
-      let attempts = 0, schedule
-      const data = getCommandData(command)
-      const socket = dgram.createSocket('udp4')
-      const offset = data.byteLength
-      let finished = false
+    let attempts = 0, finished = false, schedule, socket
+    const data = getCommandData(command)
 
-      const finish = (result) => {
-        finished = true
-        if (schedule) clearInterval(schedule)
-        socket.removeAllListeners('message')
-        socket.close()
-        result instanceof Error ? rej(result) : res(result)
-      }
+    try {
+      return await new Promise((res, rej) => {
+        socket = dgram.createSocket('udp4')
+        const offset = data.byteLength
 
-      // Listen for response
-      if (shouldRespond) {
-        socket.on('message', (msg, info) => {
-          const msgStr = msg.toString('utf8')
-          const meta = JSON.stringify({ msg: msgStr, info })
-          this._logger(`Received response: ${meta}`)
+        const finish = (result) => {
+          finished = true
+          if (schedule) clearInterval(schedule)
+          if (result instanceof Error) rej(result)
+          else res(result)
+        }
 
-          if (!finished && (!ignoreEmpty || msgStr.trim() !== "") && info.address === this.host) {
-            finish({ msg, info })
-            this._logger(`Received response dgram from Grill (${info.address}:${info.port})`)
+        // Listen for response
+        if (shouldRespond) {
+          socket.on('message', (msg, info) => {
+            const msgStr = msg.toString('utf8')
+            const isEmpty = msgStr.trim() === ""
+            const meta = JSON.stringify({ msg: msgStr, info, isEmpty })
+            this._logger(`Received response: ${meta}`)
+
+            if (finished) return
+
+            if ((!ignoreEmpty || !isEmpty) && info.address === this.host) {
+              this._logger(`Received response dgram from Grill (${info.address}:${info.port})`)
+              finish({ msg, info })
+            }
+          })
+        }
+
+        const work = () => {
+          if (finished) return
+
+          if (attempts > tries) {
+            const error = new Error(`No response from Grill after [${attempts}] command sent attempts!`)
+            this._logger(error)
+            return finish(error)
           }
-        })
-      }
 
-      const work = () => {
-        if (finished) return
-
-        if (attempts > tries) {
-          const error = new Error(`No response from Grill after [${attempts}] command sent attempts!`)
-          finish(error)
-          this._logger(error)
-        } else {
           attempts++
           socket.send(data, 0, offset, this.port, this.host, error => {
             if (error) {
               this._logger(`Grill (${this.host}:${this.port}) [${command}] command dgram send failed -> ${error}`)
             } else {
               this._logger(`Grill (${this.host}:${this.port}) [${command}] command dgram sent -> Attempt #${attempts}.`)
-              if (!shouldRespond) finish()
             }
+
+            if (!shouldRespond) return finish()
+            if (!schedule) schedule = setInterval(work, this.retryMs)
           })
         }
-      }
 
-      // Send Commands
-      work()
-      schedule = setInterval(work, this.retryMs)
-    })
+        work()
+      })
+    } finally {
+      socket?.removeAllListeners('message')
+      socket?.close()
+    }
   }
-
 
   async _powerOffGrill(status) {
     if (!status.isOn) return
