@@ -2,7 +2,8 @@
   "grill": {
     "host": "255.255.255.255",
     "port": 8080,
-    "tries": 5
+    "tries": 5,
+    "retryMs": 2000
   },
   "status": {
     "pollingInterval": 5000
