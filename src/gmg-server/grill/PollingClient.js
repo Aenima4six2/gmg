@@ -17,9 +17,16 @@ class PollingClient extends EventEmitter {
     }
 
     async start() {
+        let discovered = false
         await this._pollingManager.start({
             task: async () => {
                 // Get current grill status
+                if(!discovered) {
+                    this._logger('Discovering grill...')
+                    await this._client.discoverGrill()
+                    discovered = true
+                }
+                
                 this._logger('Fetching grill status')
                 const status = await this._client.getGrillStatus()
                 this.emit('status', status)

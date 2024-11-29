@@ -5,7 +5,5 @@
   "main": "index.js",
   "author": "Jp Dienst",
   "license": "ISC",
-  "dependencies": {
-    "ip": "^1.1.5"
-  }
+  "dependencies": {}
 }
