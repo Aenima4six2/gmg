@@ -80,9 +80,10 @@ class GMGClient {
       throw error
     }
 
-    const command = commands.setGrillTempF(fahrenheit)
+    const tempF = Number(fahrenheit);
+    const command = commands.setGrillTempF(tempF)
     const result = await this.sendCommand(command)
-    await this._validateResult(result, newState => newState.desiredGrillTemp === fahrenheit)
+    await this._validateResult(result, newState => newState.desiredGrillTemp === tempF)
   }
 
   async setFoodTemp(fahrenheit) {
@@ -92,9 +93,10 @@ class GMGClient {
       throw error
     }
 
-    const command = commands.setFoodTempF(fahrenheit)
+    const tempF = Number(fahrenheit);
+    const command = commands.setFoodTempF(tempF)
     const result = await this.sendCommand(command)
-    await this._validateResult(result, newState => newState.desiredFoodTemp === fahrenheit)
+    await this._validateResult(result, newState => newState.desiredFoodTemp === tempF)
   }
 
   async discoverGrill({ tries = this.tries } = {}) {
@@ -249,10 +251,15 @@ class GMGClient {
   }
 
   async _validateResult(result, validator) {
+    // If grill responds with OK, there's nothing else to validate
     const response = result.msg.toString()
-    if (response !== results.OK) {
-      throw new Error(`Grill responded with non OK status -> ${response}`)
-    }
+    if (response === results.OK) return;
+
+    // Validate the returned grill state
+    const newState = new GrillStatus(result.msg)
+    if (validator(newState)) return
+
+    throw new Error(`Grill responded with invalid status -> ${response}`)
   }
 
 }
