@@ -5,12 +5,17 @@ const Path = require('path')
 let db
 
 module.exports.initialize = ({ logger }) => {
-  const db_path = Path.join(__dirname, './grill_data.db')
-  logger('Initializing db: [%s]', db_path)
+  const filename = Path.join(__dirname, './grill_data.db')
+
+  logger('Initializing db: [%s]', filename)
+
   db = open({
-    filename: db_path,
+    filename,
     driver: sqlite3.Database
+  }).catch(err => {
+    logger("Failed to initialize db: %s", err)
+    setImmediate(() => process.exit(1))
   })
 }
 
-module.exports.createDb = async () => db
+module.exports.createDb = () => Promise.resolve(db)

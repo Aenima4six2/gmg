@@ -2,3 +2,4 @@
 **/.vscode
 **/gmg-emulator
 **/.git
+**/data/*.db
