@@ -14,7 +14,20 @@ RUN apt-get update && \
 FROM node:22-bookworm-slim AS runtime
 COPY --from=builder /app/gmg-client /app/gmg-client
 COPY --from=builder /app/gmg-server /app/gmg-server
-COPY Dockerfile /
+
+RUN apt-get update && \
+    apt-get install -y tini && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+ENV NODE_ENV=production \
+    DEBUG=src.* \
+    PORT=80
+
 WORKDIR /app/gmg-server
-CMD ["npm", "run", "start:release"]
-EXPOSE 80:80
+
+ENTRYPOINT ["/usr/bin/tini", "--"]
+
+CMD ["node", "./bin/www"]
+
+EXPOSE 80
