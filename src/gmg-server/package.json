@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start:dev": "export NODE_ENV=development && export DEBUG=src:* && export PORT=3001 && node ./bin/www",
-    "start:release": "export NODE_ENV=production && export DEBUG=src:* && export PORT=80 && node ./bin/www"
+    "start:release": "export NODE_ENV=production && export DEBUG=src:* && export PORT=80 && node ./bin/www",
+    "test": "jest"
   },
   "dependencies": {
     "config": "^3.3.0",
@@ -17,5 +18,8 @@
     "socket.io": "^4.8.0",
     "sqlite3": "^5.1.7",
     "sqlite": "^5.1.0"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0"
   }
 }
