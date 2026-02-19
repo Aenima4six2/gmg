@@ -8,7 +8,7 @@ else
 APP=$(DOCKER_HUB_USERNAME)/$(APP_STRING)
 endif
 
-.PHONY: help manifest image image-nc run install build dev test test-down test-logs test-rebuild clean
+.PHONY: help manifest image image-nc run install build dev unit-test test test-down test-logs test-rebuild clean
 
 help: ## This help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
@@ -46,6 +46,10 @@ dev: install ## Start dev servers (server on :3001, UI on :5173)
 	cd src/gmg-server && npm run start:dev &
 	@echo "Starting gmg-app dev server on port 5173..."
 	cd src/gmg-app && npm run dev
+
+unit-test: install ## Run unit tests for gmg-client and gmg-server
+	cd src/gmg-client && npm test
+	cd src/gmg-server && npm test
 
 test: ## Start app + emulator with Docker Compose for testing
 	docker compose up --build -d

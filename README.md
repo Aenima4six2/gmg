@@ -51,7 +51,7 @@ See `.env.example` for a template. To customize alert sounds, replace the mp3 fi
 
 ## Development Setup
 
-**Prerequisites:** Node 22+, .NET 9+ SDK (for the emulator)
+**Prerequisites:** Node 24+, .NET 10+ SDK (for the emulator)
 
 1. Clone the repo
 2. Start the emulator: `cd src/gmg-emulator && dotnet run`
@@ -67,6 +67,7 @@ VSCode users can open `gmg.code-workspace` and use the pre-configured debug laun
 A `Makefile` is included for common tasks. Run `make help` to see all targets:
 
 ```sh
+make unit-test     # run unit tests for gmg-client and gmg-server
 make test          # start app + emulator via Docker Compose
 make test-down     # stop testing environment
 make test-logs     # tail Docker Compose logs
@@ -82,4 +83,4 @@ make clean         # remove node_modules and build artifacts
 ## Tech Stack
 - **Frontend:** React 18, MUI 6, Vite, Chart.js 3, Socket.IO
 - **Backend:** Express, Socket.IO, SQLite
-- **Emulator:** .NET 9 (C#)
+- **Emulator:** .NET 10 (C#)

@@ -1,5 +1,5 @@
 # Build Phase
-FROM node:22-bookworm-slim AS builder
+FROM node:24-bookworm-slim AS builder
 WORKDIR /app
 COPY ./gmg-app ./gmg-app
 COPY ./gmg-client ./gmg-client
@@ -11,7 +11,7 @@ RUN apt-get update && \
     /bin/bash ./build.sh
 
 # Run Phase
-FROM node:22-bookworm-slim AS runtime
+FROM node:24-bookworm-slim AS runtime
 COPY --from=builder /app/gmg-client /app/gmg-client
 COPY --from=builder /app/gmg-server /app/gmg-server
 
@@ -21,7 +21,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 ENV NODE_ENV=production \
-    DEBUG=src.* \
+    DEBUG=src:* \
     PORT=80
 
 WORKDIR /app/gmg-server
