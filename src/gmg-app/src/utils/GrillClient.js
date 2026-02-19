@@ -1,5 +1,3 @@
-import 'whatwg-fetch'
-
 const formatAddress = (uri) => {
   let formatted = uri.toString()
   if (formatted.endsWith('/') || formatted.endsWith('\\')) {

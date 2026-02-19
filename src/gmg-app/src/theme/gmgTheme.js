@@ -1,21 +1,63 @@
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme'
-import merge from 'lodash.merge'
+import { createTheme } from '@mui/material/styles'
+import { grey, green } from '@mui/material/colors'
 
-const colors = require('material-ui/styles/colors')
-const muiTheme = {
+const theme = createTheme({
   palette: {
-    textColor: colors.grey200,
-    primary1Color: colors.grey50,
-    accent1Color: colors.green700,
-    accent2Color: colors.grey800,
-    accent3Color: 'rgb(48, 48, 48)',
+    mode: 'dark',
+    text: {
+      primary: grey[200],
+    },
+    primary: {
+      main: grey[50],
+    },
+    secondary: {
+      main: green[700],
+    },
+    background: {
+      default: '#000000',
+      paper: 'rgb(48, 48, 48)',
+    }
   },
-  table: {
-    height: 'calc(100vh - 122px)'
-  },
-  tableHeaderColumn: {
-    fontSize: '14px'
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'rgb(48, 48, 48)',
+        }
+      }
+    },
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: grey[800],
+        }
+      }
+    },
+    MuiBottomNavigation: {
+      styleOverrides: {
+        root: {
+          backgroundColor: grey[800],
+        }
+      }
+    },
+    MuiAvatar: {
+      styleOverrides: {
+        root: {
+          width: 50,
+          height: 50,
+          backgroundColor: grey[600],
+          color: grey[300],
+        }
+      }
+    },
+    MuiListItemText: {
+      styleOverrides: {
+        primary: {
+          fontSize: '1rem',
+        }
+      }
+    }
   }
-}
-const theme = merge(darkBaseTheme, muiTheme)
+})
+
 export default theme

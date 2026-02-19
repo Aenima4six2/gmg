@@ -2,9 +2,9 @@ const WebHookSender = require('./WebhookSender')
 const path = require('path')
 
 const slackEscape = (message) => (message || '')
-    .replace('&', '&amp;')
-    .replace('<', '&lt;')
-    .replace('>', '&gt;')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
 
 
 class SlackSender {

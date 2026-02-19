@@ -1,8 +1,13 @@
-const socketIo = require('socket.io')
+const { Server } = require('socket.io')
 
 class SocketServer {
   constructor({ server, logger, pollingClient }) {
-    this._io = socketIo(server)
+    this._io = new Server(server, {
+      cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+      }
+    })
     this._pollingClient = pollingClient
     this._sockets = []
     this._started = false
@@ -43,7 +48,7 @@ class SocketServer {
   stop() {
     if (!this._started) throw new Error('Already stopped!')
     this._started = false
-    this._sockets.forEach(socket => socket.close())
+    this._sockets.forEach(socket => socket.disconnect(true))
     this._pollingClient.removeListener('status', this._onStatus)
     this._io.removeListener('connection', this._onConnection)
   }

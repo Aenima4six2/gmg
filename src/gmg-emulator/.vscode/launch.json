@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/netcoreapp2.1/gmg-emulator.dll",
+            "program": "${workspaceFolder}/bin/Debug/net9.0/gmg-emulator.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",

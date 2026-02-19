@@ -2,40 +2,31 @@
   "name": "gmg-app",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001",
   "dependencies": {
-    "chartjs-plugin-streaming": "^1.5.0",
-    "font-awesome": "^4.7.0",
-    "lodash.merge": "latest",
-    "material-ui": "^0.20.2",
-    "moment": "^2.22.2",
-    "prop-types": "latest",
-    "react": "^16.6.3",
-    "react-chartjs-2": "^2.7.4",
-    "react-dom": "^16.6.3",
-    "react-s-alert": "^1.4.1",
-    "react-scripts": "2.1.1",
-    "react-tap-event-plugin": "^3.0.3",
-    "socket.io-client": "^2.1.1",
-    "typeface-roboto": "0.0.54",
-    "whatwg-fetch": "^2.0.4"
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@fontsource/roboto": "^5.1.0",
+    "@mui/icons-material": "^6.4.0",
+    "@mui/material": "^6.4.0",
+    "chart.js": "^3.9.0",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "chartjs-plugin-streaming": "^2.0.0",
+    "date-fns": "^3.6.0",
+    "notistack": "^3.0.1",
+    "prop-types": "^15.8.0",
+    "react": "^18.3.0",
+    "react-chartjs-2": "^4.3.0",
+    "react-dom": "^18.3.0",
+    "socket.io-client": "^4.8.0"
   },
   "devDependencies": {
-    "rimraf": "^2.6.2"
+    "vite": "^6.1.0",
+    "@vitejs/plugin-react": "^4.3.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "publish": "rimraf ../gmg-server/public/app && npm run build && mv ./build ../gmg-server/public/app",
-    "test": "react-scripts test --env=jsdom"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "publish": "rm -rf ../gmg-server/public/app && npm run build && mv ./dist ../gmg-server/public/app"
+  }
 }

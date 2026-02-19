@@ -2,3 +2,6 @@
 /.idea
 /manifest
 /.env
+/src/gmg-server/public/app
+/src/gmg-app/dist
+**/.claude

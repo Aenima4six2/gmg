@@ -1,0 +1,17 @@
+services:
+  emulator:
+    build:
+      context: ./src/gmg-emulator
+    ports:
+      - "8080:8080/udp"
+
+  gmg:
+    build:
+      context: ./src
+    ports:
+      - "3000:80"
+    environment:
+      - GMG_GRILL_HOST=emulator
+      - GMG_GRILL_PORT=8080
+    depends_on:
+      - emulator

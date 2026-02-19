@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -28,7 +28,7 @@ namespace Gmg.Emulator.Requests
                 {SET_PROBE_TEMP, ParseGetProbeTemp}
             };
 
-        public static IRequest CreateFromBytes(byte[] commandCodeBytes)
+        public static IRequest? CreateFromBytes(byte[] commandCodeBytes)
         {
             if (commandCodeBytes == null) throw new ArgumentNullException(nameof(commandCodeBytes));
 

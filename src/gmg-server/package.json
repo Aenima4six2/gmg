@@ -3,21 +3,19 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start:dev": "export NODE_ENV=development && export DEBUG=src.* && export PORT=3001 && node ./bin/www",
-    "start:release": "export NODE_ENV=production && export DEBUG=src.* && export PORT=80 && node ./bin/www"
+    "start:dev": "export NODE_ENV=development && export DEBUG=src:* && export PORT=3001 && node ./bin/www",
+    "start:release": "export NODE_ENV=production && export DEBUG=src:* && export PORT=80 && node ./bin/www"
   },
   "dependencies": {
-    "body-parser": "~1.18.3",
-    "config": "^1.31.0",
+    "config": "^3.3.0",
     "cookie-parser": "~1.4.3",
-    "debug": "~3.1.0",
-    "express": "^4.16.4",
+    "cors": "^2.8.5",
+    "debug": "^4.3.0",
+    "express": "^4.21.0",
     "gmg-client": "file:../gmg-client",
-    "moment": "^2.22.2",
-    "morgan": "^1.9.1",
-    "node-fetch": "^2.3.0",
-    "serve-favicon": "~2.5.0",
-    "socket.io": "^2.1.1",
-    "sqlite": "^4.0.12"
+    "morgan": "^1.10.0",
+    "socket.io": "^4.8.0",
+    "sqlite3": "^5.1.7",
+    "sqlite": "^5.1.0"
   }
 }
