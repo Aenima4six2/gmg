@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install gmg-client dependencies
+        run: npm install
+        working-directory: src/gmg-client
+
+      - name: Install gmg-server dependencies
+        run: npm install
+        working-directory: src/gmg-server
+
+      - name: Run gmg-client tests
+        run: npm test
+        working-directory: src/gmg-client
+
+      - name: Run gmg-server tests
+        run: npm test
+        working-directory: src/gmg-server
+
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build app image
+        run: docker build -t gmg:ci ./src
+
+      - name: Build emulator image
+        run: docker build -t gmg-emulator:ci ./src/gmg-emulator
