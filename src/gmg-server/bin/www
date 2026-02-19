@@ -18,14 +18,7 @@ const client = clientFactory.initialize({ logger: debug('src:gmg-client') })
 const dbFactory = require('../data')
 
 dbFactory.initialize({ logger: debug('src:db-factory') })
-
-/**
- * Ensure we can discover and connect to the grill
- */
-client.discoverGrill().then(() => startServices()).catch((err) => {
-  logger(err)
-  startServices()
-})
+startServices()
 
 function startServices() {
   /**
@@ -81,8 +74,8 @@ function startServices() {
   // Start all
   socketManager.start()
   alertManager.start()
-  persistenceManager.start()
-  pollingClient.start()
+  void persistenceManager.start()
+  void pollingClient.start()
 }
 
 /**
