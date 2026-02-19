@@ -1,12 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>Gmg.Emulator</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.2.1" />
-    <PackageReference Include="Serilog" Version="2.7.1" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="Serilog" Version="4.2.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
   </ItemGroup>
+
 </Project>

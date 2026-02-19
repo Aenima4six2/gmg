@@ -38,7 +38,7 @@ function startServices() {
   /**
    * Create HTTP server.
    */
-  const webServer = http.Server(app)
+  const webServer = http.createServer(app)
   webServer.listen(port)
   webServer.on('error', err => onError(port, err))
   webServer.on('listening', () => onListening(webServer))

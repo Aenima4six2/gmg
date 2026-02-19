@@ -1,6 +1,5 @@
 const alertTypes = require('../../constants/alertTypes')
 const path = require('path')
-const moment = require('moment')
 const resendIntervalMin = Number.MAX_SAFE_INTEGER
 let lastSent = null
 let lastState = null
@@ -29,7 +28,7 @@ module.exports.handle = (status) => {
     // Determine if the alert can be resent
     if (lastState !== null && lastSent !== null) {
         const stateChanged = lastState !== status.desiredFoodTemp
-        const canResend = moment(lastSent).add(resendIntervalMin, 'm').isBefore(moment())
+        const canResend = !lastSent || (lastSent.getTime() + resendIntervalMin * 60000) < Date.now()
         if (!stateChanged && !canResend) {
             result.triggered = false
         }
@@ -37,7 +36,7 @@ module.exports.handle = (status) => {
 
     // Update state if sent
     if (result.triggered) {
-        lastSent = moment()
+        lastSent = new Date()
         lastState = status.desiredFoodTemp
     }
 

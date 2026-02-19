@@ -4,8 +4,5 @@
   "description": "Green Mountain Grills API client",
   "main": "index.js",
   "author": "Jp Dienst",
-  "license": "ISC",
-  "dependencies": {
-    "ip": "^1.1.5"
-  }
+  "license": "ISC"
 }

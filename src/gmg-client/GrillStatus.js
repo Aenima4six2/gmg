@@ -1,5 +1,5 @@
 const getRawValue = (hex, position) => {
-  const value = hex.substr(position, 2)
+  const value = hex.substring(position, position + 2)
   const parsed = parseInt(value, 16)
   return parsed
 }

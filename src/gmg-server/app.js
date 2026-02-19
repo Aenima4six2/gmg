@@ -2,29 +2,22 @@ const express = require('express')
 const path = require('path')
 const logger = require('morgan')
 const cookieParser = require('cookie-parser')
-const bodyParser = require('body-parser')
+const cors = require('cors')
 
 module.exports.create = () => {
   // Other middleware  
   const app = express()
   app.use(logger('dev'))
-  app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({ extended: false }))
+  app.use(express.json())
+  app.use(express.urlencoded({ extended: false }))
   app.use(cookieParser())
+  app.use(cors())
 
   // Static content
   const publicPath = path.join(__dirname, 'public')
   app.use(express.static(publicPath))
   const appPath = path.join(__dirname, 'public/app')
   app.use(express.static(appPath))
-
-  // Routes
-  app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*')
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
-    res.header('Access-Control-Allow-Methods', 'POST, PUT, DELETE, PATCH, GET, OPTIONS')
-    next()
-  })
 
   // Register routes
   app.use('/api', require('./routes/api'))
