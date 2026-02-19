@@ -173,6 +173,12 @@ class GMGClient {
       throw new Error('Grill host is broadcast address! Please discover first')
     }
 
+    // Resolve hostname to IP for response matching
+    const dns = require('dns')
+    const { promisify } = require('util')
+    const lookup = promisify(dns.lookup)
+    const { address: resolvedHost } = await lookup(this.host)
+
     let attempts = 0, finished = false, schedule, socket
     const data = getCommandData(command)
 
@@ -198,7 +204,7 @@ class GMGClient {
 
             if (finished) return
 
-            if ((!ignoreEmpty || !isEmpty) && info.address === this.host) {
+            if ((!ignoreEmpty || !isEmpty) && info.address === resolvedHost) {
               this._logger(`Received response dgram from Grill (${info.address}:${info.port})`)
               finish({ msg, info })
             }
