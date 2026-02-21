@@ -8,6 +8,10 @@
   "status": {
     "pollingInterval": "GMG_STATUS_POLLING_INTERVAL"
   },
+  "db": {
+    "path": "GMG_DB_PATH",
+    "maxSizeMb": "GMG_DB_MAX_SIZE_MB"
+  },
   "alerts": {
     "slack": {
       "webhookUrl": "GMG_ALERTS_SLACK_WEBHOOKURL"

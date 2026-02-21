@@ -16,7 +16,9 @@ const appFactory = require('../app')
 const clientFactory = require('../grill')
 const client = clientFactory.initialize({ logger: debug('src:gmg-client') })
 const dbFactory = require('../data')
+const Path = require('path')
 
+const dbConfig = config.get('db')
 dbFactory.initialize({ logger: debug('src:db-factory') })
 startServices()
 
@@ -66,9 +68,12 @@ function startServices() {
     logger: debug('src:AlertManager')
   })
 
+  const dbDir = dbConfig.path || Path.resolve(__dirname, '../data')
   const persistenceManager = new PersistenceManager({
     pollingClient,
-    logger: debug('src:PersistenceManager')
+    logger: debug('src:PersistenceManager'),
+    dbPath: Path.join(dbDir, 'grill_data.db'),
+    maxSizeMb: Number(dbConfig.maxSizeMb) || 50
   })
 
   // Start all
