@@ -5,7 +5,8 @@ const Path = require('path')
 let db
 
 module.exports.initialize = ({ logger }) => {
-  const filename = Path.join(__dirname, './grill_data.db')
+  const dbDir = process.env.GMG_DB_PATH || __dirname
+  const filename = Path.join(dbDir, 'grill_data.db')
 
   logger('Initializing db: [%s]', filename)
 
