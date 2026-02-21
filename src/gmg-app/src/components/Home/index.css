@@ -16,10 +16,10 @@
 }
 
 .headline {
-    fontSize: 2.4rem;
-    paddingTop: 1.6rem;
-    marginBottom: 1.2rem;
-    fontWeight: 40rem;
+    font-size: 2.4rem;
+    padding-top: 1.6rem;
+    margin-bottom: 1.2rem;
+    font-weight: 400;
 }
 
 .connecting-box{
