@@ -46,6 +46,7 @@ The server is configured via environment variables or config files in `src/gmg-s
 | `GMG_GRILL_PORT` | Grill UDP port | `8080` |
 | `GMG_STATUS_POLLING_INTERVAL` | Status poll interval (ms) | `5000` |
 | `GMG_ALERTS_SLACK_WEBHOOKURL` | Slack webhook URL for alerts | none |
+| `GMG_DB_PATH` | Directory for SQLite database file | `src/gmg-server/data/` |
 
 See `.env.example` for a template. To customize alert sounds, replace the mp3 files in `src/gmg-server/public/alerts/`.
 
@@ -72,8 +73,9 @@ make test          # start app + emulator via Docker Compose
 make test-down     # stop testing environment
 make test-logs     # tail Docker Compose logs
 make test-rebuild  # rebuild and restart testing environment
-make image         # build Docker image
+make image         # build Docker images (app + emulator)
 make image-nc      # build with no cache
+make build-emulator # build the grill emulator (.NET)
 make install       # install all npm dependencies
 make build         # build UI and publish to server
 make dev           # start dev servers (server + Vite)
