@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import './index.css'
-import 'typeface-roboto'
 
 export default class Connecting extends Component {
     constructor() {

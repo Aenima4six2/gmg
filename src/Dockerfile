@@ -1,33 +1,27 @@
 # Build Phase
-FROM node:14-bullseye-slim AS builder
+FROM node:24-alpine AS builder
 WORKDIR /app
+RUN apk add --no-cache python3 make g++
 COPY ./gmg-app ./gmg-app
 COPY ./gmg-client ./gmg-client
 COPY ./gmg-server ./gmg-server
-COPY ./build.sh .
-RUN apt-get update && \
-    apt-get install dos2unix && \
-    dos2unix ./build.sh && \
-    /bin/bash ./build.sh
+RUN cd gmg-app && npm install && npm run publish \
+    && cd ../gmg-client && npm install \
+    && cd ../gmg-server && npm install
 
 # Run Phase
-FROM node:14.18-bullseye-slim AS runtime
+FROM node:24-alpine AS runtime
+RUN apk add --no-cache tini
 COPY --from=builder /app/gmg-client /app/gmg-client
 COPY --from=builder /app/gmg-server /app/gmg-server
 
-RUN apt-get update && \
-    apt-get install -y tini && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
 ENV NODE_ENV=production \
-    DEBUG=src.* \
+    DEBUG=src:* \
     PORT=80
 
 WORKDIR /app/gmg-server
 
-ENTRYPOINT ["/usr/bin/tini", "--"]
-
+ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["node", "./bin/www"]
 
-EXPOSE 80:80
+EXPOSE 80

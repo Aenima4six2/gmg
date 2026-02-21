@@ -1,4 +1,5 @@
-/**/node_modules
-/**/.vscode
-/gmg-emulator
-/gmg-server/data/*.db
+**/node_modules
+**/.vscode
+**/gmg-emulator
+**/.git
+**/data/*.db

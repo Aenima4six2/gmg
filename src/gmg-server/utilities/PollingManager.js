@@ -1,5 +1,4 @@
-const util = require('util')
-const setTimeoutPromise = util.promisify(setTimeout)
+const { setTimeout: setTimeoutPromise } = require('timers/promises')
 const EventEmitter = require('events')
 
 class PollingClient extends EventEmitter {

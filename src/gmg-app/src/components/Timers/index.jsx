@@ -1,18 +1,10 @@
 import React, { Component } from 'react'
-import { Card, CardActions, CardMedia, CardTitle } from 'material-ui/Card'
-import Avatar from 'material-ui/Avatar'
-import FontIcon from 'material-ui/FontIcon'
-import List from 'material-ui/List/List'
-import ListItem from 'material-ui/List/ListItem'
-import Button from 'material-ui/RaisedButton'
+import { Card, CardActions, CardContent, Avatar, List, ListItem, ListItemAvatar, ListItemText, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Box, Typography } from '@mui/material'
+import AccessTimeIcon from '@mui/icons-material/AccessTime'
+import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown'
 import logo from './logo.png'
 import PropTypes from 'prop-types'
 import './index.css'
-import '../../../node_modules/font-awesome/css/font-awesome.css'
-import FlatButton from 'material-ui/FlatButton'
-import Dialog from 'material-ui/Dialog'
-import TextField from 'material-ui/TextField'
-import 'typeface-roboto'
 
 const regex = /(\d{1,2}):(\d{1,2}):(\d{1,2}):(\d{1,2})/g
 const conversions = {
@@ -136,81 +128,101 @@ export default class Timers extends Component {
   }
 
   render() {
-    const actions = [
-      <FlatButton
-        label="Cancel"
-        primary={true}
-        onClick={this.handleCancel}
-      />,
-      <FlatButton
-        disabled={!!this.state.desiredCountDownError}
-        label="Set"
-        primary={true}
-        onClick={this.handleSubmit}
-      />,
-    ]
-
     return (
       <Card>
-        <CardMedia overlay={
-          <CardTitle title="Timers" subtitle="Set a grilling stopwatch or countdown timer."/>
-        }>
-          <img src={logo} alt=""/>
-        </CardMedia>
-        <div className="controls">
-          <List>
-            <ListItem
-              disabled={true}
-              leftAvatar={
-                <Avatar
-                  icon={<FontIcon className="fa fa-clock-o"/>}
-                  size={50}
-                />
-              }
-            > Timer: {this.formatSeconds(this.state.countUp)}
+        <Box sx={{ position: 'relative' }}>
+          <Box
+            component="img"
+            src={logo}
+            alt=""
+            sx={{ width: '100%', display: 'block' }}
+          />
+          <Box sx={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            bgcolor: 'rgba(0, 0, 0, 0.54)',
+            px: 2,
+            py: 1
+          }}>
+            <Typography variant="h5" color="white">Timers</Typography>
+            <Typography variant="body2" color="grey.400">Set a grilling stopwatch or countdown timer.</Typography>
+          </Box>
+        </Box>
+        <CardContent className="controls">
+          <List disablePadding>
+            <ListItem dense>
+              <ListItemAvatar>
+                <Avatar>
+                  <AccessTimeIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={`Timer: ${this.formatSeconds(this.state.countUp)}`} />
             </ListItem>
           </List>
           <CardActions>
             <Button
+              variant="outlined"
+              color="inherit"
               onClick={() => this.state.countUpActive ? this.cancelCountUp() : this.countUp()}
-              disabled={!this.props.isEnabled}
-              label={this.state.countUpActive ? "Cancel" : "Start"}/>
+              disabled={!this.props.isEnabled}>
+              {this.state.countUpActive ? "Cancel" : "Start"}
+            </Button>
           </CardActions>
-          <List>
-            <ListItem
-              disabled={true}
-              leftAvatar={
-                <Avatar
-                  icon={<FontIcon className="fa fa-arrow-circle-o-down"/>}
-                  size={50}
-                />
-              }
-            > Countdown: {this.formatSeconds(this.state.countDown)}
+          <List disablePadding>
+            <ListItem dense>
+              <ListItemAvatar>
+                <Avatar>
+                  <ArrowCircleDownIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={`Countdown: ${this.formatSeconds(this.state.countDown)}`} />
             </ListItem>
           </List>
           <CardActions>
             <Button
+              variant="outlined"
+              color="inherit"
               onClick={() => this.state.countDownActive ? this.cancelCountDown() : this.handleOpen()}
-              disabled={!this.props.isEnabled}
-              label={this.state.countDownActive ? "Cancel" : "Start"}/>
+              disabled={!this.props.isEnabled}>
+              {this.state.countDownActive ? "Cancel" : "Start"}
+            </Button>
           </CardActions>
-          <Dialog
-            title="Set the countdown time (dd:hh:mm:ss)"
-            actions={actions}
-            modal={true}
-            open={this.state.open}
-            onRequestClose={this.handleSubmit}
-          >
+        </CardContent>
+        <Dialog
+          open={this.state.open}
+          disableEscapeKeyDown>
+          <DialogTitle>Set the countdown time (dd:hh:mm:ss)</DialogTitle>
+          <DialogContent>
             <TextField
               id="desired-countdown"
               value={this.state.desiredCountDown || ''}
               onChange={this.handleDesiredCountDownChange}
-              errorText={this.state.desiredCountDownError}
-              hintText="Set countdown"
-              floatingLabelText="00:01:30:00"
+              error={!!this.state.desiredCountDownError}
+              helperText={this.state.desiredCountDownError}
+              placeholder="Set countdown"
+              label="00:01:30:00"
+              margin="dense"
+              fullWidth
             />
-          </Dialog>
-        </div>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="text"
+              color="primary"
+              onClick={this.handleCancel}>
+              Cancel
+            </Button>
+            <Button
+              variant="text"
+              color="primary"
+              disabled={!!this.state.desiredCountDownError}
+              onClick={this.handleSubmit}>
+              Set
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Card>
     )
   }

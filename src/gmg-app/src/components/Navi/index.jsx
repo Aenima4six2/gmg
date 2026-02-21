@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { BottomNavigation, BottomNavigationItem } from 'material-ui/BottomNavigation'
-import Paper from 'material-ui/Paper'
-import FontIcon from 'material-ui/FontIcon'
+import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material'
+import HomeIcon from '@mui/icons-material/Home'
 import './index.css'
 
 export default class Navigation extends Component {
@@ -36,21 +35,21 @@ export default class Navigation extends Component {
   render() {
     return (
       <div className="navi">
-        <Paper zDepth={1}>
-          <BottomNavigation selectedIndex={this.state.selectedIndex}>
-            <BottomNavigationItem
+        <Paper elevation={1}>
+          <BottomNavigation value={this.state.selectedIndex}>
+            <BottomNavigationAction
               label="Home"
-              icon={<FontIcon className="fa fa-home"/>}
+              icon={<HomeIcon />}
               onClick={() => this.select(0)}
             />
-            {/* <BottomNavigationItem
+            {/* <BottomNavigationAction
               label="Profiles"
-              icon={<FontIcon className="fa fa-table"/>}
+              icon={<TableChartIcon />}
               onClick={() => this.select(1)}
             />
-            <BottomNavigationItem
+            <BottomNavigationAction
               label="Settings"
-              icon={<FontIcon className="fa fa-cog"/>}
+              icon={<SettingsIcon />}
               onClick={() => this.select(2)}
             /> */}
           </BottomNavigation>
