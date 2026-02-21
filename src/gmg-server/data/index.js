@@ -1,11 +1,12 @@
 const { open } = require('sqlite')
 const sqlite3 = require('sqlite3')
 const Path = require('path')
+const config = require('config')
 
 let db
 
 module.exports.initialize = ({ logger }) => {
-  const dbDir = process.env.GMG_DB_PATH || __dirname
+  const dbDir = config.get('db.path') || __dirname
   const filename = Path.join(dbDir, 'grill_data.db')
 
   logger('Initializing db: [%s]', filename)

@@ -8,6 +8,10 @@
   "status": {
     "pollingInterval": 5000
   },
+  "db": {
+    "path": "",
+    "maxSizeMb": 50
+  },
   "alerts": {
     "slack": {
       "webhookUrl": "https://hooks.slack.com/services/SOME-SLACK-WEBHOOK-ID-HERE",
