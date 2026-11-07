@@ -131,4 +131,48 @@ describe('PersistenceManager', () => {
             expect(manager._insertCount).toBe(0)
         })
     })
+
+    describe('error handling', () => {
+        test('uses INSERT OR IGNORE so same-second statuses do not violate UNIQUE(timestamp)', async () => {
+            const manager = new PersistenceManager({ pollingClient, dbPath: '/tmp/test.db' })
+            await manager.start()
+            mockDb.run.mockClear()
+
+            await manager._onStatus({ isOn: true, currentGrillTemp: 250, currentFoodTemp: 100 })
+
+            expect(mockDb.run).toHaveBeenCalledWith(
+                expect.stringContaining('INSERT OR IGNORE INTO temperature_log'),
+                { $grill_temperature: 250, $food_temperature: 100 }
+            )
+        })
+
+        test('logs and does not reject when the insert fails', async () => {
+            const logger = jest.fn()
+            const manager = new PersistenceManager({ pollingClient, logger, dbPath: '/tmp/test.db' })
+            await manager.start()
+            mockDb.run.mockRejectedValueOnce(new Error('SQLITE_FULL: database or disk is full'))
+
+            await expect(
+                manager._onStatus({ isOn: true, currentGrillTemp: 250, currentFoodTemp: 100 })
+            ).resolves.toBeUndefined()
+
+            expect(logger).toHaveBeenCalledWith(expect.stringContaining('SQLITE_FULL'))
+            expect(manager._insertCount).toBe(0)
+        })
+
+        test('logs and does not reject when cleanup fails', async () => {
+            const logger = jest.fn()
+            const manager = new PersistenceManager({ pollingClient, logger, dbPath: '/tmp/test.db', maxSizeMb: 1 })
+            await manager.start()
+            jest.spyOn(fs, 'statSync').mockReturnValue({ size: 2 * 1024 * 1024 })
+            mockDb.get.mockRejectedValueOnce(new Error('SQLITE_BUSY: database is locked'))
+            manager._insertCount = 99
+
+            await expect(
+                manager._onStatus({ isOn: true, currentGrillTemp: 250, currentFoodTemp: 100 })
+            ).resolves.toBeUndefined()
+
+            expect(logger).toHaveBeenCalledWith(expect.stringContaining('SQLITE_BUSY'))
+        })
+    })
 })

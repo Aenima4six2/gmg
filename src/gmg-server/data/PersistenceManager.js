@@ -46,22 +46,30 @@ class PersistenceManager {
         await this.db.close()
     }
 
+    // Invoked as an EventEmitter listener, so a rejection here would surface as
+    // an unhandledRejection and terminate the process. Log and carry on instead.
     async _onStatus(status) {
         if (!status.isOn) {
             return
         }
 
-        await this.db.run(`
-            INSERT INTO temperature_log (timestamp, grill_temperature, food_temperature)
-            VALUES (strftime('%s','now'), $grill_temperature, $food_temperature)
-        `, {
-            $grill_temperature: status.currentGrillTemp,
-            $food_temperature: status.currentFoodTemp
-        })
+        try {
+            // timestamp is UNIQUE at one-second resolution; ignore a second
+            // status event landing in the same second rather than failing.
+            await this.db.run(`
+                INSERT OR IGNORE INTO temperature_log (timestamp, grill_temperature, food_temperature)
+                VALUES (strftime('%s','now'), $grill_temperature, $food_temperature)
+            `, {
+                $grill_temperature: status.currentGrillTemp,
+                $food_temperature: status.currentFoodTemp
+            })
 
-        this._insertCount++
-        if (this._insertCount % CLEANUP_CHECK_INTERVAL === 0) {
-            await this._cleanup()
+            this._insertCount++
+            if (this._insertCount % CLEANUP_CHECK_INTERVAL === 0) {
+                await this._cleanup()
+            }
+        } catch (err) {
+            this._logger(`Failed to persist grill status: ${err.message}`)
         }
     }
 
