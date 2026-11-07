@@ -3,9 +3,7 @@ import './index.css'
 import '@fontsource/roboto'
 import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import { SnackbarProvider, closeSnackbar } from 'notistack'
-import IconButton from '@mui/material/IconButton'
-import CloseIcon from '@mui/icons-material/Close'
+import { ToastContainer } from 'react-toastify'
 import gmgTheme from '../../theme/gmgTheme'
 import Home from '../Home'
 // import AppBar from '@mui/material/AppBar'
@@ -45,24 +43,15 @@ export default class App extends Component {
     return (
       <ThemeProvider theme={gmgTheme}>
         <CssBaseline />
-        <SnackbarProvider
-          maxSnack={3}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          action={(snackbarId) => (
-            <IconButton size="small" color="inherit" onClick={() => closeSnackbar(snackbarId)}>
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          )}
-        >
-          <div className="app">
-            {/* <AppBar className="app-logo" iconStyleLeft={{ visibility: 'hidden' }} /> */}
-            {this.renderCards()}
-            <Navigation
-              onSelectedIndexChanged={this.selectedNavigationIndexChanged}
-              selectedIndex={this.selectedNavigationIndex}
-            />
-          </div>
-        </SnackbarProvider>
+        <div className="app">
+          {/* <AppBar className="app-logo" iconStyleLeft={{ visibility: 'hidden' }} /> */}
+          {this.renderCards()}
+          <Navigation
+            onSelectedIndexChanged={this.selectedNavigationIndexChanged}
+            selectedIndex={this.selectedNavigationIndex}
+          />
+        </div>
+        <ToastContainer position="top-right" limit={3} theme="colored" />
       </ThemeProvider>
     )
   }

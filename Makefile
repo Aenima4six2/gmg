@@ -47,9 +47,10 @@ dev: install ## Start dev servers (server on :3001, UI on :5173)
 	@echo "Starting gmg-app dev server on port 5173..."
 	cd src/gmg-app && npm run dev
 
-unit-test: install ## Run unit tests for gmg-client and gmg-server
+unit-test: install ## Run unit tests for gmg-client, gmg-server and gmg-app
 	cd src/gmg-client && npm test
 	cd src/gmg-server && npm test
+	cd src/gmg-app && npm test
 
 test: ## Start app + emulator with Docker Compose for testing
 	docker compose up --build -d

@@ -59,8 +59,8 @@ export default class FoodTemperature extends Component {
             px: 2,
             py: 1
           }}>
-            <Typography variant="h5" color="white">Food Temp &#8457;</Typography>
-            <Typography variant="body2" color="grey.400">Set the temperature of the food</Typography>
+            <Typography variant="h5" sx={{ color: 'white' }}>Food Temp &#8457;</Typography>
+            <Typography variant="body2" sx={{ color: 'grey.400' }}>Set the temperature of the food</Typography>
           </Box>
         </Box>
         <CardContent className="controls">
@@ -97,8 +97,7 @@ export default class FoodTemperature extends Component {
           </CardActions>
         </CardContent>
         <Dialog
-          open={this.state.open}
-          disableEscapeKeyDown>
+          open={this.state.open}>
           <DialogTitle>Set the desired food temperature</DialogTitle>
           <DialogContent>
             <TextField

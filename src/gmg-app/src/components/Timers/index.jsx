@@ -146,8 +146,8 @@ export default class Timers extends Component {
             px: 2,
             py: 1
           }}>
-            <Typography variant="h5" color="white">Timers</Typography>
-            <Typography variant="body2" color="grey.400">Set a grilling stopwatch or countdown timer.</Typography>
+            <Typography variant="h5" sx={{ color: 'white' }}>Timers</Typography>
+            <Typography variant="body2" sx={{ color: 'grey.400' }}>Set a grilling stopwatch or countdown timer.</Typography>
           </Box>
         </Box>
         <CardContent className="controls">
@@ -191,8 +191,7 @@ export default class Timers extends Component {
           </CardActions>
         </CardContent>
         <Dialog
-          open={this.state.open}
-          disableEscapeKeyDown>
+          open={this.state.open}>
           <DialogTitle>Set the countdown time (dd:hh:mm:ss)</DialogTitle>
           <DialogContent>
             <TextField
