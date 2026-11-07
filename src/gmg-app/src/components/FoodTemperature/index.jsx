@@ -48,7 +48,7 @@ export default class FoodTemperature extends Component {
             component="img"
             src={logo}
             alt=""
-            sx={{ width: '100%', display: 'block' }}
+            sx={{ width: '100%', display: 'block', minHeight: '7rem', objectFit: 'cover' }}
           />
           <Box sx={{
             position: 'absolute',
