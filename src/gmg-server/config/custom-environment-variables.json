@@ -13,6 +13,12 @@
     "maxSizeMb": "GMG_DB_MAX_SIZE_MB"
   },
   "alerts": {
+    "audio": {
+      "enabled": {
+        "__name": "GMG_ALERTS_AUDIO_ENABLED",
+        "__format": "boolean"
+      }
+    },
     "slack": {
       "webhookUrl": "GMG_ALERTS_SLACK_WEBHOOKURL"
     }

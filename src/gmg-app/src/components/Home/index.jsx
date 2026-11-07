@@ -53,8 +53,16 @@ export default class Home extends Component {
     this.socket.on('disconnect', () => this.setState({ socketConnected: false }))
   }
 
+  playAlertSound = (beep) => {
+    if (!beep) return
+    const audio = new Audio(new URL(beep, window.location.origin).href)
+    // Browsers block autoplay until the user has interacted with the page
+    audio.play().catch(err => console.warn(`Unable to play alert sound: ${err.message}`))
+  }
+
   sendAlert = (alert) => {
     const message = `${alert.name}: ${alert.reason}`
+    this.playAlertSound(alert.beep)
     switch (alert.level) {
       case 'error': {
         enqueueSnackbar(message, { variant: 'error' })

@@ -46,10 +46,11 @@ The server is configured via environment variables or config files in `src/gmg-s
 | `GMG_GRILL_PORT` | Grill UDP port | `8080` |
 | `GMG_STATUS_POLLING_INTERVAL` | Status poll interval (ms) | `5000` |
 | `GMG_ALERTS_SLACK_WEBHOOKURL` | Slack webhook URL for alerts | none |
+| `GMG_ALERTS_AUDIO_ENABLED` | Play a sound in the browser when an alert fires (`true`/`false`) | `true` |
 | `GMG_DB_PATH` | Directory for SQLite database file | `src/gmg-server/data/` |
 | `GMG_DB_MAX_SIZE_MB` | Max database size before oldest rows are pruned | `50` |
 
-See `.env.example` for a template. To customize alert sounds, replace the mp3 files in `src/gmg-server/public/alerts/`.
+See `.env.example` for a template. To customize alert sounds, replace the mp3 files in `src/gmg-server/public/alerts/`; set `GMG_ALERTS_AUDIO_ENABLED=false` to turn them off.
 
 ## Development Setup
 

@@ -12,6 +12,7 @@ const PollingClient = require('../grill/PollingClient')
 const SocketSender = require('../alerts/senders/SocketSender')
 const SlackSender = require('../alerts/senders/SlackSender')
 const slackConfig = config.get('alerts.slack')
+const audioConfig = config.get('alerts.audio')
 const appFactory = require('../app')
 const clientFactory = require('../grill')
 const client = clientFactory.initialize({ logger: debug('src:gmg-client') })
@@ -62,7 +63,7 @@ function startServices() {
     pollingClient,
     handlers: getAlertHandlers(),
     senders: [
-      new SocketSender(socketManager),
+      new SocketSender(socketManager, { audioEnabled: audioConfig.enabled }),
       new SlackSender(slackConfig)
     ],
     logger: debug('src:AlertManager')
