@@ -21,6 +21,10 @@ if [ -n "$GMG_ALERTS_SLACK_WEBHOOKURL" ] ; then
   runstring="$runstring  -e \"GMG_ALERTS_SLACK_WEBHOOKURL=$GMG_ALERTS_SLACK_WEBHOOKURL\""
 fi
 
+if [ -n "$GMG_ALERTS_AUDIO_ENABLED" ] ; then
+  runstring="$runstring  -e \"GMG_ALERTS_AUDIO_ENABLED=$GMG_ALERTS_AUDIO_ENABLED\""
+fi
+
 runstring="$runstring gmg"
 
 echo "$runstring"
