@@ -4,6 +4,8 @@ COPY . .
 RUN dotnet restore && dotnet publish -c Release -o /app
 
 FROM mcr.microsoft.com/dotnet/runtime:10.0-alpine
+# Pick up Alpine security fixes newer than the base image
+RUN apk upgrade --no-cache
 WORKDIR /app
 COPY --from=build /app .
 ENTRYPOINT ["dotnet", "gmg-emulator.dll"]
