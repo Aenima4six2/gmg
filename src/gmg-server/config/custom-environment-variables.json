@@ -1,16 +1,31 @@
 {
   "grill": {
     "host": "GMG_GRILL_HOST",
-    "port": "GMG_GRILL_PORT",
-    "tries": "GMG_GRILL_TRIES",
-    "retryMs": "GMG_GRILL_RETRYMS"
+    "port": {
+      "__name": "GMG_GRILL_PORT",
+      "__format": "number"
+    },
+    "tries": {
+      "__name": "GMG_GRILL_TRIES",
+      "__format": "number"
+    },
+    "retryMs": {
+      "__name": "GMG_GRILL_RETRYMS",
+      "__format": "number"
+    }
   },
   "status": {
-    "pollingInterval": "GMG_STATUS_POLLING_INTERVAL"
+    "pollingInterval": {
+      "__name": "GMG_STATUS_POLLING_INTERVAL",
+      "__format": "number"
+    }
   },
   "db": {
     "path": "GMG_DB_PATH",
-    "maxSizeMb": "GMG_DB_MAX_SIZE_MB"
+    "maxSizeMb": {
+      "__name": "GMG_DB_MAX_SIZE_MB",
+      "__format": "number"
+    }
   },
   "alerts": {
     "slack": {
