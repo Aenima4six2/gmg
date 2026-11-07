@@ -12,5 +12,18 @@ export default defineConfig({
         ws: true
       }
     }
+  },
+  test: {
+    environment: 'happy-dom',
+    globals: true,
+    setupFiles: './src/setupTests.js',
+    server: {
+      deps: {
+        // chart.js 3 resolves to its CommonJS build under Node, which breaks
+        // chartjs-adapter-date-fns' named ESM import. Let Vite transform these
+        // so tests resolve modules the same way the browser build does.
+        inline: [/chart\.js/, /chartjs-/]
+      }
+    }
   }
 })

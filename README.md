@@ -69,7 +69,7 @@ VSCode users can open `gmg.code-workspace` and use the pre-configured debug laun
 A `Makefile` is included for common tasks. Run `make help` to see all targets:
 
 ```sh
-make unit-test     # run unit tests for gmg-client and gmg-server
+make unit-test     # run unit tests for gmg-client, gmg-server and gmg-app
 make test          # start app + emulator via Docker Compose
 make test-down     # stop testing environment
 make test-logs     # tail Docker Compose logs

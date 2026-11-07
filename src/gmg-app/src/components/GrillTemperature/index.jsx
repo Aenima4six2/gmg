@@ -59,8 +59,8 @@ export default class GrillTemperature extends Component {
             px: 2,
             py: 1
           }}>
-            <Typography variant="h5" color="white">Grill Temp &#8457;</Typography>
-            <Typography variant="body2" color="grey.400">Set the temperature of the grill</Typography>
+            <Typography variant="h5" sx={{ color: 'white' }}>Grill Temp &#8457;</Typography>
+            <Typography variant="body2" sx={{ color: 'grey.400' }}>Set the temperature of the grill</Typography>
           </Box>
         </Box>
         <CardContent className="controls">
@@ -97,8 +97,7 @@ export default class GrillTemperature extends Component {
           </CardActions>
         </CardContent>
         <Dialog
-          open={this.state.open}
-          disableEscapeKeyDown>
+          open={this.state.open}>
           <DialogTitle>Set the desired grill temperature</DialogTitle>
           <DialogContent>
             <TextField
