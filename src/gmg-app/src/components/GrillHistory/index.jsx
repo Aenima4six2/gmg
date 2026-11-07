@@ -49,7 +49,6 @@ export default class GrillHistory extends Component {
                                     max: now,
                                     time: {
                                         unit: 'minute',
-                                        stepSize: 5,
                                         displayFormats: {
                                             minute: 'h:mm aaa'
                                         }
@@ -59,7 +58,8 @@ export default class GrillHistory extends Component {
                                     },
                                     ticks: {
                                         color: 'rgba(255, 255, 255, 0.7)',
-                                        maxRotation: 0
+                                        maxRotation: 0,
+                                        stepSize: 5
                                     }
                                 },
                                 y: {
