@@ -3,8 +3,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import HomeControls from '../HomeControls'
 
-// The power button is the first icon button in the toolbar
-const powerButton = () => screen.getByTestId('PowerSettingsNewIcon').closest('button')
+const powerButton = () => screen.getByRole('button', { name: 'Power' })
 
 describe('HomeControls', () => {
   test('power button is disabled when the grill is not connected', () => {

@@ -32,8 +32,8 @@ export default class GrillHistory extends Component {
                         px: 2,
                         py: 1
                     }}>
-                        <Typography variant="h5" color="white">Temperature History</Typography>
-                        <Typography variant="body2" color="grey.400">View grilling temperature history.</Typography>
+                        <Typography variant="h5" sx={{ color: 'white' }}>Temperature History</Typography>
+                        <Typography variant="body2" sx={{ color: 'grey.400' }}>View grilling temperature history.</Typography>
                     </Box>
                 </Box>
                 <Box sx={{ p: 2 }}>

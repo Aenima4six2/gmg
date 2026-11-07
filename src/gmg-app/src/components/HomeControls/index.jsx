@@ -28,6 +28,7 @@ export default class HomeControls extends Component {
             <Tooltip title={this.props.fanModeActive ? 'Grill cannot be powered on during fan mode!' : ''}>
               <span>
                 <IconButton
+                  aria-label="Power"
                   style={styles.powerIcon}
                   disabled={!this.props.grillConnected || this.props.fanModeActive}
                   onClick={this.props.onPowerTouchTap}>
@@ -41,6 +42,7 @@ export default class HomeControls extends Component {
             <Tooltip title="">
               <span>
                 <IconButton
+                  aria-label="Timers"
                   style={styles.timersIcon}
                   disabled={this.props.loading}
                   onClick={this.props.onTimersTouchTap}>
@@ -54,6 +56,7 @@ export default class HomeControls extends Component {
             <Tooltip title="">
               <span>
                 <IconButton
+                  aria-label="History"
                   style={styles.historyIcon}
                   disabled={this.props.loading}
                   onClick={this.props.onHistoryTouchTap}>
@@ -71,6 +74,7 @@ export default class HomeControls extends Component {
               : `The grill is not connected! 
               The application will continue trying to connect in the background .`}>
               <IconButton
+                aria-label={this.props.grillConnected ? 'Grill connected' : 'Grill not connected'}
                 disableRipple={true}>
                 <WifiIcon
                   sx={{ color: getWifiColor(this.props.grillConnected) }} />
@@ -79,6 +83,7 @@ export default class HomeControls extends Component {
             <Tooltip title={this.getAlert()}>
               <span>
                 <IconButton
+                  aria-label="Grill alerts"
                   disabled={!this.getAlert()}
                   disableRipple={true}>
                   <WarningIcon
