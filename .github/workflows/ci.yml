@@ -31,6 +31,14 @@ jobs:
         run: npm test
         working-directory: src/gmg-server
 
+      - name: Install gmg-app dependencies
+        run: npm install
+        working-directory: src/gmg-app
+
+      - name: Run gmg-app tests
+        run: npm test
+        working-directory: src/gmg-app
+
   docker-build:
     name: Docker Build
     runs-on: ubuntu-latest
