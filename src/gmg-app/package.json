@@ -5,7 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@fontsource/roboto": "^5.1.0",
+    "@fontsource/roboto": "^5.3.0",
     "@mui/icons-material": "^9.5.0",
     "@mui/material": "^9.5.0",
     "chart.js": "^4.6.1",
@@ -16,11 +16,11 @@
     "react": "^19.3.1",
     "react-chartjs-2": "^5.3.1",
     "react-dom": "^19.3.1",
-    "socket.io-client": "^4.8.0"
+    "socket.io-client": "^4.8.4"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.2",
-    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.8",
     "@vitejs/plugin-react": "^6.2.1",
