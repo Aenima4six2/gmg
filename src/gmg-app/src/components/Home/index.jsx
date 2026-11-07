@@ -6,7 +6,7 @@ import Timers from "../Timers/index"
 import HomeControls from '../HomeControls'
 import io from 'socket.io-client'
 import GrillClient from '../../utils/GrillClient'
-import { enqueueSnackbar } from 'notistack'
+import { toast } from 'react-toastify'
 import Connecting from './Connecting'
 import './index.css'
 
@@ -57,15 +57,15 @@ export default class Home extends Component {
     const message = `${alert.name}: ${alert.reason}`
     switch (alert.level) {
       case 'error': {
-        enqueueSnackbar(message, { variant: 'error' })
+        toast.error(message)
         break
       }
       case 'warning': {
-        enqueueSnackbar(message, { variant: 'warning' })
+        toast.warning(message)
         break
       }
       default: {
-        enqueueSnackbar(message, { variant: 'info' })
+        toast.info(message)
       }
     }
   }
@@ -138,7 +138,7 @@ export default class Home extends Component {
       await this.client.powerToggle()
     }
     catch (err) {
-      enqueueSnackbar(err.message, { variant: 'error' })
+      toast.error(err.message)
     }
     this.setState({
       loading: !!(this.state.commandsPending - 1),
@@ -156,7 +156,7 @@ export default class Home extends Component {
       await this.client.setDesiredGrillTemp(temperature)
     }
     catch (err) {
-      enqueueSnackbar(err.message, { variant: 'error' })
+      toast.error(err.message)
     }
     this.setState({
       loading: !!(this.state.commandsPending - 1),
@@ -174,7 +174,7 @@ export default class Home extends Component {
       await this.client.setDesiredFoodTemp(temperature)
     }
     catch (err) {
-      enqueueSnackbar(err.message, { variant: 'error' })
+      toast.error(err.message)
     }
     this.setState({
       loading: !!(this.state.commandsPending - 1),
