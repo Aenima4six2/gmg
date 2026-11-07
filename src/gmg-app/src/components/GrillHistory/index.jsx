@@ -21,7 +21,7 @@ export default class GrillHistory extends Component {
                         component="img"
                         src={logo}
                         alt=""
-                        sx={{ width: '100%', display: 'block' }}
+                        sx={{ width: '100%', display: 'block', minHeight: '7rem', objectFit: 'cover' }}
                     />
                     <Box sx={{
                         position: 'absolute',
@@ -32,8 +32,8 @@ export default class GrillHistory extends Component {
                         px: 2,
                         py: 1
                     }}>
-                        <Typography variant="h5" color="white">Temperature History</Typography>
-                        <Typography variant="body2" color="grey.400">View grilling temperature history.</Typography>
+                        <Typography variant="h5" sx={{ color: 'white' }}>Temperature History</Typography>
+                        <Typography variant="body2" sx={{ color: 'grey.400' }}>View grilling temperature history.</Typography>
                     </Box>
                 </Box>
                 <Box sx={{ p: 2 }}>
@@ -49,7 +49,6 @@ export default class GrillHistory extends Component {
                                     max: now,
                                     time: {
                                         unit: 'minute',
-                                        stepSize: 5,
                                         displayFormats: {
                                             minute: 'h:mm aaa'
                                         }
@@ -59,7 +58,8 @@ export default class GrillHistory extends Component {
                                     },
                                     ticks: {
                                         color: 'rgba(255, 255, 255, 0.7)',
-                                        maxRotation: 0
+                                        maxRotation: 0,
+                                        stepSize: 5
                                     }
                                 },
                                 y: {

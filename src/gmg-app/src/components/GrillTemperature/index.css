@@ -1,5 +1,6 @@
 .controls.MuiCardContent-root {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   padding-top: 8px;
   padding-bottom: 8px;

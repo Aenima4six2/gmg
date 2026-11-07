@@ -25,45 +25,43 @@ export default class HomeControls extends Component {
       <div>
         <Toolbar sx={{ height: '5rem' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Tooltip title={this.props.fanModeActive ? 'Grill cannot be powered on during fan mode!' : ''}>
-              <span>
-                <IconButton
-                  style={styles.powerIcon}
-                  disabled={!this.props.grillConnected || this.props.fanModeActive}
-                  onClick={this.props.onPowerTouchTap}>
-                  <PowerSettingsNewIcon
-                    sx={{ color: getButtonColor(this.props.powerOn) }}
-                    className="big" />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <span style={styles.powerLabel}>Power</span>
-            <Tooltip title="">
-              <span>
-                <IconButton
-                  style={styles.timersIcon}
-                  disabled={this.props.loading}
-                  onClick={this.props.onTimersTouchTap}>
-                  <AccessTimeIcon
-                    sx={{ color: getButtonColor(this.props.timersOn) }}
-                    className="big" />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <span style={styles.timersLabel}>Timers</span>
-            <Tooltip title="">
-              <span>
-                <IconButton
-                  style={styles.historyIcon}
-                  disabled={this.props.loading}
-                  onClick={this.props.onHistoryTouchTap}>
-                  <HistoryIcon
-                    sx={{ color: getButtonColor(this.props.historyOn) }}
-                    className="big" />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <span style={styles.historyLabel}>History</span>
+            <Box sx={styles.navItem}>
+              <Tooltip title={this.props.fanModeActive ? 'Grill cannot be powered on during fan mode!' : ''}>
+                <span>
+                  <IconButton
+                    aria-label="Power"
+                    disabled={!this.props.grillConnected || this.props.fanModeActive}
+                    onClick={this.props.onPowerTouchTap}>
+                    <PowerSettingsNewIcon
+                      sx={{ color: getButtonColor(this.props.powerOn) }}
+                      className="big" />
+                  </IconButton>
+                </span>
+              </Tooltip>
+              <span style={styles.navLabel}>Power</span>
+            </Box>
+            <Box sx={styles.navItem}>
+              <IconButton
+                aria-label="Timers"
+                disabled={this.props.loading}
+                onClick={this.props.onTimersTouchTap}>
+                <AccessTimeIcon
+                  sx={{ color: getButtonColor(this.props.timersOn) }}
+                  className="big" />
+              </IconButton>
+              <span style={styles.navLabel}>Timers</span>
+            </Box>
+            <Box sx={styles.navItem}>
+              <IconButton
+                aria-label="History"
+                disabled={this.props.loading}
+                onClick={this.props.onHistoryTouchTap}>
+                <HistoryIcon
+                  sx={{ color: getButtonColor(this.props.historyOn) }}
+                  className="big" />
+              </IconButton>
+              <span style={styles.navLabel}>History</span>
+            </Box>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
             <Tooltip title={this.props.grillConnected
@@ -71,6 +69,7 @@ export default class HomeControls extends Component {
               : `The grill is not connected! 
               The application will continue trying to connect in the background .`}>
               <IconButton
+                aria-label={this.props.grillConnected ? 'Grill connected' : 'Grill not connected'}
                 disableRipple={true}>
                 <WifiIcon
                   sx={{ color: getWifiColor(this.props.grillConnected) }} />
@@ -79,6 +78,7 @@ export default class HomeControls extends Component {
             <Tooltip title={this.getAlert()}>
               <span>
                 <IconButton
+                  aria-label="Grill alerts"
                   disabled={!this.getAlert()}
                   disableRipple={true}>
                   <WarningIcon
